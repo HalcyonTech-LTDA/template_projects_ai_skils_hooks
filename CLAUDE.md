@@ -24,9 +24,31 @@ echo "{}" | node .claude/hooks/inject-rules.js
 
 Detalhes completos em `docs_projeto/HOOKS.md`.
 
+## Skills de fluxo
+
+Duas skills governam como o trabalho entra no repositorio:
+
+| Skill | Quando |
+|---|---|
+| `/commit` | Gerar a mensagem e criar o commit. Le a convencao do proprio repositorio (`docs_projeto/COMMITS.md`, depois `CLAUDE.md`, depois o historico) antes de propor tipo e escopo. Nunca roda `git add` por conta propria. |
+| `/worktree` | Rodar tarefas independentes em paralelo, uma janela `claude` por tarefa, com merge de volta serializado por fila. |
+
+A skill `/worktree` traz os proprios scripts em
+`.claude/skills/worktree/scripts/` e funciona sem `package.json`: sem projeto Node
+ela apenas nao roda portao nenhum. Worktrees nascem em `.claude/worktrees/`, que e
+ignorado pelo git.
+
+## Este repositorio e a fonte das skills
+
+`template_projetos` e a **origem canonica** de `.claude/skills/`. Alteracao numa
+skill comeca aqui e desce por copia para os projetos derivados — nunca o contrario.
+Se voce corrigir uma skill dentro de um projeto, replique a correcao aqui na mesma
+tarefa, ou ela se perde no proximo projeto criado.
+
 ## Estrutura
 
 - `.claude/settings.json` — versionado, hooks publicos
 - `.claude/settings.local.json` — ignorado pelo git, config pessoal
-- `.claude/skills/` — skills locais do projeto
+- `.claude/skills/` — skills locais do projeto (fonte canonica)
+- `.claude/worktrees/` — worktrees de agentes, ignorado pelo git
 - `docs_projeto/` — documentacao do projeto (atualizar sempre)
