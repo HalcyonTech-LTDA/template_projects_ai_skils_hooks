@@ -18,6 +18,8 @@ Documentacao do **repositorio template** e do **template de projeto** que ele en
 - [[HOWTO]] — como clonar este repo e iniciar um projeto novo
 - [[CONVENCOES]] — schema de properties, naming, tags, IDs
 - [[HOOKS]] — regras do projeto injetadas via hook do Claude Code
+- [[COMMITS]] — convencao de commits e a skill `/commit` (preencher por projeto)
+- [[WORKTREES]] — agentes paralelos em worktrees e a skill `/worktree`
 - [[decisoes/README|decisoes/]] — registros de mudancas estruturais neste repo
 - [[referencias/README|referencias/]] — resumos de links/normas/bibliotecas citadas
 
