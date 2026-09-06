@@ -3,7 +3,7 @@ title: docs_projeto
 type: readme
 status: aprovado
 created: 2026-05-28
-updated: 2026-05-28
+updated: 2026-09-06
 tags: [readme, indice]
 ---
 
@@ -18,6 +18,7 @@ Documentacao do **repositorio template** e do **template de projeto** que ele en
 - [[HOWTO]] — como clonar este repo e iniciar um projeto novo
 - [[CONVENCOES]] — schema de properties, naming, tags, IDs
 - [[HOOKS]] — regras do projeto injetadas via hook do Claude Code
+- [[MCPS]] — catalogo de servidores MCP: quais ligar, quando desligar, custo de contexto
 - [[COMMITS]] — convencao de commits e a skill `/commit` (preencher por projeto)
 - [[WORKTREES]] — agentes paralelos em worktrees e a skill `/worktree`
 - [[decisoes/README|decisoes/]] — registros de mudancas estruturais neste repo

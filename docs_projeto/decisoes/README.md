@@ -3,7 +3,7 @@ title: Decisoes do repo template
 type: readme
 status: aprovado
 created: 2026-05-28
-updated: 2026-05-28
+updated: 2026-09-06
 tags: [readme, decisoes]
 ---
 
@@ -16,3 +16,4 @@ Registro de mudancas estruturais feitas **neste repositorio** (nao nos projetos 
 ## Indice
 
 - [[2026-05-28_configuracao_obsidian_template]] — configuracao inicial da estrutura Obsidian do template
+- [[2026-09-06_catalogo_mcps]] — catalogo curado de MCPs, politica de segredos e `.mcp.json.example`

@@ -3,7 +3,7 @@ title: Referencias externas
 type: readme
 status: aprovado
 created: 2026-05-28
-updated: 2026-05-28
+updated: 2026-09-06
 tags: [readme, referencias]
 ---
 
@@ -17,8 +17,31 @@ Resumos de URLs, bibliotecas, normas ou conceitos citados durante o desenvolvime
 
 - Um arquivo por referencia: `<slug-da-referencia>.md`
 - Frontmatter minimo: `title`, `source` (URL ou citacao), `type: referencia`, `tags`, `created`, `updated`
+- Referencia de ferramenta viva (MCP, CLI, SDK) leva tambem `verificado_em` — a data em que o comando foi conferido na fonte
 - Conteudo: resumo executivo + trechos relevantes citaveis + link/fonte
 
 ## Indice
 
-_(vazio — nenhuma referencia ingerida ainda)_
+### Claude Code
+
+- [[claude-code-mcp-configuracao]] — escopos, expansao de `${VAR}`, OAuth, aprovacao de `.mcp.json`
+
+### Servidores MCP — nucleo
+
+Catalogo decisorio e criterio de escolha em [[../MCPS|MCPS.md]].
+
+- [[mcp-github]] — PRs, issues, code search. Alto custo de contexto; limite os toolsets
+- [[mcp-figma]] — Dev Mode: design vira codigo com os valores reais
+- [[mcp-mobile-next]] — automacao iOS/Android por arvore de acessibilidade
+- [[mcp-playwright]] — teste de aplicacao web, cross-browser
+- [[mcp-terminator]] — automacao de app desktop, **Windows apenas**
+- [[mcp-supabase]] — schema, migracoes, Edge Functions
+- [[mcp-vercel]] — deploys, logs de build, dominios
+- [[mcp-google-workspace]] — Gmail, Drive, Calendar. Ler a secao de risco antes de ligar
+
+### Servidores MCP — opcionais
+
+- [[mcp-context7]] — docs atualizadas de bibliotecas. Melhor custo/beneficio do catalogo
+- [[mcp-chrome-devtools]] — performance e rede. Depurar, nao dirigir
+- [[mcp-sentry]] — erro de producao com stack trace no contexto
+- [[mcp-notion]] — base de conhecimento externa

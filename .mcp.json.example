@@ -1,0 +1,63 @@
+{
+  "_notas": {
+    "_": "APAGUE ESTE BLOCO _notas AO COPIAR. Ele existe so para documentar o exemplo; nao faz parte do schema de .mcp.json. JSON estrito: sem // e sem virgula sobrando.",
+    "como_usar": "cp .mcp.json.example .mcp.json e entao APAGUE os servidores que este projeto nao usa. Alvo: 3 a 6 ativos. Criterio e perfis de projeto em docs_projeto/MCPS.md secoes 1 e 2.",
+    "segredos": "Nunca valor literal aqui. Prefira OAuth (/mcp). Se o servidor exigir token, ponha o valor em .claude/settings.local.json no bloco env e referencie ${NOME} aqui — ver o servidor exemplo-com-token abaixo.",
+    "github": "Transversal: prefira -s user em vez de deixar no .mcp.json. O header X-MCP-Toolsets corta de ~50 tools para ~25.",
+    "figma": "Remoto, OAuth, funciona em qualquer seat. Alternativa desktop: http://127.0.0.1:3845/mcp (exige app Figma aberto em Dev Mode e seat Dev/Full em plano pago).",
+    "supabase": "Aponte para projeto de DESENVOLVIMENTO, nunca producao. Remova features do querystring para cortar tools.",
+    "vercel": "So util quando ha deploy para investigar. Desligue no dia a dia local.",
+    "context7": "~2 tools. Melhor custo/beneficio do catalogo. Deixe ligado.",
+    "playwright": "Teste de aplicacao WEB. Cross-browser, snapshot por acessibilidade.",
+    "mobile": "Teste de app MOBILE. Exige Node 20+, adb (Android) e/ou Xcode CLI (iOS, so em macOS).",
+    "terminator": "Teste de app DESKTOP. Windows apenas. 50+ tools: o mais caro do catalogo, ligue so durante a tarefa.",
+    "exemplo-com-token": "Modelo de servidor que exige token na mao. Apague no .mcp.json real."
+  },
+  "mcpServers": {
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/",
+      "headers": {
+        "X-MCP-Toolsets": "repos,issues,pull_requests,context"
+      }
+    },
+    "figma": {
+      "type": "http",
+      "url": "https://mcp.figma.com/mcp"
+    },
+    "supabase": {
+      "type": "http",
+      "url": "https://mcp.supabase.com/mcp?features=docs,database,debugging,development,functions"
+    },
+    "vercel": {
+      "type": "http",
+      "url": "https://mcp.vercel.com"
+    },
+    "context7": {
+      "type": "http",
+      "url": "https://mcp.context7.com/mcp"
+    },
+    "playwright": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest"]
+    },
+    "mobile": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@mobilenext/mobile-mcp@latest"]
+    },
+    "terminator": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "terminator-mcp-agent@latest"]
+    },
+    "exemplo-com-token": {
+      "type": "http",
+      "url": "https://exemplo.com/mcp",
+      "headers": {
+        "Authorization": "Bearer ${ALGUM_TOKEN}"
+      }
+    }
+  }
+}
