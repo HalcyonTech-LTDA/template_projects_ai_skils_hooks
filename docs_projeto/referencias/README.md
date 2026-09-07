@@ -3,7 +3,7 @@ title: Referencias externas
 type: readme
 status: aprovado
 created: 2026-05-28
-updated: 2026-09-06
+updated: 2026-09-07
 tags: [readme, referencias]
 ---
 
@@ -25,6 +25,7 @@ Resumos de URLs, bibliotecas, normas ou conceitos citados durante o desenvolvime
 ### Claude Code
 
 - [[claude-code-mcp-configuracao]] — escopos, expansao de `${VAR}`, OAuth, aprovacao de `.mcp.json`
+- [[skills-taste-leonxlnx]] — pacote de 13 skills de design; flags do CLI `skills` e armadilhas
 
 ### Servidores MCP — nucleo
 

@@ -57,6 +57,21 @@ o projeto nao usa. Segredo nunca entra no `.mcp.json`: use OAuth ou o bloco `env
 
 Como as skills, este catalogo e **fonte canonica** — correcao comeca aqui.
 
+## Skills
+
+`.claude/skills/` tem 49 skills. Skill nao custa contexto por sessao (so a `description`
+entra no prompt), mas **colide por gatilho**: mais de 15 delas descrevem design de interface.
+
+`docs_projeto/SKILLS.md` e o catalogo decisorio — arvore de precedencia de qual usar quando,
+quais sao mutuamente exclusivas e quais estao inertes. Leia antes de invocar skill de design.
+
+Duas regras que valem sempre:
+
+- **Uma skill estetica por tarefa.** `minimalist-ui` e `industrial-brutalist-ui` juntas
+  produzem output incoerente.
+- **Nao rode `npx skills update`.** As 13 skills de `Leonxlnx/taste-skill` sao fork proprio;
+  `skills-lock.json` e registro de procedencia, nao mecanismo de atualizacao.
+
 ## Este repositorio e a fonte das skills
 
 `template_projetos` e a **origem canonica** de `.claude/skills/`. Alteracao numa
@@ -70,5 +85,7 @@ tarefa, ou ela se perde no proximo projeto criado.
 - `.claude/settings.local.json` — ignorado pelo git, config pessoal e bloco `env` com segredos
 - `.mcp.json.example` — nucleo de MCPs comentado; copiar para `.mcp.json` e podar
 - `.claude/skills/` — skills locais do projeto (fonte canonica)
+- `skills-lock.json` — procedencia das skills vindas de `Leonxlnx/taste-skill`; versionado, nao atualizar
 - `.claude/worktrees/` — worktrees de agentes, ignorado pelo git
+- `docs_projeto/SKILLS.md` — catalogo e precedencia das skills (fonte canonica)
 - `docs_projeto/` — documentacao do projeto (atualizar sempre)

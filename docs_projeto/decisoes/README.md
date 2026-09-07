@@ -3,7 +3,7 @@ title: Decisoes do repo template
 type: readme
 status: aprovado
 created: 2026-05-28
-updated: 2026-09-06
+updated: 2026-09-07
 tags: [readme, decisoes]
 ---
 
@@ -17,3 +17,4 @@ Registro de mudancas estruturais feitas **neste repositorio** (nao nos projetos 
 
 - [[2026-05-28_configuracao_obsidian_template]] — configuracao inicial da estrutura Obsidian do template
 - [[2026-09-06_catalogo_mcps]] — catalogo curado de MCPs, politica de segredos e `.mcp.json.example`
+- [[2026-09-07_skills_taste]] — pacote `taste-skill` (13 skills), catalogo `SKILLS.md` e politica de fork
