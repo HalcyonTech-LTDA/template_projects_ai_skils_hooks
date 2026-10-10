@@ -3,7 +3,7 @@ title: Catalogo de MCPs para desenvolvimento
 type: convencao
 status: aprovado
 created: 2026-09-06
-updated: 2026-09-06
+updated: 2026-09-27
 project: template_projetos
 tags: [convencao, mcp, ferramentas, claude-code, tema/tooling]
 ---
@@ -78,17 +78,20 @@ claude mcp add -s user -t http github https://api.githubcopilot.com/mcp/
 | **Escopo** | `project` — so faz sentido em projeto com design |
 | **Custo de contexto** | **Baixo** — punhado de tools |
 | **Credencial** | Remoto: OAuth. Desktop: nenhuma, mas exige seat Dev/Full em plano pago |
-| **Verificado em** | 2026-09-06 |
+| **Limite** | Leituras: Starter 20/mes; View/Collab pago 6/mes; Dev/Full pago de 200/dia (Pro) a 600/dia (Enterprise) |
+| **Verificado em** | 2026-09-27 |
 | **Referencia** | [[referencias/mcp-figma]] |
 
 ```bash
-# Remoto (preferido — funciona em qualquer seat e plano)
+# Remoto (preferido — qualquer seat e plano, mas veja o limite)
 claude mcp add -s project -t http figma https://mcp.figma.com/mcp
 
 # Desktop (alternativa; exige app Figma aberto em Dev Mode com o servidor ligado)
 claude mcp add -s project -t http figma-desktop http://127.0.0.1:3845/mcp
 ```
 
+- **Antes de planejar** um ciclo de design para codigo, rode a tool `whoami`, que nao gasta
+  chamada. No Starter, 20 leituras por mes nao sustentam o ciclo.
 - **Ligue** ao implementar tela a partir de design.
 - **Desligue** depois que a tela saiu do Figma — ele nao ajuda em logica de negocio.
 - **Casa com** as skills `frontend-design`, `ui-ux-pro-max` e `ui-design-system` do repo.
@@ -348,3 +351,4 @@ desatualizado e pior que ausencia de doc.
 | Data | Mudanca | Motivo |
 |------|---------|--------|
 | 2026-09-06 | Versao inicial do catalogo (8 no nucleo, 4 opcionais, 6 anti-recomendacoes) | Template nao orientava escolha de MCP; cada projeto derivado improvisava |
+| 2026-09-27 | Figma revalidado: limite de chamadas por plano e seat, `whoami` antes de planejar e escrita no canvas em beta | A ficha dizia "qualquer seat e plano", mas o Starter para em 20 leituras por mes |

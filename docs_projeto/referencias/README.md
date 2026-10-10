@@ -32,7 +32,7 @@ Resumos de URLs, bibliotecas, normas ou conceitos citados durante o desenvolvime
 Catalogo decisorio e criterio de escolha em [[../MCPS|MCPS.md]].
 
 - [[mcp-github]] — PRs, issues, code search. Alto custo de contexto; limite os toolsets
-- [[mcp-figma]] — Dev Mode: design vira codigo com os valores reais
+- [[mcp-figma]] — Dev Mode: design vira codigo com os valores reais; no Starter, 20 leituras por mes
 - [[mcp-mobile-next]] — automacao iOS/Android por arvore de acessibilidade
 - [[mcp-playwright]] — teste de aplicacao web, cross-browser
 - [[mcp-terminator]] — automacao de app desktop, **Windows apenas**
