@@ -16,7 +16,9 @@ obrigatorias em cada mensagem do usuario para o Claude Code.
 ### 1. Consulta de skills (por prompt)
 Antes de planejar ou agir, o Claude lista as skills em `.claude/skills/` e
 invoca a que combinar com a tarefa via Skill tool. O proprio hook lista as
-skills disponiveis no contexto injetado.
+skills disponiveis no contexto injetado e, se `.claude/agents/` existir, os
+subagentes do projeto, apontando a skill `/issue` para tarefa de desenvolvimento
+(ver [[AGENTES]]).
 
 ### 2. Atualizacao de documentacao
 Ao final de qualquer alteracao de codigo, ou quando o usuario citar referencias,
@@ -25,7 +27,10 @@ o Claude deve atualizar `docs_projeto/` com o que mudou ou foi aprendido.
 ### 3. Minimo de 5 perguntas
 Para qualquer pedido nao-trivial, o Claude chama `AskUserQuestion` com pelo
 menos 5 perguntas cobrindo: escopo, restricoes tecnicas, preferencias,
-criterios de aceite e edge cases. Excecao: leitura factual pura.
+criterios de aceite e edge cases. Excecoes: leitura factual pura, e issue ou
+tarefa que a skill `/issue` classificou como XS ou S — nela o Claude pergunta so
+o que for ambiguo (0 a 2 perguntas). A excecao existe porque uma correcao de uma
+linha nao justifica 5 perguntas, e cada rodada de perguntas tambem custa contexto.
 
 ### 4. Advogado do diabo
 Em todo prompt, o Claude critica a abordagem proposta, aponta riscos, invalida

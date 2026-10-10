@@ -3,14 +3,14 @@ title: Catalogo de skills e precedencia de design
 type: convencao
 status: aprovado
 created: 2026-09-07
-updated: 2026-09-07
+updated: 2026-10-10
 project: template_projetos
 tags: [convencao, skills, design, claude-code, tema/tooling]
 ---
 
 # Catalogo de skills e precedencia de design
 
-Este repositorio carrega **49 skills** em `.claude/skills/`. Diferente dos MCPs, skill
+Este repositorio carrega **50 skills** em `.claude/skills/`. Diferente dos MCPs, skill
 nao custa contexto por sessao: so a `description` de cada uma entra no prompt, e o corpo
 so e lido quando a skill dispara. O custo real e outro — **colisao de gatilho**: com 20+
 skills descrevendo "design de interface", o modelo escolhe uma diferente a cada sessao e
@@ -74,6 +74,8 @@ Estas nao competem com as esteticas e podem rodar junto:
 - `react-best-practices`, `nextjs-best-practices`, `tailwind-patterns`,
   `web-performance-optimization`
 - `commit`, `worktree` — fluxo de entrada de trabalho no repo
+- `issue` — conduz uma issue pelo tamanho, escolhendo subagente e modelo; usa `commit` e
+  `worktree` por dentro. Catalogo dos agentes em [[AGENTES]]
 
 ## 5. Casos especiais
 

@@ -28,15 +28,30 @@ const skillsLine = skills.length
   ? skills.join(", ")
   : "(nenhuma skill local encontrada em .claude/skills/)";
 
+const agentsDir = path.join(cwd, ".claude", "agents");
+
+let agents = [];
+try {
+  agents = fs
+    .readdirSync(agentsDir, { withFileTypes: true })
+    .filter((d) => d.isFile() && d.name.endsWith(".md"))
+    .map((d) => d.name.slice(0, -3))
+    .sort();
+} catch {}
+
+const agentsLine = agents.length
+  ? `\n   Subagentes do projeto em .claude/agents/: ${agents.join(", ")}. Issue ou tarefa de desenvolvimento passa pela skill /issue, que escolhe agente e modelo pelo tamanho (docs_projeto/AGENTES.md).`
+  : "";
+
 const rules = `<project-rules>
 REGRAS OBRIGATORIAS DO PROJETO (injetadas via hook UserPromptSubmit):
 
 1. CONSULTA DE SKILLS — Antes de planejar, codar ou chamar tools, revise as skills do projeto e invoque a que combinar com a tarefa via Skill tool.
-   Skills locais disponiveis em .claude/skills/: ${skillsLine}
+   Skills locais disponiveis em .claude/skills/: ${skillsLine}${agentsLine}
 
 2. DOCUMENTACAO — Ao final de qualquer alteracao no codigo, ou quando o usuario citar referencias/links/conceitos, atualize docs_projeto/ com o que foi mudado ou aprendido. Nao termine a tarefa sem isso.
 
-3. CINCO PERGUNTAS MINIMAS — Use AskUserQuestion com no minimo 5 perguntas distintas cobrindo: (a) escopo/intencao, (b) restricoes tecnicas, (c) preferencias de estilo/arquitetura, (d) criterios de aceite, (e) edge cases. Excecao: leitura factual pura (ex: "mostre o git status", "leia esse arquivo").
+3. CINCO PERGUNTAS MINIMAS — Use AskUserQuestion com no minimo 5 perguntas distintas cobrindo: (a) escopo/intencao, (b) restricoes tecnicas, (c) preferencias de estilo/arquitetura, (d) criterios de aceite, (e) edge cases. Excecoes: leitura factual pura (ex: "mostre o git status", "leia esse arquivo"); e issue ou tarefa classificada como XS ou S pela skill /issue, que pergunta so o que for ambiguo (0 a 2 perguntas).
 
 4. ADVOGADO DO DIABO — Em todo prompt nao-trivial, critique a abordagem proposta, aponte riscos, invalide premissas fracas e apresente pelo menos 2 caminhos alternativos com tradeoffs explicitos antes de executar.
 

@@ -6,3 +6,6 @@ Thumbs.db
 
 # Worktrees de agentes (skill /worktree). Vivem dentro do repo, nunca versionados.
 /.claude/worktrees/
+
+# Handoff entre fatias de uma issue (skill /issue). Estado local de trabalho, nunca versionado.
+/.claude/handoff/

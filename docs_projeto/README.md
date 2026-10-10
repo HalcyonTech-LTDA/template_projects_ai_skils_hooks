@@ -22,6 +22,7 @@ Documentacao do **repositorio template** e do **template de projeto** que ele en
 - [[SKILLS]] — catalogo de skills e precedencia entre as de design (qual usar quando)
 - [[COMMITS]] — convencao de commits e a skill `/commit` (preencher por projeto)
 - [[WORKTREES]] — agentes paralelos em worktrees e a skill `/worktree`
+- [[AGENTES]] — subagentes do projeto e a skill `/issue`: qual agente e modelo por tamanho de tarefa
 - [[decisoes/README|decisoes/]] — registros de mudancas estruturais neste repo
 - [[referencias/README|referencias/]] — resumos de links/normas/bibliotecas citadas
 

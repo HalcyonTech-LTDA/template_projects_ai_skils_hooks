@@ -26,10 +26,11 @@ Detalhes completos em `docs_projeto/HOOKS.md`.
 
 ## Skills de fluxo
 
-Duas skills governam como o trabalho entra no repositorio:
+Tres skills governam como o trabalho entra no repositorio:
 
 | Skill | Quando |
 |---|---|
+| `/issue` | Conduzir uma issue ou tarefa de desenvolvimento do comeco ao merge. Classifica o tamanho (label `size/*` ou estimativa declarada) e escolhe subagente e modelo por ele. Usa `/worktree` e `/commit` por dentro. |
 | `/commit` | Gerar a mensagem e criar o commit. Le a convencao do proprio repositorio (`docs_projeto/COMMITS.md`, depois `CLAUDE.md`, depois o historico) antes de propor tipo e escopo. Nunca roda `git add` por conta propria. |
 | `/worktree` | Rodar tarefas independentes em paralelo, uma janela `claude` por tarefa, com merge de volta serializado por fila. |
 
@@ -37,6 +38,24 @@ A skill `/worktree` traz os proprios scripts em
 `.claude/skills/worktree/scripts/` e funciona sem `package.json`: sem projeto Node
 ela apenas nao roda portao nenhum. Worktrees nascem em `.claude/worktrees/`, que e
 ignorado pelo git.
+
+## Agentes
+
+`.claude/agents/` tem 5 subagentes: `explorer` (haiku, busca so de leitura), `researcher`
+(sonnet, web), `worker` (sonnet, testes e docs), `implementer` (opus, uma fatia) e `reviewer`
+(opus, revisao do diff). `docs_projeto/AGENTES.md` e o catalogo: tabela tamanho → modelo,
+handoff entre fatias, os tres momentos do advisor e os numeros de custo que justificam tudo.
+
+Tres regras que valem sempre:
+
+- **Um `implementer` novo por fatia.** Estado entre fatias vai para `.claude/handoff/<issue>.md`
+  (ignorado pelo git), nunca para um agente mantido vivo por `SendMessage`.
+- **Uma issue por sessao**, `/clear` entre issues. O custo esta no contexto relido a cada
+  chamada, nao na resposta.
+- **Agente de projeto vence agente de usuario com o mesmo nome.** Nao mantenha copias destes
+  cinco em `~/.claude/agents/`.
+
+Como as skills, os agentes e o `AGENTES.md` sao **fonte canonica** — correcao comeca aqui.
 
 ## MCPs
 
@@ -59,7 +78,7 @@ Como as skills, este catalogo e **fonte canonica** — correcao comeca aqui.
 
 ## Skills
 
-`.claude/skills/` tem 49 skills. Skill nao custa contexto por sessao (so a `description`
+`.claude/skills/` tem 50 skills. Skill nao custa contexto por sessao (so a `description`
 entra no prompt), mas **colide por gatilho**: mais de 15 delas descrevem design de interface.
 
 `docs_projeto/SKILLS.md` e o catalogo decisorio — arvore de precedencia de qual usar quando,
@@ -87,5 +106,8 @@ tarefa, ou ela se perde no proximo projeto criado.
 - `.claude/skills/` — skills locais do projeto (fonte canonica)
 - `skills-lock.json` — procedencia das skills vindas de `Leonxlnx/taste-skill`; versionado, nao atualizar
 - `.claude/worktrees/` — worktrees de agentes, ignorado pelo git
+- `.claude/agents/` — subagentes do projeto (fonte canonica)
+- `.claude/handoff/` — handoff entre fatias da skill `/issue`, ignorado pelo git
+- `docs_projeto/AGENTES.md` — catalogo dos agentes e do fluxo por tamanho (fonte canonica)
 - `docs_projeto/SKILLS.md` — catalogo e precedencia das skills (fonte canonica)
 - `docs_projeto/` — documentacao do projeto (atualizar sempre)
