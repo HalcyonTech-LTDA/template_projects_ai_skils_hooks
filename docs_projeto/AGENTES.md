@@ -70,7 +70,7 @@ A excecao de XS e S as 5 perguntas esta na regra 3 do hook (`HOOKS.md`).
 
 ## 4. Handoff entre fatias
 
-- Arquivo: `.claude/handoff/<issue>.md`, ignorado pelo git. Sobrevive a `/clear` e a troca de sessao.
+- Arquivo: `.claude/handoff/<issue>.md` do **checkout principal**, ignorado pelo git, sempre por caminho absoluto, mesmo quando a issue roda num worktree (que tem o proprio `.claude/` e some no fim). Sobrevive a `/clear` e a troca de sessao.
 - Secoes: `## Plano` (do `Plan`, depois do advisor) e um `## Handoff — fatia <n>` por fatia, no
   formato que o `implementer` devolve.
 - O handoff e um resumo: o `implementer` seguinte le o codigo atual e o codigo vence.

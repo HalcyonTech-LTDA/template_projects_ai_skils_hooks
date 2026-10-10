@@ -53,7 +53,7 @@ Na duvida entre dois tamanhos, escolha o maior. Codigo sensivel (login, autoriza
 ### 4.1 Plano e handoff (M para cima)
 
 1. Peca ao `Plan` o plano em fatias que compilam e testam sozinhas, cada uma com criterio de prova.
-2. Grave o plano em `.claude/handoff/<issue>.md` (ignorado pelo git; `<issue>` e o numero ou um slug ASCII), secao `## Plano`.
+2. Grave o plano em `.claude/handoff/<issue>.md` **do checkout principal**, por caminho absoluto, mesmo trabalhando num worktree: o worktree tem o proprio `.claude/` e some no fim (ignorado pelo git; `<issue>` e o numero ou um slug ASCII). Secao `## Plano`.
 3. **Advisor, momento 1:** consulte antes de executar. Se mudar o plano, regrave.
 4. Mostre o plano ao usuario em poucas linhas e siga.
 5. Trabalhe num worktree (skill `/worktree`) quando houver outra sessao no mesmo repositorio ou quando a issue for L ou XL.
