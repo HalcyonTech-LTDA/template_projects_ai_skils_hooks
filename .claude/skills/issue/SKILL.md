@@ -78,5 +78,6 @@ Para L e XL, ou para codigo sensivel, abra **um ou dois** `reviewer` independent
 1. Docs: rode a regra 2 do hook. Para mais de 3 arquivos de docs, use um `worker` com uma ficha de fatos ja conferidos.
 2. Marque os criterios de aceite no corpo da issue e comente a prova (comando, saida, link do CI) **antes** do merge.
 3. **Advisor, momento 3:** consulte antes de declarar concluido, com o trabalho ja commitado.
-4. PR e merge conforme o projeto. Nao use "closes #N" ou "fixes #N" em texto de commit se o projeto nao quiser fechamento automatico. Faca push so se o usuario pedir.
-5. Termine com: tamanho usado, agentes e modelos usados, o que ficou pendente, e a sugestao de `/clear`.
+4. Se a issue pertence a uma trilha (`/trilha`): mova-a para **In review** com o comentario de prova e o que nao foi provado; Done e fechamento sao do dono. PR usa `Refs #N`, e `Closes #N` so quando o merge e o aceite.
+5. PR e merge conforme o projeto. Nao use "closes #N" ou "fixes #N" em texto de commit se o projeto nao quiser fechamento automatico. Faca push so se o usuario pedir.
+6. Termine com: tamanho usado, agentes e modelos usados, o que ficou pendente, e a sugestao de `/clear`.

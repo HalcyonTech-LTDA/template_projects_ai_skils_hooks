@@ -1,0 +1,52 @@
+name: Tarefa
+description: Uma entrega com prova propria, parte de uma trilha (skill /trilha)
+title: "<PREFIXO>-<NN> · <entrega em uma frase>"
+labels: ["tipo:tarefa"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Dependencias **nao** vao no corpo: marque em Relationships > Mark as blocked by (ou pelo manifesto da trilha).
+        Milestone = o marco de entrega. Pai (Parent issue) = o epico da trilha. Tamanho e prioridade sao campos do Project.
+  - type: textarea
+    id: contexto
+    attributes:
+      label: Contexto
+      description: Por que existe; estado atual citado como `arquivo:linha` contra um commit fixo.
+    validations:
+      required: true
+  - type: textarea
+    id: fazer
+    attributes:
+      label: O que fazer
+      placeholder: "- <entregavel>"
+    validations:
+      required: true
+  - type: textarea
+    id: pronto
+    attributes:
+      label: Criterio de pronto
+      description: Prova observavel (comparacao, medicao, teste, leitura em ambiente real). Nunca "implementado". Separe host/mock de ambiente real.
+      placeholder: "- [ ] <prova>"
+    validations:
+      required: true
+  - type: textarea
+    id: fora
+    attributes:
+      label: Fora do escopo
+      placeholder: "- <o que fica para outra issue>"
+  - type: textarea
+    id: fontes
+    attributes:
+      label: Fontes
+      placeholder: "- `arquivo:linha` (`<branch>@<commit>`)"
+  - type: dropdown
+    id: quem
+    attributes:
+      label: Quem executa
+      options:
+        - agente
+        - dono
+        - externo
+    validations:
+      required: true

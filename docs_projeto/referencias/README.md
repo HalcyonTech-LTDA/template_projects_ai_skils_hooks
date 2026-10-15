@@ -27,6 +27,10 @@ Resumos de URLs, bibliotecas, normas ou conceitos citados durante o desenvolvime
 - [[claude-code-mcp-configuracao]] — escopos, expansao de `${VAR}`, OAuth, aprovacao de `.mcp.json`
 - [[skills-taste-leonxlnx]] — pacote de 13 skills de design; flags do CLI `skills` e armadilhas
 
+### GitHub
+
+- [[github-projects-issues-dependencias]] — blocked by, sub-issues, Issue Types, teto de 50 campos, copia de Project, status update; base da `/trilha`
+
 ### Frontend — referencia e componentes
 
 Protocolo de uso em `.claude/skills/_shared/fontes-frontend.md`; precedencia em [[../SKILLS|SKILLS.md]] secao 7.

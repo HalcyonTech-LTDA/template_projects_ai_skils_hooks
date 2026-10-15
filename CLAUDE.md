@@ -26,10 +26,11 @@ Detalhes completos em `docs_projeto/HOOKS.md`.
 
 ## Skills de fluxo
 
-Tres skills governam como o trabalho entra no repositorio:
+Quatro skills governam como o trabalho entra no repositorio:
 
 | Skill | Quando |
 |---|---|
+| `/trilha` | Planejar e controlar uma frente de trabalho no GitHub: epico, marcos (milestones), issues em sequencia, dependencias nativas (blocked by), progresso dos marcos e checagem de deriva do board. So issues, nunca draft. IDs do board em `docs_projeto/BOARD.md`. |
 | `/issue` | Conduzir uma issue ou tarefa de desenvolvimento do comeco ao merge. Classifica o tamanho (label `size/*` ou estimativa declarada) e escolhe subagente e modelo por ele. Usa `/worktree` e `/commit` por dentro. |
 | `/commit` | Gerar a mensagem e criar o commit. Le a convencao do proprio repositorio (`docs_projeto/COMMITS.md`, depois `CLAUDE.md`, depois o historico) antes de propor tipo e escopo. Nunca roda `git add` por conta propria. |
 | `/worktree` | Rodar tarefas independentes em paralelo, uma janela `claude` por tarefa, com merge de volta serializado por fila. |
@@ -78,7 +79,7 @@ Como as skills, este catalogo e **fonte canonica** — correcao comeca aqui.
 
 ## Skills
 
-`.claude/skills/` tem 49 skills. Skill nao custa contexto por sessao (so a `description`
+`.claude/skills/` tem 50 skills. Skill nao custa contexto por sessao (so a `description`
 entra no prompt), mas **colide por gatilho**: mais de 15 delas descrevem design de interface.
 
 `docs_projeto/SKILLS.md` e o catalogo decisorio — arvore de precedencia de qual usar quando,
@@ -116,4 +117,6 @@ tarefa, ou ela se perde no proximo projeto criado.
 - `.claude/handoff/` — handoff entre fatias da skill `/issue`, ignorado pelo git
 - `docs_projeto/AGENTES.md` — catalogo dos agentes e do fluxo por tamanho (fonte canonica)
 - `docs_projeto/SKILLS.md` — catalogo e precedencia das skills (fonte canonica)
+- `docs_projeto/BOARD.md` — molde dos IDs do board do GitHub; preenchido em cada projeto derivado
+- `.github/ISSUE_TEMPLATE/` — formularios de issue (tarefa, epico, bug); issue em branco desligada
 - `docs_projeto/` — documentacao do projeto (atualizar sempre)

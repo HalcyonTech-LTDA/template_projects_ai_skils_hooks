@@ -77,6 +77,8 @@ Estas nao competem com as esteticas e podem rodar junto:
 - `commit`, `worktree` — fluxo de entrada de trabalho no repo
 - `issue` — conduz uma issue pelo tamanho, escolhendo subagente e modelo; usa `commit` e
   `worktree` por dentro. Catalogo dos agentes em [[AGENTES]]
+- `trilha` — planeja e controla uma frente de trabalho no GitHub (marcos, sequencia, bloqueios,
+  progresso); cria as issues que a `issue` conduz. IDs do board em [[BOARD]]
 
 ## 5. Casos especiais
 
