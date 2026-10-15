@@ -78,7 +78,7 @@ Como as skills, este catalogo e **fonte canonica** — correcao comeca aqui.
 
 ## Skills
 
-`.claude/skills/` tem 50 skills. Skill nao custa contexto por sessao (so a `description`
+`.claude/skills/` tem 49 skills. Skill nao custa contexto por sessao (so a `description`
 entra no prompt), mas **colide por gatilho**: mais de 15 delas descrevem design de interface.
 
 `docs_projeto/SKILLS.md` e o catalogo decisorio — arvore de precedencia de qual usar quando,
@@ -90,6 +90,11 @@ Duas regras que valem sempre:
   produzem output incoerente.
 - **Nao rode `npx skills update`.** As 13 skills de `Leonxlnx/taste-skill` sao fork proprio;
   `skills-lock.json` e registro de procedencia, nao mecanismo de atualizacao.
+
+Toda tarefa de interface segue `.claude/skills/_shared/fontes-frontend.md`: referencia real
+nomeada antes do codigo (Refero), componente de registry antes de inventado (Arc, Cult UI),
+screenshot ao lado da referencia antes de entregar. As quatro skills de UI apontam para ele;
+ver `docs_projeto/SKILLS.md` secao 7.
 
 ## Este repositorio e a fonte das skills
 
@@ -104,6 +109,7 @@ tarefa, ou ela se perde no proximo projeto criado.
 - `.claude/settings.local.json` — ignorado pelo git, config pessoal e bloco `env` com segredos
 - `.mcp.json.example` — nucleo de MCPs comentado; copiar para `.mcp.json` e podar
 - `.claude/skills/` — skills locais do projeto (fonte canonica)
+- `.claude/skills/_shared/` — texto comum a varias skills (nao e skill; o hook ignora)
 - `skills-lock.json` — procedencia das skills vindas de `Leonxlnx/taste-skill`; versionado, nao atualizar
 - `.claude/worktrees/` — worktrees de agentes, ignorado pelo git
 - `.claude/agents/` — subagentes do projeto (fonte canonica)

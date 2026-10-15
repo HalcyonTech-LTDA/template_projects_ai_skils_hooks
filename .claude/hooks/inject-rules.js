@@ -20,6 +20,7 @@ try {
   skills = fs
     .readdirSync(skillsDir, { withFileTypes: true })
     .filter((d) => d.isDirectory())
+    .filter((d) => fs.existsSync(path.join(skillsDir, d.name, "SKILL.md")))
     .map((d) => d.name)
     .sort();
 } catch {}

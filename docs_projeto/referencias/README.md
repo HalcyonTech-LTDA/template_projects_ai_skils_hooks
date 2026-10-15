@@ -3,7 +3,7 @@ title: Referencias externas
 type: readme
 status: aprovado
 created: 2026-05-28
-updated: 2026-09-07
+updated: 2026-10-15
 tags: [readme, referencias]
 ---
 
@@ -26,6 +26,14 @@ Resumos de URLs, bibliotecas, normas ou conceitos citados durante o desenvolvime
 
 - [[claude-code-mcp-configuracao]] — escopos, expansao de `${VAR}`, OAuth, aprovacao de `.mcp.json`
 - [[skills-taste-leonxlnx]] — pacote de 13 skills de design; flags do CLI `skills` e armadilhas
+
+### Frontend — referencia e componentes
+
+Protocolo de uso em `.claude/skills/_shared/fontes-frontend.md`; precedencia em [[../SKILLS|SKILLS.md]] secao 7.
+
+- [[refero]] — acervo de telas e fluxos reais. Fonte de pesquisa; MCP pago nao usado
+- [[ui-arc]] — componentes React animados, CSS modules sem Tailwind. Tokens colidem com shadcn
+- [[cult-ui]] — registry shadcn com ilustracoes; Pro virou gratis. Tem lista de vetados
 
 ### Servidores MCP — nucleo
 

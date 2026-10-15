@@ -10,6 +10,18 @@ description: Anti-slop frontend skill for landing pages, portfolios, and redesig
 
 ---
 
+## STEP 0. SOURCES AND REFERENCE LOCK (mandatory, before any code)
+
+Read `.claude/skills/_shared/fontes-frontend.md` and follow it. If you cannot read it, these still hold:
+1. Name 2-3 real references (user-provided > refero.design via browser > real products from the brief) and what each contributes, then write the reference lock. No named reference, no code.
+2. Prefer an existing component from Arc (`@uiarc/*`) or Cult UI (`@cult-ui/*`) over writing one. Read its `.md` first.
+3. Never install Cult's `border-beam-*`, `halo-*`, `cosmic-button`, `metal-button`, `gradient-*`, `bg-animated-gradient`, `circuit-board`, `distorted-glass`.
+4. Close visual work with screenshots at 1440px and 390px next to the primary reference, and fix the drift. No browser available: say so.
+
+The Design Read in 0.B names the primary reference. Section 0 infers the direction **from** the references, not instead of them.
+
+---
+
 ## 0. BRIEF INFERENCE (Read the Room Before Anything Else)
 
 Before touching code or tweaking dials, **infer what the user actually wants**. Most LLM design output is bad because the model jumps to a default aesthetic instead of reading the room.
@@ -97,11 +109,14 @@ Once you have the design read (Section 0) and dials (Section 1), pick the right 
 | Fast local-business / agency MVP | Bootstrap 5.3 | Boring, fast, works |
 | Modern accessible React foundation | `@radix-ui/themes` | Primitives + polished theme |
 | Modern SaaS where you own the components | shadcn/ui (`npx shadcn@latest add ...`) | You own the code, easy to customise; never ship default state |
+| Animated product UI, charts, data-dense blocks | Arc (`npx shadcn@latest add @uiarc/<name>`) | CSS modules + own tokens, reduced-motion built in. See `_shared/fontes-frontend.md` |
+| Marketing illustrations, device frames, SVG hero art | Cult UI (`npx shadcn@latest add @cult-ui/<name>`) | Tailwind + `motion`. Respect the banned list in `_shared/fontes-frontend.md` |
 | Tailwind-based modern SaaS / AI marketing | Tailwind v4 utilities + `dark:` variant | Default for indie + small team builds |
 
 **Honesty rule:** if the brief reads as one of the systems above, install and use the **official** package. Do not recreate its CSS by hand. Do not import a system's tokens but then override 90% of them.
 
 **One system per project.** Do not mix Fluent React with Carbon in the same tree. Do not import shadcn/ui components into a Material 3 app.
+Exception: Arc and Cult UI may share a project. Their tokens share names (`--background`, `--border`, `--accent`) and their dark themes use different switches (`data-theme="dark"` vs `.dark`). Resolve both as described in `_shared/fontes-frontend.md` section 3.
 
 ### 2.B When the brief is an aesthetic, not a system
 For these directions, there is **no single official package**. Build with native CSS + Tailwind + a maintained component library. Be honest in code comments about what is borrowed inspiration vs. official material.

@@ -3,14 +3,15 @@ title: Catalogo de skills e precedencia de design
 type: convencao
 status: aprovado
 created: 2026-09-07
-updated: 2026-10-10
+updated: 2026-10-15
 project: template_projetos
 tags: [convencao, skills, design, claude-code, tema/tooling]
 ---
 
 # Catalogo de skills e precedencia de design
 
-Este repositorio carrega **50 skills** em `.claude/skills/`. Diferente dos MCPs, skill
+Este repositorio carrega **49 skills** em `.claude/skills/` (mais `obsidian-skills/`, que e
+pacote e nao skill, e `_shared/`, que guarda texto comum a varias skills). Diferente dos MCPs, skill
 nao custa contexto por sessao: so a `description` de cada uma entra no prompt, e o corpo
 so e lido quando a skill dispara. O custo real e outro — **colisao de gatilho**: com 20+
 skills descrevendo "design de interface", o modelo escolhe uma diferente a cada sessao e
@@ -97,3 +98,39 @@ no upstream, hash do conteudo instalado) — nao como mecanismo de atualizacao. 
 mudanca do upstream, faca deliberadamente: leia o diff, decida, e propague por copia.
 
 Ficha da referencia em [[referencias/skills-taste-leonxlnx]].
+
+## 7. Fontes de frontend — protocolo comum
+
+A arvore da secao 2 escolhe **a estetica**. Ela nao diz de onde vem a evidencia nem o
+codigo. Isso fica num arquivo so, lido pelas quatro skills que produzem interface:
+
+`.claude/skills/_shared/fontes-frontend.md`
+
+| Skill | Onde o protocolo entra |
+|---|---|
+| `design-taste-frontend` | `STEP 0`, antes da inferencia de brief |
+| `ui-ux-pro-max` | `Step 0`, antes do `--design-system` (que vira suplemento) |
+| `frontend-design` | `Step 0`, antes do Design Thinking |
+| `redesign-existing-projects` | Passo `Reference` entre Diagnose e Fix, mais `Verify` no fim |
+
+As quatro regras que cada skill repete inline:
+
+1. **2 a 3 referencias reais nomeadas antes do codigo**, com o que cada uma contribui, e o
+   reference lock escrito. Ordem: do usuario → refero.design pelo navegador → produtos reais
+2. **Componente de registry antes de componente inventado**: Arc (`@uiarc/*`) ou Cult UI
+   (`@cult-ui/*`), lendo o `.md` do componente
+3. **Vetados do Cult**: `border-beam-*`, `halo-*`, `cosmic-button`, `metal-button`,
+   `gradient-*`, `bg-animated-gradient`, `circuit-board`, `distorted-glass`
+4. **Screenshot em 1440px e 390px ao lado da referencia principal** antes de entregar
+
+| Fonte | Papel | Ficha |
+|---|---|---|
+| Refero | Referencia — o que olhar. Sem MCP (pago) | [[referencias/refero]] |
+| Arc | Componente animado, CSS modules, sem Tailwind | [[referencias/ui-arc]] |
+| Cult UI | Ilustracao, device frame, secao de marketing (Tailwind) | [[referencias/cult-ui]] |
+
+Arc e Cult podem conviver, mas os tokens tem os mesmos nomes e o tema escuro usa seletores
+diferentes — regra na secao 3 do arquivo compartilhado.
+
+`_shared/` nao e skill (nao tem `SKILL.md`); o hook so lista pastas com `SKILL.md`.
+Decisao em [[decisoes/2026-10-15_fontes_frontend]].
