@@ -12,3 +12,4 @@ Voce localiza informacao no repositorio e devolve uma resposta curta.
 - Nao cole arquivos inteiros. Se a resposta exigir muito texto, resuma e aponte onde ler.
 - Exclua `.claude/skills/` e `node_modules/` das buscas, salvo se o pedido for sobre eles.
 - Diga o que nao encontrou e onde procurou.
+- Se o briefing trouxer a tabela de tamanho da `/issue`, devolva tambem o tamanho proposto, uma frase de justificativa e, se ficou entre dois tamanhos, quais. Nao proponha plano nem solucao.

@@ -51,6 +51,27 @@ Quem quiser uma segunda opiniao antes do portao 2 pode instalar no escopo do usu
 (`/plugin marketplace add aklofas/kicad-happy`) e rodar a revisao dela sobre o projeto. Precedencia:
 para gerar, editar, verificar e liberar, a familia `pcb-*` vence; `kicad-happy` so como revisao extra.
 
+## `copperheadhq/copperhead`: agente de terceiros, referencia e verificacao extra
+
+Agente de IA em CLI (TypeScript, Apache-2.0, v0.12.0 em 2026-10-15, criado em 2026-07) que edita
+`.kicad_sch`/`.kicad_pcb` reais e roda ERC/DRC pelo `kicad-cli` ate passarem. Pede KiCad >= 8
+(KiCad 10 e Windows nao verificados), Node >= 20, git e um backend de LLM proprio. Ficha:
+`docs_projeto/referencias/copperhead.md`.
+
+| Comando | Precisa de LLM? | Uso aqui |
+|---|---|---|
+| `copperhead check` | Nao (sem rede) | Segunda opiniao de ERC, DRC e drift antes dos portoes 1 e 2. Nao substitui os scripts da familia |
+| `copperhead score schematic` | Nao | Nota de legibilidade do esquematico gerado, como sinal extra na revisao humana |
+| `copperhead do` / `create` | Sim | **Nao usar** numa sessao com as skills `pcb-*`: e um segundo agente disputando a mesma tarefa, com custo de modelo proprio |
+| MCP stdio | — | Experimental e instavel. Mesma regra dos MCPs de KiCad acima: escopo `local`, so exploracao |
+
+Ficou fora do nucleo porque e pre-1.0, nao roteia (decisao do projeto), nao cobre fabricacao para a
+JLC nem escolha de pecas no ROADMAP, e nao tem KiCad 10 confirmado. Precedencia: para gerar,
+editar, verificar e liberar, a familia `pcb-*` vence.
+
+Ideias que valem trazer para os scripts, sem copiar codigo: snapshot git antes de editar com
+rollback automatico se ERC/DRC piorar, e uma nota de legibilidade do esquematico.
+
 ## Alternativas consideradas para gerar esquematico
 
 - **SKiDL 2.3.0** (Python, MIT): suporta KiCad 5 a 10, gera netlist e esquematico. Descartado como

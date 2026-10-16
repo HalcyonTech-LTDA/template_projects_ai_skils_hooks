@@ -96,3 +96,6 @@ e percorra o checklist do portao 1; confira cada CI contra o circuito de aplicac
 - `references/circuitos-de-referencia.md` — blocos de mecatronica com valores de partida e fonte.
 - `references/formato-kicad-sch.md` — o que o KiCad 10 exige no arquivo (para editar a mao com seguranca).
 - Ficha de boas praticas com fontes: `docs_projeto/referencias/boas-praticas-pcb.md`.
+- Verificacao extra opcional, de terceiros: `copperhead check` (ERC/DRC/drift sem LLM) e
+  `copperhead score schematic` (legibilidade). Precedencia e limites em
+  `../pcb-projeto/references/ferramentas.md`.

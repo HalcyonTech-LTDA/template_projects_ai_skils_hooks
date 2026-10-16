@@ -24,6 +24,8 @@ screenshot antes de entregar.**
 | [Cult UI](https://www.cult-ui.com) | Registry shadcn com Tailwind, `motion` e Base UI. Inclui ilustracoes SVG e device frames | **Componente.** Ilustracoes, mockups de device, secoes de marketing |
 
 Fichas completas em `docs_projeto/referencias/` (`refero.md`, `ui-arc.md`, `cult-ui.md`).
+As galerias por tipo de secao (navbar, footer, CTA, 404, bento, motion) entram no passo 2,
+em `galerias-de-secao.md`.
 
 ### Instalacao
 
@@ -73,9 +75,26 @@ desca so quando o degrau de cima nao render:
 1. **Referencias que o usuario deu** — links, screenshots, produtos citados. Sempre vencem
 2. **refero.design pelo navegador** (Playwright ou Chrome). WebFetch devolve pagina vazia:
    o site e renderizado por JS. O plano gratuito mostra so parte do acervo
-3. **Produtos reais citados no brief ou concorrentes diretos**, capturados por screenshot
-4. **Pagina viva do componente no Arc ou no Cult** — vale para o tratamento de um
+3. **Galeria da secao** — capturas de sites reais por tipo de bloco (tabela abaixo). Vale
+   para a camada **Tela** de uma secao especifica; **nunca** como referencia principal da
+   pagina. Abra o link de origem antes de travar o lock
+4. **Produtos reais citados no brief ou concorrentes diretos**, capturados por screenshot
+5. **Pagina viva do componente no Arc ou no Cult** — vale para o tratamento de um
    componente (estado, motion, densidade), **nunca** como direcao visual da pagina
+
+| Secao | Galeria | Observacao |
+|---|---|---|
+| Navbar | [navbar.gallery](https://navbar.gallery) | Filtro por tipo (dropdown, mega menu, side bar) |
+| Footer | [footer.design](https://footer.design) | Filtro por estilo |
+| CTA | [unsection.com](https://unsection.com) (CTA), depois [cta.gallery](https://cta.gallery) | cta.gallery vive de patrocinio |
+| Hero, feature, pricing, FAQ, depoimentos | [unsection.com](https://unsection.com) | Maior acervo; ignore a aba de templates pagos |
+| Pagina 404 | [404s.design](https://404s.design) | Filtro por estilo, interacao e setor |
+| Bento grid | [bentogrids.com](https://bentogrids.com) | So navegador (JS). Filtro **Web Design**: o resto e Dribbble |
+| Micro-interacao, motion | [60fps.design](https://60fps.design) | Parte gratis; foco iOS. Curva e duracao, nao layout |
+
+Nenhuma galeria fornece codigo. `scrolltide.co` fica fora do degrau: e pago, e a licenca
+proibe redistribuir. Os previews dele servem para olhar o efeito, e o prompt nao entra. Ficha
+completa em `docs_projeto/referencias/galerias-de-secao.md`.
 
 Cada referencia precisa sair com nome, link e **o que dela sera aproveitado**.
 Sem referencia nomeada, o codigo nao comeca. "Inspirado em boas praticas" nao e referencia.

@@ -2,7 +2,7 @@
 name: issue
 description: Conduz uma issue do comeco ao merge escolhendo agentes e modelos pelo tamanho (XS a XL) — le a issue, classifica, pergunta, planeja, implementa por fatias com handoff escrito, testa, revisa e documenta. Use quando o usuario pedir /issue, colar a URL ou o numero de uma issue, ou disser "pega a issue", "trabalha nessa issue", "implementa essa tarefa".
 allowed-tools: Bash, Read, Grep, Glob, Edit, Write, Agent, AskUserQuestion, Skill
-version: 1.0
+version: 1.1
 ---
 
 # /issue — fluxo de agentes por tamanho
@@ -14,18 +14,21 @@ O catalogo dos agentes, a tabela completa e o porque de cada regra estao em `doc
 - **Uma issue por sessao.** Ao terminar, sugira `/clear` antes da proxima.
 - **Um `implementer` novo por fatia.** `SendMessage` so dentro da mesma fatia, para corrigir o que o teste apontou ou retomar agente que caiu por limite.
 - **Busca no codigo vai para o `explorer`**, que devolve `caminho:linha`. Nao leia dezenas de arquivos na sessao principal.
-- **O advisor entra em so tres momentos:** antes de executar o plano, quando o mesmo erro se repete e antes de declarar concluido.
+- **O advisor entra em so tres momentos:** antes de executar o plano de uma L ou XL, quando o mesmo erro se repete e antes de declarar concluido.
 
 ## 1. Ler a issue
 
 - Entrada: URL ou numero (`gh issue view <n> --json number,title,body,labels,milestone,comments`) ou texto solto colado pelo usuario.
 - Leia os links do corpo: docs do projeto, decisoes e issues relacionadas. Se a issue e os docs discordam, **os docs vencem**: aponte a divergencia.
-- Localize o codigo afetado com o `explorer`. Referencia externa (biblioteca, norma, API de terceiro) vai para o `researcher`, que arquiva a ficha em `docs_projeto/referencias/`.
+- Referencia externa (biblioteca, norma, API de terceiro) vai para o `researcher`, que arquiva a ficha em `docs_projeto/referencias/`.
 
-## 2. Classificar o tamanho
+## 2. Localizar e classificar
 
-1. Label `size/XS` … `size/XL` na issue: use-a.
-2. Sem label: estime pela tabela abaixo, **diga qual escolheu e por que** em uma frase e ofereca aplicar a label (`gh issue edit <n> --add-label size/M`).
+Abra o `explorer` com **`model: sonnet`** (o padrao dele e Haiku; aqui ele tambem julga o tamanho). A sessao principal nao le o codigo para classificar: usa o que ele devolver. Briefing:
+
+- titulo, corpo e label `size/*` da issue, se houver;
+- a tabela abaixo e as regras de desempate;
+- o pedido: caminhos afetados (`caminho:linha`), tamanho proposto, uma frase de justificativa e, se ficou entre dois tamanhos, quais.
 
 | Tamanho | Sinal |
 |---|---|
@@ -35,7 +38,12 @@ O catalogo dos agentes, a tabela completa e o porque de cada regra estao em `doc
 | L | Atravessa camadas ou repositorios, muda contrato, esquema ou migracao |
 | XL | Varias fatias com dependencia entre si, seguranca ou dado de cliente no centro, ou prova em ambiente real |
 
-Na duvida entre dois tamanhos, escolha o maior. Codigo sensivel (login, autorizacao, segredo, criptografia, dado de cliente) **sobe para pelo menos M**.
+Desempate: na duvida entre dois tamanhos, **o maior**. Codigo sensivel (login, autorizacao, segredo, criptografia, dado de cliente) **sobe para pelo menos M**.
+
+Decisao:
+
+1. **Sem label:** use o tamanho proposto. Diga qual e por que em uma frase e ofereca aplicar a label (`gh issue edit <n> --add-label size/M`).
+2. **Com label:** vale o **maior** entre a label e o proposto. Se o `explorer` propuser maior, diga por que e ofereca corrigir a label. Se propuser menor, mantenha a label: so o usuario rebaixa.
 
 ## 3. Perguntar
 
@@ -47,18 +55,25 @@ Na duvida entre dois tamanhos, escolha o maior. Codigo sensivel (login, autoriza
 | Tamanho | Planejar | Implementar | Testar | Revisar |
 |---|---|---|---|---|
 | XS / S | Na propria sessao, sem plano formal | Na propria sessao | Na propria sessao ou `worker` | Se for codigo sensivel |
-| M | `Plan` com `model: opus` | `implementer` com `model: sonnet`, um por fatia | `worker` | Se for codigo sensivel |
+| M | Lista curta de fatias na sessao, sem `Plan` e sem advisor | `implementer` com `model: sonnet`, um por fatia | `worker` | Se for codigo sensivel |
 | L / XL | `Plan` com `model: opus` | `implementer` (Opus), um por fatia | `worker` | **Sempre**, com o `reviewer` |
 
-### 4.1 Plano e handoff (M para cima)
+O handoff fica em `.claude/handoff/<issue>.md` **do checkout principal**, por caminho absoluto, mesmo trabalhando num worktree: o worktree tem o proprio `.claude/` e some no fim (ignorado pelo git; `<issue>` e o numero ou um slug ASCII). Trabalhe num worktree (skill `/worktree`) quando houver outra sessao no mesmo repositorio ou quando a issue for L ou XL.
+
+**O plano e as fatias nao vao para o chat.** Diga so quantas fatias sao e o caminho do arquivo.
+
+### 4.1 Fatias da M
+
+1. Com os achados do `explorer`, grave no handoff uma secao `## Fatias` de 3 a 6 linhas: uma por fatia, com o que muda e o criterio de prova.
+2. Se alguma fatia pedir uma decisao de desenho que nao cabe numa linha, ou se passar de 6 fatias, a issue e L: reclassifique, ofereca a label e siga 4.2.
+
+### 4.2 Plano da L e XL
 
 1. Peca ao `Plan` o plano em fatias que compilam e testam sozinhas, cada uma com criterio de prova.
-2. Grave o plano em `.claude/handoff/<issue>.md` **do checkout principal**, por caminho absoluto, mesmo trabalhando num worktree: o worktree tem o proprio `.claude/` e some no fim (ignorado pelo git; `<issue>` e o numero ou um slug ASCII). Secao `## Plano`.
+2. Grave o plano no handoff, secao `## Plano`.
 3. **Advisor, momento 1:** consulte antes de executar. Se mudar o plano, regrave.
-4. Mostre o plano ao usuario em poucas linhas e siga.
-5. Trabalhe num worktree (skill `/worktree`) quando houver outra sessao no mesmo repositorio ou quando a issue for L ou XL.
 
-### 4.2 Cada fatia
+### 4.3 Cada fatia
 
 1. Abra um `implementer` **novo**, com este briefing:
    - o caminho de `.claude/handoff/<issue>.md`;
@@ -69,7 +84,7 @@ Na duvida entre dois tamanhos, escolha o maior. Codigo sensivel (login, autoriza
 4. Falhou: corrija o que for trivial na propria sessao, que sai mais barato que reabrir o agente, ou devolva ao mesmo `implementer` por `SendMessage`. **Advisor, momento 2:** se o mesmo erro voltar, consulte antes da terceira tentativa.
 5. Verde: faca o commit da fatia com a skill `/commit`.
 
-### 4.3 Revisao
+### 4.4 Revisao
 
 Para L e XL, ou para codigo sensivel, abra **um ou dois** `reviewer` independentes sobre `git diff <base>...<branch>` antes do merge. Achado que bloqueia volta como uma nova fatia.
 

@@ -160,7 +160,7 @@ Racional e lista de verificacao em `references/alta-tensao.md`.
 - `references/estrutura-de-pastas.md` — arvore de `hardware/<placa>/`, nomes, revisoes, `.gitignore`.
 - `references/alta-tensao.md` — portao de alta tensao em detalhe.
 - `references/ferramentas.md` — por que `kicad-cli` + scripts e nao MCP; MCPs e skills de terceiros
-  opcionais (KiCad MCP, `kicad-happy`); risco do KiCad 11; SKiDL como alternativa.
+  opcionais (KiCad MCP, `kicad-happy`, `copperhead`); risco do KiCad 11; SKiDL como alternativa.
 - `scripts/README.md` — catalogo dos comandos do toolkit.
 - Fichas em `docs_projeto/referencias/`: `kicad-cli-e-formatos`, `kicad-mcp-e-skills`,
-  `componentes-e-fabricacao-pcb`, `boas-praticas-pcb`.
+  `componentes-e-fabricacao-pcb`, `boas-praticas-pcb`, `copperhead`.

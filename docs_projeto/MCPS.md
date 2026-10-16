@@ -89,7 +89,24 @@ opcional, ligue esse.
 Nao entra no nucleo: sozinho estoura a regra de 3 a 6 servidores da secao 1. A familia de
 skills `pcb-*` faz o mesmo trabalho com `kicad-cli` e scripts proprios, sem custo de contexto
 e com prova pelo ERC/DRC (ver [[SKILLS]], secao 7). Se for testar, prefira o `kicad-mcp-pro`
-(mira o KiCad 10; exige Python 3.13+ via `uvx`) com perfil `minimal`.
+(mira o KiCad 10; exige Python 3.13+ via `uvx`) com perfil `minimal`. O `copperhead` tambem
+expoe um MCP stdio, experimental e instavel, com poucas tools de alto nivel; mesma regra
+(ver [[referencias/copperhead]]).
+
+### 4.2 REA — engenharia reversa (sob demanda, fora do nucleo)
+
+| | |
+|---|---|
+| **O que faz** | Engenharia reversa de binario nativo, Electron, .NET, APK, firmware, WASM e site |
+| **Escopo** | `local` — so na pasta da investigacao, remover ao terminar |
+| **Custo de contexto** | **Alto** — catalogo de tools extenso, gerado por versao |
+| **Comando (Windows)** | `claude mcp add --scope local rea -- cmd.exe /d /c npx -y rea-agents@6.5.0 mcp` |
+| **Verificado em** | 2026-10-15 |
+| **Referencia** | [[referencias/rea-engenharia-reversa]] |
+
+Nao rode `npx rea-agents setup`: ele registra no escopo `user` e instala a skill em
+`~/.claude/skills/`, ligando o REA em todo projeto. Binario nativo exige Ghidra, IDA ou
+Hopper, instalados por conta propria; no Windows o Ghidra e experimental.
 
 ## 5. Nao instale isto
 
@@ -210,3 +227,5 @@ desatualizado e pior que ausencia de doc.
 | 2026-09-27 | Figma revalidado: limite de chamadas por plano e seat, `whoami` antes de planejar e escrita no canvas em beta | A ficha dizia "qualquer seat e plano", mas o Starter para em 20 leituras por mes |
 | 2026-10-12 | MCP de KiCad avaliado e registrado como experimental (secao 4.1), fora do nucleo | Pedido de skill de PCB; 240+ tools contrariam a regra de 3 a 6, e a familia `pcb-*` cobre o uso |
 | 2026-10-15 | Fichas da secao 3 movidas para `MCPS_NUCLEO.md`; aqui ficou uma tabela-resumo | O arquivo tinha 354 linhas e o teto de documentacao passou a ser 300 (`CONVENCOES.md` secao 7) |
+| 2026-10-15 | `copperhead` citado na secao 4.1 (MCP stdio experimental), fora do nucleo | Referencia para a familia `pcb-*`; pre-1.0 e com LLM proprio |
+| 2026-10-15 | REA (`morluto/rea`) registrado como MCP sob demanda (secao 4.2), escopo `local` | Referencia para engenharia reversa; o `setup` oficial liga o servidor em todo projeto |

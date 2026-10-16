@@ -29,6 +29,37 @@ fornecedor. Quando o usuario tiver numero proprio (peca de teste, datasheet), el
 | Parede ao redor do inserto | >= 1,6 mm | |
 | Suporte (standoff) de PCB | diametro externo >= furo + 2 x 1,6 mm | Altura = folga sob a placa (componentes THT do lado de baixo) |
 | Cabeca de parafuso embutida | rebaixo = cabeca + 0,4 mm | |
+| Rosca engajada em plastico | ~2x o diametro do parafuso | Menos que isso espana |
+| Pilar (boss) de parafuso direto | diametro externo 2,5 a 3x o parafuso | Plastico em volta = diametro do parafuso |
+
+### Parafuso metrico — medidas de norma (mm)
+
+Passagem media (ISO 273) e broca de rosca. Cabeca allen pela ISO 4762. Em plastico impresso,
+o furo de rosca entra com a folga de furo vertical da tabela de FDM acima.
+
+| Rosca | Cabeca allen | Passagem | Furo para rosca |
+|---|---|---|---|
+| M1.6 | 3,0 | 1,8 | 1,25 |
+| M2 | 3,8 | 2,4 | 1,6 |
+| M2.5 | 4,5 | 2,9 | 2,05 |
+| M3 | 5,5 | 3,4 | 2,5 |
+| M4 | 7 | 4,5 | 3,3 |
+| M5 | 8,5 | 5,5 | 4,2 |
+| M6 | 10 | 6,6 | 5 |
+
+- Escolha: M2/M2.5 para placa e peca fina, M3 para o que fica na mao ou na mesa, M4+ para
+  carga. **O furo de montagem da placa decide**: o parafuso cuja passagem e a mais proxima
+- Cabecas: allen ISO 4762 (padrao), abaulada ISO 7380 (M3+), escareada ISO 10642 (M3+),
+  panela Phillips ISO 7045 (ate M8), sextavada ISO 4017. Porca ISO 4032, arruela ISO 7089
+- **So comprimento comercial** (6, 8, 10, 12, 16, 20...). Conta de baixo da cabeca; na
+  escareada, do topo da cabeca
+- Origem do parafuso no codigo = onde a cabeca assenta. Furo de passagem, furo de rosca e
+  rebaixo usam a mesma origem: um posicionamento serve para os tres cortes
+- Porca cativa: alojamento sextavado (entre-faces + folga) para nao girar
+- Nome da peca leva a medida: "Parafusos da tampa, M3 x 8". Pedido de "maior" sem numero
+  → pergunte qual, dizendo quanto mede cada
+
+Fonte das regras de pilar e da tabela: `docs_projeto/referencias/enclose.md`.
 
 ## Orientacao de impressao
 

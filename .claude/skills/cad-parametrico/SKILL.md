@@ -63,6 +63,15 @@ Regras:
 - Origem e eixo declarados no docstring (ex.: canto inferior esquerdo da placa em 0,0)
 - Tampa e corpo sao funcoes separadas que compartilham os mesmos parametros
 - Nome de arquivo exportado = nome da peca; nao sobrescreva arquivo de outra peca
+- **Toda peca nasce na posicao montada.** Montagem sem transformacao extra: o STEP do
+  conjunto sai certo e a colisao aparece no proprio script
+- **Placa entra pelo STEP real**, nunca por caixa desenhada a mao: `kicad-cli pcb export
+  step` (familia `pcb-*`) e um unico `Pos * Rot` posicionando placa e componentes juntos
+- **Fixador e peca do modelo**, nao so furo: parafuso, porca e arruela com a medida no
+  nome. Regras em `references/fabricacao.md`, secao Fixacao
+- **Reserve o espaco do que nao e modelado** — plugue encaixado, raio de curvatura do cabo,
+  dedo para apertar o conector — como caixa nomeada (`KEEPOUT_USB = ...`) e confira que
+  nenhuma peca a invade
 
 Idiomas build123d que o agente costuma errar estao em `references/build123d.md`.
 
@@ -85,6 +94,12 @@ impressora do usuario vence a tabela.
    peca e valida sem ter rodado
 4. Para impressao, recomende imprimir **so a regiao critica** (um canto com furo e encaixe)
    antes da peca inteira
+5. **Prova de montabilidade** quando houver mais de uma peca. Ache a base (a que fica na
+   mesa), ordene o resto pelo que bloqueia o que (o que fica preso dentro entra antes do
+   que fecha; o que e parafusado entra antes do que cobre o parafuso) e, para cada peca,
+   confira: existe linha reta livre para ela entrar? O que a segura ate o passo seguinte?
+   Peca sem caminho, cabeca de parafuso coberta ou peca que nada segura e **defeito a
+   relatar**, nao detalhe para o usuario descobrir na bancada
 
 ## 6. O que nao fazer
 
