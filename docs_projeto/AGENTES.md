@@ -3,7 +3,7 @@ title: Agentes e fluxo de issue por tamanho
 type: convencao
 status: aprovado
 created: 2026-10-10
-updated: 2026-10-10
+updated: 2026-10-15
 project: template_projetos
 tags: [convencao, agentes, subagentes, custo, claude-code, tema/tooling]
 ---
@@ -40,7 +40,7 @@ Consequencias que viraram regra:
 
 | Agente | Modelo | Effort | Ferramentas | Papel |
 |---|---|---|---|---|
-| `explorer` | haiku | — | Read, Grep, Glob, Bash (so leitura) | Achar onde esta X, quem chama Y. Devolve `caminho:linha` |
+| `explorer` | haiku (sonnet ao classificar) | — | Read, Grep, Glob, Bash (so leitura) | Achar onde esta X, quem chama Y. Devolve `caminho:linha`. Na `/issue`, propoe o tamanho |
 | `researcher` | sonnet | medium | Web, leitura, Write (so `referencias/`) | Pesquisa externa com URL em cada afirmacao |
 | `worker` | sonnet | medium | todas | Rodar testes, bancada, docs por ficha de fatos. Nao decide desenho, nao commita |
 | `implementer` | opus (sonnet em M) | high | todas | Uma fatia de um plano aprovado. So compila; termina com handoff |
@@ -51,28 +51,44 @@ O planejamento usa o agente embutido `Plan` com `model: opus`. Nao ha arquivo pa
 **Cada `description` entra em todo prompt de toda sessao**, como as tools de MCP. Crie agente novo so
 para um papel que nenhum dos cinco cobre.
 
+**Agentes do blueprint de negocio.** Outros 5 agentes vem copiados do repo
+[modern-business-blueprint-plugin](https://github.com/HalcyonTech-LTDA/modern-business-blueprint-plugin):
+`blueprint-orchestrator-agent` e quatro especialistas (`business-strategist-agent`,
+`product-gtm-lead-agent`, `corporate-architect-agent`, `finance-venture-agent`). Eles entram
+porque cobrem um papel que nenhum dos cinco cobre (conceber uma empresa a partir de uma ideia),
+e nao participam da `/issue`. O orquestrador roda como sessao principal
+(`claude --agent blueprint-orchestrator-agent`), porque subagente nao chama subagente. Detalhes
+em [[PADROES]] secao 3. Nao edite os cinco aqui: eles sao regravados pelo script de importacao.
+
 **Agente de projeto vence agente de usuario com o mesmo nome** (`~/.claude/agents/`). Nao mantenha
 copias globais com estes nomes: elas divergem e so valem fora dos projetos derivados.
 
 ## 3. Tamanho e modelo
 
-O tamanho vem da label `size/XS` … `size/XL` da issue. Sem label, a sessao estima pela tabela da
-skill `/issue`, declara a escolha e oferece aplicar a label. Na duvida, o maior. Codigo sensivel
-(login, autorizacao, segredo, criptografia, dado de cliente) e no minimo M.
+Quem classifica e o `explorer` chamado com `model: sonnet`, na mesma passada em que localiza o
+codigo afetado: a sessao principal (em geral Opus) nao gasta contexto lendo codigo para isso. Ele
+roda mesmo quando a issue ja tem label `size/XS` … `size/XL`, e vale o **maior** dos dois: a
+label nunca e rebaixada sem o usuario. Na duvida, o maior. Codigo sensivel (login, autorizacao,
+segredo, criptografia, dado de cliente) e no minimo M.
 
 | Tamanho | Perguntas | Planejar | Implementar | Testar | Revisar |
 |---|---|---|---|---|---|
 | XS / S | 0 a 2, so o ambiguo | Na sessao | Na sessao | Sessao ou `worker` | Se sensivel |
-| M | 5 ou mais | `Plan` opus | `implementer` sonnet, um por fatia | `worker` | Se sensivel |
+| M | 5 ou mais | Lista de fatias na sessao | `implementer` sonnet, um por fatia | `worker` | Se sensivel |
 | L / XL | 5 ou mais | `Plan` opus | `implementer` opus, um por fatia | `worker` | **Sempre** (`reviewer`) |
 
 A excecao de XS e S as 5 perguntas esta na regra 3 do hook (`HOOKS.md`).
 
+**Plano formal (`Plan` opus + advisor) so em L e XL.** Na M, a propria sessao escreve de 3 a 6
+linhas de fatias a partir do que o `explorer` achou. Se uma fatia pedir decisao de desenho que nao
+cabe numa linha, ou passar de 6 fatias, a issue e L. Em nenhum tamanho o plano vai para o chat:
+fica no handoff, e a sessao diz so quantas fatias sao.
+
 ## 4. Handoff entre fatias
 
 - Arquivo: `.claude/handoff/<issue>.md` do **checkout principal**, ignorado pelo git, sempre por caminho absoluto, mesmo quando a issue roda num worktree (que tem o proprio `.claude/` e some no fim). Sobrevive a `/clear` e a troca de sessao.
-- Secoes: `## Plano` (do `Plan`, depois do advisor) e um `## Handoff — fatia <n>` por fatia, no
-  formato que o `implementer` devolve.
+- Secoes: `## Fatias` (M, escrita pela sessao) ou `## Plano` (L/XL, do `Plan`, depois do advisor),
+  e um `## Handoff — fatia <n>` por fatia, no formato que o `implementer` devolve.
 - O handoff e um resumo: o `implementer` seguinte le o codigo atual e o codigo vence.
 - Ao terminar a issue, o arquivo pode ser apagado. O que importa para o futuro vai para `docs_projeto/`.
 
@@ -80,7 +96,7 @@ A excecao de XS e S as 5 perguntas esta na regra 3 do hook (`HOOKS.md`).
 
 Se o advisor estiver ligado (`/advisor <modelo>`), ele e consultado em so tres momentos:
 
-1. Antes de executar o plano de uma issue M, L ou XL.
+1. Antes de executar o plano de uma issue L ou XL. A M nao tem plano formal e nao consulta aqui.
 2. Quando o mesmo erro se repete: antes da terceira tentativa.
 3. Antes de declarar a issue concluida, com o trabalho ja commitado.
 

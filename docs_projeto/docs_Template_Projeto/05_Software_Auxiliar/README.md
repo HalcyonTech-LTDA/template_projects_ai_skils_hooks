@@ -16,4 +16,6 @@ status: aprovado
 
 App, desktop, web, API, cloud.
 
+Padroes de engenharia por stack (skills `modern-*`) e projeto inicial de cada tipo: `docs_projeto/PADROES.md` no repo template.
+
 > Template. Ao duplicar para um novo projeto, substituir `project: _Template_Projeto` pelo nome real e popular as subpastas.

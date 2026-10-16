@@ -3,7 +3,7 @@ title: docs_projeto
 type: readme
 status: aprovado
 created: 2026-05-28
-updated: 2026-09-07
+updated: 2026-10-15
 tags: [readme, indice]
 ---
 
@@ -20,6 +20,7 @@ Documentacao do **repositorio template** e do **template de projeto** que ele en
 - [[HOOKS]] — regras do projeto injetadas via hook do Claude Code
 - [[MCPS]] — catalogo de servidores MCP: quais ligar, quando desligar, custo de contexto
 - [[SKILLS]] — catalogo de skills e precedencia entre as de design (qual usar quando)
+- [[PADROES]] — padroes Halcyon (`modern-*`): skills por stack, projeto inicial e script de importacao do GitHub
 - [[COMMITS]] — convencao de commits e a skill `/commit` (preencher por projeto)
 - [[WORKTREES]] — agentes paralelos em worktrees e a skill `/worktree`
 - [[AGENTES]] — subagentes do projeto e a skill `/issue`: qual agente e modelo por tamanho de tarefa

@@ -23,3 +23,6 @@ Registro de mudancas estruturais feitas **neste repositorio** (nao nos projetos 
 - [[2026-10-15_trilha_e_board]] — skill `/trilha` (marcos, sequencia, bloqueios nativos, progresso), molde `BOARD.md` e formularios de issue
 - [[2026-10-15_skills_3d]] — fork de texto (Three.js, R3F, Blender) + skill propria `cad-parametrico`; anatomy, cad-agent, Atlas, code-buddy fora
 - [[2026-10-15_fontes_frontend]] — Refero, Arc e Cult UI nas 4 skills de design via `_shared/fontes-frontend.md`; vetados do Cult; hook lista so pastas com `SKILL.md`
+- [[2026-10-15_classificacao_sonnet_e_plano_l_xl]] — `explorer` em Sonnet propoe o tamanho (vale o maior entre ele e a label); `Plan` opus e advisor so em L/XL; M com lista de fatias da sessao; plano fora do chat
+- [[2026-10-15_padroes_halcyon]] — 54 skills e 5 agentes dos repos `modern-*` copiados do GitHub por script com `padroes-lock.json`; guardrail em `_shared/padroes-*.md`; marketplace nao publicado; `java-clean-architecture-scaffolding` como base Java
+- [[2026-10-15_galerias_de_secao]] — degrau "galeria da secao" no passo 2 (navbar, footer, CTA, 404, bento, motion); scrolltide so como ficha, pago e sem redistribuicao

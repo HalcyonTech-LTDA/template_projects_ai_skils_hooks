@@ -10,7 +10,8 @@ tags: [convencao, skills, design, claude-code, tema/tooling]
 
 # Catalogo de skills e precedencia de design
 
-Este repositorio carrega **62 skills** em `.claude/skills/` (mais `obsidian-skills/`, que e
+Este repositorio carrega **116 skills** em `.claude/skills/` (62 proprias ou de fork e 54
+copiadas dos padroes Halcyon, secao 10) (mais `obsidian-skills/`, que e
 pacote e nao skill, e `_shared/`, que guarda texto comum a varias skills). Diferente dos MCPs, skill
 nao custa contexto por sessao: so a `description` de cada uma entra no prompt, e o corpo
 so e lido quando a skill dispara. O custo real e outro — **colisao de gatilho**: com 20+
@@ -135,6 +136,9 @@ fase, e a `pcb-projeto` e a porta de entrada.
   trigger") e sao ~100 mil linhas nao revisadas. Quem quiser segunda opiniao antes do portao 2
   instala no escopo do usuario. Precedencia: para gerar, editar, verificar e liberar, `pcb-*`
   vence; `kicad-happy` so como revisao extra.
+- `copperheadhq/copperhead` (Apache-2.0, pre-1.0): agente de IA em CLI que edita o KiCad e roda
+  ERC/DRC. So `check` e `score schematic` (sem LLM) como verificacao extra; o loop `do`/`create`
+  e um segundo agente e nao roda junto da familia. Ficha [[referencias/copperhead]].
 - MCP de KiCad: ver [[MCPS]], secao 4.1.
 
 Decisao e alternativas em [[decisoes/2026-10-12_skills_pcb_kicad]]. Fichas em
@@ -157,7 +161,8 @@ codigo. Isso fica num arquivo so, lido pelas quatro skills que produzem interfac
 As quatro regras que cada skill repete inline:
 
 1. **2 a 3 referencias reais nomeadas antes do codigo**, com o que cada uma contribui, e o
-   reference lock escrito. Ordem: do usuario → refero.design pelo navegador → produtos reais
+   reference lock escrito. Ordem: do usuario → refero.design pelo navegador → galeria da
+   secao (navbar, footer, CTA, 404, bento, motion) → produtos reais
 2. **Componente de registry antes de componente inventado**: Arc (`@uiarc/*`) ou Cult UI
    (`@cult-ui/*`), lendo o `.md` do componente
 3. **Vetados do Cult**: `border-beam-*`, `halo-*`, `cosmic-button`, `metal-button`,
@@ -167,6 +172,7 @@ As quatro regras que cada skill repete inline:
 | Fonte | Papel | Ficha |
 |---|---|---|
 | Refero | Referencia — o que olhar. Sem MCP (pago) | [[referencias/refero]] |
+| Galerias de secao | Referencia de um bloco (navbar, footer, CTA, 404, bento, motion). Nunca a principal | [[referencias/galerias-de-secao]] |
 | Arc | Componente animado, CSS modules, sem Tailwind | [[referencias/ui-arc]] |
 | Cult UI | Ilustracao, device frame, secao de marketing (Tailwind) | [[referencias/cult-ui]] |
 
@@ -211,5 +217,35 @@ esteticas ("landing page", "even if they never say isometric"). Se entrar, entra
 `kit/` auditado e com a regra: **so figura de documentacao, nunca UI de produto**.
 
 Fichas: [[referencias/skill3d-three-agent-skills]], [[referencias/skill3d-terminalskills]],
-[[referencias/skill3d-anatomy]], [[referencias/skill3d-cad-agent]]. Decisao em
+[[referencias/skill3d-anatomy]], [[referencias/skill3d-cad-agent]], [[referencias/enclose]]
+(fonte das regras de fixacao e da prova de montabilidade da `cad-parametrico`). Decisao em
 [[decisoes/2026-10-15_skills_3d]].
+
+## 10. Padroes Halcyon (`modern-*`) — precedencia
+
+54 skills copiadas dos repos `HalcyonTech-LTDA/modern-*` do GitHub. Catalogo por stack,
+projeto inicial e script de importacao em [[PADROES]]. A fonte e o repo de origem, e nao este
+template: nao edite a copia.
+
+Regra geral: **dentro da ferramenta dela, a skill `modern-*` vence a generica.** A generica
+continua valendo fora desse recorte.
+
+| Tema | Vence | Fica para a generica |
+|---|---|---|
+| Codigo Java, Gradle, testes JVM | `modern-java-*`, `modern-gradle-conventions` | `clean-code` e `software-architecture` em principio geral, sem regra de Java |
+| Spring Boot e microsservicos | `modern-spring-boot-conventions`, `modern-microservices-*` | `senior-backend` e `senior-architect` (cobrem Node, Go e Python, nao Spring) |
+| Dockerfile, Compose, `.dockerignore` | `modern-docker*`, `modern-compose-workflows` | `docker-expert` so em diagnostico de container que ja existe |
+| Mensagem de commit | `/commit` conduz o fluxo e le `modern-git-commit-craftsmanship` como referencia de conteudo | — |
+| Worktree, rebase, recuperacao | `/worktree` conduz o paralelismo; `modern-git-*` ensina o comando | — |
+| MongoDB | `modern-mongodb-*` | `supabase-postgres-best-practices` e Postgres, nao concorre |
+| Carga, API e mocks HTTP | `modern-k6-*`, `modern-postman-*`/`modern-newman-*`, `modern-wiremock-*` | `senior-qa` (foco em JS/React) |
+| Infra Azure em Bicep | `modern-bicep-*` | `senior-devops` em CI/CD generico e outras nuvens |
+| Concepcao de empresa | `modern-business-blueprint-orchestrator` e agentes do blueprint | `copywriting`, `ux-researcher-designer` |
+
+`/commit` e `modern-git-commit-craftsmanship` nao sao exclusivas. A convencao do repositorio
+(`docs_projeto/COMMITS.md`) vence as duas, e a skill de git so preenche o que ela nao define.
+
+**Procedencia.** As copias nao entram no `skills-lock.json`: o hash de la vem do CLI `skills` e
+nao e reproduzivel a mao. O registro fica em `padroes-lock.json` (repo, commit e versao de cada
+origem), regravado pelo `.claude/scripts/importar-padroes.js`. Decisao em
+[[decisoes/2026-10-15_padroes_halcyon]].

@@ -59,6 +59,8 @@ Find & Replace global no Obsidian (`Ctrl+Shift+F`) facilita.
 
 A estrutura tem 14 modulos. Se seu projeto e **software puro**, voce pode deletar `03_Hardware/`, `04_Firmware/`, `07_Certificacoes_Homologacoes/`, `08_Producao/`. Se e **hardware sem firmware**, deletar `04_Firmware/`.
 
+Projeto com codigo: escolha o projeto inicial (servico Java parte do `java-clean-architecture-scaffolding`) e pode as skills `modern-*` das stacks que nao usa. As duas coisas estao em [[PADROES]].
+
 Regra: prefira **deletar** modulos nao-aplicaveis a manter pastas vazias — pastas mortas poluem busca e graph.
 
 ## 5. Preencher o esqueleto inicial

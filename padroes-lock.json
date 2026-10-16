@@ -1,0 +1,186 @@
+{
+  "plugins": {
+    "modern-azure-bicep-best-practices": {
+      "agents": [],
+      "commit": "052843df3103810197c83a3423ca11b88b319a89",
+      "ref": "main",
+      "repo": "HalcyonTech-LTDA/modern-azure-bicep-best-practices",
+      "rule": ".claude/skills/_shared/padroes-azure-bicep.md",
+      "skills": [
+        "modern-bicep-api-management-and-policies",
+        "modern-bicep-container-apps-and-jobs",
+        "modern-bicep-cosmos-db",
+        "modern-bicep-deployment-stacks-and-lifecycle",
+        "modern-bicep-modular-architecture",
+        "modern-bicep-security-and-governance",
+        "modern-bicep-testing-and-ci-cd",
+        "modern-bicep-workbooks-and-observability"
+      ],
+      "url": "https://github.com/HalcyonTech-LTDA/modern-azure-bicep-best-practices",
+      "version": "1.0.0"
+    },
+    "modern-business-blueprint-plugin": {
+      "agents": [
+        "blueprint-orchestrator-agent",
+        "business-strategist-agent",
+        "corporate-architect-agent",
+        "finance-venture-agent",
+        "product-gtm-lead-agent"
+      ],
+      "commit": "16546e2af224ba4ec6311255230b7b00e79bf2da",
+      "ref": "main",
+      "repo": "HalcyonTech-LTDA/modern-business-blueprint-plugin",
+      "rule": ".claude/skills/_shared/padroes-business-blueprint.md",
+      "skills": [
+        "modern-beachhead-and-mvp-strategy",
+        "modern-business-blueprint-orchestrator",
+        "modern-category-design-and-positioning",
+        "modern-enterprise-gtm-and-sales-engine",
+        "modern-institutional-investment-thesis",
+        "modern-ip-and-legal-asset-protection",
+        "modern-land-and-expand-roadmapping",
+        "modern-lean-corporate-governance",
+        "modern-moat-and-defensibility-strategy",
+        "modern-monetization-and-economic-architecture",
+        "modern-staged-capital-and-runway-strategy",
+        "modern-technical-architecture-and-security-paradigm",
+        "modern-unit-economics-and-pnl-architecture"
+      ],
+      "url": "https://github.com/HalcyonTech-LTDA/modern-business-blueprint-plugin",
+      "version": "1.2.0"
+    },
+    "modern-docker-best-practices": {
+      "agents": [],
+      "commit": "29a41c19a9da1f37a59e5e6baef35a0667539fd5",
+      "ref": "main",
+      "repo": "HalcyonTech-LTDA/modern-docker-best-practices",
+      "rule": ".claude/skills/_shared/padroes-docker.md",
+      "skills": [
+        "modern-compose-workflows",
+        "modern-dockerfile-craftsmanship",
+        "modern-dockerignore-context"
+      ],
+      "url": "https://github.com/HalcyonTech-LTDA/modern-docker-best-practices",
+      "version": "1.0.0"
+    },
+    "modern-git-best-practices": {
+      "agents": [],
+      "commit": "0f238ee7ce3285e6fe640afc3a57d556c3a63669",
+      "ref": "main",
+      "repo": "HalcyonTech-LTDA/modern-git-best-practices",
+      "rule": ".claude/skills/_shared/padroes-git.md",
+      "skills": [
+        "modern-git-cli-and-workflows",
+        "modern-git-commit-craftsmanship",
+        "modern-git-rebase-and-history",
+        "modern-git-recovery-and-security"
+      ],
+      "url": "https://github.com/HalcyonTech-LTDA/modern-git-best-practices",
+      "version": "1.0.0"
+    },
+    "modern-java-best-practices": {
+      "agents": [],
+      "commit": "0cf5920ca9d718fb0393bd78bb2bb6f0c7a37819",
+      "ref": "main",
+      "repo": "HalcyonTech-LTDA/modern-java-best-practices",
+      "rule": ".claude/skills/_shared/padroes-java.md",
+      "skills": [
+        "modern-gradle-conventions",
+        "modern-java-clean-architecture",
+        "modern-java-concurrency",
+        "modern-java-idioms",
+        "modern-java-testing"
+      ],
+      "url": "https://github.com/HalcyonTech-LTDA/modern-java-best-practices",
+      "version": "1.3.0"
+    },
+    "modern-k6-best-practices": {
+      "agents": [],
+      "commit": "12be70750dacd4f52028e3a7f92bbc57b0affa7b",
+      "ref": "main",
+      "repo": "HalcyonTech-LTDA/modern-k6-best-practices",
+      "rule": ".claude/skills/_shared/padroes-k6.md",
+      "skills": [
+        "modern-k6-living-documentation",
+        "modern-k6-orchestration-and-reporting",
+        "modern-k6-test-craftsmanship",
+        "modern-k6-workloads-and-thresholds"
+      ],
+      "url": "https://github.com/HalcyonTech-LTDA/modern-k6-best-practices",
+      "version": "1.0.0"
+    },
+    "modern-mongodb-best-practices": {
+      "agents": [],
+      "commit": "a97c77ca94dbffd732d82950756e7a5bdcda15b1",
+      "ref": "main",
+      "repo": "HalcyonTech-LTDA/modern-mongodb-best-practices",
+      "rule": ".claude/skills/_shared/padroes-mongodb.md",
+      "skills": [
+        "modern-mongodb-data-modeling",
+        "modern-mongodb-indexing-and-queries",
+        "modern-mongodb-migrations-and-lifecycle",
+        "modern-mongodb-resilience-and-ops"
+      ],
+      "url": "https://github.com/HalcyonTech-LTDA/modern-mongodb-best-practices",
+      "version": "1.0.0"
+    },
+    "modern-postman-newman-best-practices": {
+      "agents": [],
+      "commit": "7d5169a129a14a5972da582095f0d82629826ce3",
+      "ref": "main",
+      "repo": "HalcyonTech-LTDA/modern-postman-newman-best-practices",
+      "rule": ".claude/skills/_shared/padroes-postman-newman.md",
+      "skills": [
+        "modern-newman-living-documentation",
+        "modern-newman-orchestration-and-ci",
+        "modern-postman-collection-craftsmanship",
+        "modern-postman-environments-and-secrets"
+      ],
+      "url": "https://github.com/HalcyonTech-LTDA/modern-postman-newman-best-practices",
+      "version": "1.0.0"
+    },
+    "modern-spring-boot-best-practices": {
+      "agents": [],
+      "commit": "b65d98c0844eecc8e501c426cea4963dbfb14622",
+      "ref": "main",
+      "repo": "HalcyonTech-LTDA/modern-spring-boot-best-practices",
+      "rule": ".claude/skills/_shared/padroes-spring-boot.md",
+      "skills": [
+        "modern-spring-boot-conventions"
+      ],
+      "url": "https://github.com/HalcyonTech-LTDA/modern-spring-boot-best-practices",
+      "version": "1.0.0"
+    },
+    "modern-spring-boot-microservices-best-practices": {
+      "agents": [],
+      "commit": "2694066db3417cfd5c05faf8a201e017d070450f",
+      "ref": "main",
+      "repo": "HalcyonTech-LTDA/modern-spring-boot-microservices-best-practices",
+      "rule": ".claude/skills/_shared/padroes-spring-boot-microservices.md",
+      "skills": [
+        "modern-microservices-architecture-and-decomposition",
+        "modern-microservices-event-driven-and-data-consistency",
+        "modern-microservices-inter-service-communication",
+        "modern-microservices-observability-and-resilience-ops",
+        "modern-microservices-perimeter-gateway-and-security"
+      ],
+      "url": "https://github.com/HalcyonTech-LTDA/modern-spring-boot-microservices-best-practices",
+      "version": "1.0.0"
+    },
+    "modern-wiremock-best-practices": {
+      "agents": [],
+      "commit": "01e92c184b675500bc3004ab524c9e0156b07c05",
+      "ref": "main",
+      "repo": "HalcyonTech-LTDA/modern-wiremock-best-practices",
+      "rule": ".claude/skills/_shared/padroes-wiremock.md",
+      "skills": [
+        "modern-wiremock-declarative-stubs",
+        "modern-wiremock-living-documentation",
+        "modern-wiremock-orchestration-and-testing"
+      ],
+      "url": "https://github.com/HalcyonTech-LTDA/modern-wiremock-best-practices",
+      "version": "1.0.0"
+    }
+  },
+  "version": 1
+}

@@ -39,7 +39,7 @@ Quatro skills governam como o trabalho entra no repositorio:
 | Skill | Quando |
 |---|---|
 | `/trilha` | Planejar e controlar uma frente de trabalho no GitHub: epico, marcos (milestones), issues em sequencia, dependencias nativas (blocked by), progresso dos marcos e checagem de deriva do board. So issues, nunca draft. IDs do board em `docs_projeto/BOARD.md`. |
-| `/issue` | Conduzir uma issue ou tarefa de desenvolvimento do comeco ao merge. Classifica o tamanho (label `size/*` ou estimativa declarada) e escolhe subagente e modelo por ele. Usa `/worktree` e `/commit` por dentro. |
+| `/issue` | Conduzir uma issue ou tarefa de desenvolvimento do comeco ao merge. O `explorer` em Sonnet localiza o codigo e propoe o tamanho (vale o maior entre ele e a label `size/*`); subagente e modelo saem do tamanho, e plano formal so em L/XL. Usa `/worktree` e `/commit` por dentro. |
 | `/commit` | Gerar a mensagem e criar o commit. Le a convencao do proprio repositorio (`docs_projeto/COMMITS.md`, depois `CLAUDE.md`, depois o historico) antes de propor tipo e escopo. Nunca roda `git add` por conta propria. |
 | `/worktree` | Rodar tarefas independentes em paralelo, uma janela `claude` por tarefa, com merge de volta serializado por fila. |
 
@@ -50,7 +50,8 @@ ignorado pelo git.
 
 ## Agentes
 
-`.claude/agents/` tem 5 subagentes: `explorer` (haiku, busca so de leitura), `researcher`
+`.claude/agents/` tem 5 subagentes de desenvolvimento (mais os 5 do blueprint de negocio, ver
+"Padroes Halcyon"): `explorer` (haiku, busca so de leitura; sonnet ao classificar na `/issue`), `researcher`
 (sonnet, web), `worker` (sonnet, testes e docs), `implementer` (opus, uma fatia) e `reviewer`
 (opus, revisao do diff). `docs_projeto/AGENTES.md` e o catalogo: tabela tamanho → modelo,
 handoff entre fatias, os tres momentos do advisor e os numeros de custo que justificam tudo.
@@ -88,7 +89,7 @@ Como as skills, este catalogo e **fonte canonica** — correcao comeca aqui.
 
 ## Skills
 
-`.claude/skills/` tem 62 skills. Skill nao custa contexto por sessao (so a `description`
+`.claude/skills/` tem 116 skills (54 delas copiadas dos padroes Halcyon, abaixo). Skill nao custa contexto por sessao (so a `description`
 entra no prompt), mas **colide por gatilho**: mais de 15 delas descrevem design de interface.
 
 `docs_projeto/SKILLS.md` e o catalogo decisorio — arvore de precedencia de qual usar quando,
@@ -111,6 +112,18 @@ nomeada antes do codigo (Refero), componente de registry antes de inventado (Arc
 screenshot ao lado da referencia antes de entregar. As quatro skills de UI apontam para ele;
 ver `docs_projeto/SKILLS.md` secao 8.
 
+## Padroes Halcyon: skills `modern-*`
+
+54 skills e 5 agentes vem copiados dos repos `HalcyonTech-LTDA/modern-*` do GitHub (Java,
+Spring Boot, microsservicos, MongoDB, Docker, Git, k6, Postman/Newman, WireMock, Azure Bicep e
+blueprint de negocio). A regra-guarda de cada stack fica em `.claude/skills/_shared/padroes-*.md`.
+`docs_projeto/PADROES.md` e o catalogo: stack → skills → projeto inicial
+(`java-clean-architecture-scaffolding` e o padrao para servico Java).
+
+**Aqui a direcao se inverte.** A fonte e o repo `modern-*`, nao este template. Corrija la e
+reimporte com `node .claude/scripts/importar-padroes.js`, que clona do GitHub e grava o commit
+em `padroes-lock.json`. Precedencia contra as skills genericas: `docs_projeto/SKILLS.md` secao 10.
+
 ## Hardware: familia `pcb-*`
 
 Cinco skills para projetar placas no KiCad 10, do requisito ao pedido na JLCPCB:
@@ -127,6 +140,9 @@ skill comeca aqui e desce por copia para os projetos derivados — nunca o contr
 Se voce corrigir uma skill dentro de um projeto, replique a correcao aqui na mesma
 tarefa, ou ela se perde no proximo projeto criado.
 
+**Excecao: as skills `modern-*`** (e os 5 agentes do blueprint). A origem delas e o repo
+`HalcyonTech-LTDA/modern-*` no GitHub. Ver "Padroes Halcyon" acima.
+
 ## Estrutura
 
 - `.claude/settings.json` — versionado, hooks publicos
@@ -136,6 +152,9 @@ tarefa, ou ela se perde no proximo projeto criado.
 - `.claude/skills/` — skills locais do projeto (fonte canonica)
 - `.claude/skills/_shared/` — texto comum a varias skills (nao e skill; o hook ignora)
 - `skills-lock.json` — procedencia das skills vindas de `Leonxlnx/taste-skill`; versionado, nao atualizar
+- `padroes-lock.json` — repo, commit e versao de cada padrao `modern-*` copiado; gravado pelo script
+- `.claude/scripts/importar-padroes.js` — reimporta os padroes Halcyon do GitHub
+- `docs_projeto/PADROES.md` — catalogo dos padroes por stack e projeto inicial
 - `.claude/worktrees/` — worktrees de agentes, ignorado pelo git
 - `.claude/agents/` — subagentes do projeto (fonte canonica)
 - `.claude/handoff/` — handoff entre fatias da skill `/issue`, ignorado pelo git
