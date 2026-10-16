@@ -8,11 +8,19 @@ This skill guides creation of distinctive, production-grade frontend interfaces 
 
 The user provides frontend requirements: a component, page, application, or interface to build. They may include context about the purpose, audience, or technical constraints.
 
+## Step 0 — Sources and reference lock (mandatory, before any code)
+
+Read `.claude/skills/_shared/fontes-frontend.md` and follow it. If you cannot read it, these still hold:
+1. Name 2-3 real references (user-provided > refero.design via browser > real products from the brief) and what each contributes, then write the reference lock. No named reference, no code.
+2. Prefer an existing component from Arc (`@uiarc/*`) or Cult UI (`@cult-ui/*`) over writing one. Read its `.md` first.
+3. Never install Cult's `border-beam-*`, `halo-*`, `cosmic-button`, `metal-button`, `gradient-*`, `bg-animated-gradient`, `circuit-board`, `distorted-glass`.
+4. Close visual work with screenshots at 1440px and 390px next to the primary reference, and fix the drift. No browser available: say so.
+
 ## Design Thinking
 
-Before coding, understand the context and commit to a BOLD aesthetic direction:
+Before coding, understand the context and commit to a BOLD aesthetic direction, derived from the reference lock in Step 0:
 - **Purpose**: What problem does this interface solve? Who uses it?
-- **Tone**: Pick an extreme: brutally minimal, maximalist chaos, retro-futuristic, organic/natural, luxury/refined, playful/toy-like, editorial/magazine, brutalist/raw, art deco/geometric, soft/pastel, industrial/utilitarian, etc. There are so many flavors to choose from. Use these for inspiration but design one that is true to the aesthetic direction.
+- **Tone**: Take it from the primary reference, then push it to an extreme: brutally minimal, maximalist chaos, retro-futuristic, organic/natural, luxury/refined, playful/toy-like, editorial/magazine, brutalist/raw, art deco/geometric, soft/pastel, industrial/utilitarian, etc. There are so many flavors to choose from. Use these for inspiration but design one that is true to the aesthetic direction.
 - **Constraints**: Technical requirements (framework, performance, accessibility).
 - **Differentiation**: What makes this UNFORGETTABLE? What's the one thing someone will remember?
 

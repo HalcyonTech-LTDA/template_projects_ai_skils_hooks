@@ -23,6 +23,7 @@ Documentacao do **repositorio template** e do **template de projeto** que ele en
 - [[COMMITS]] — convencao de commits e a skill `/commit` (preencher por projeto)
 - [[WORKTREES]] — agentes paralelos em worktrees e a skill `/worktree`
 - [[AGENTES]] — subagentes do projeto e a skill `/issue`: qual agente e modelo por tamanho de tarefa
+- [[BOARD]] — IDs e ajustes do board do GitHub deste projeto; o metodo esta na skill `/trilha`
 - [[decisoes/README|decisoes/]] — registros de mudancas estruturais neste repo
 - [[referencias/README|referencias/]] — resumos de links/normas/bibliotecas citadas
 

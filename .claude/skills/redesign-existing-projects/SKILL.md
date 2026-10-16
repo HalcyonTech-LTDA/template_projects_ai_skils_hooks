@@ -10,8 +10,10 @@ description: Upgrades existing websites and apps to premium quality. Audits curr
 When applied to an existing project, follow this sequence:
 
 1. **Scan** — Read the codebase. Identify the framework, styling method (Tailwind, vanilla CSS, styled-components, etc.), and current design patterns.
-2. **Diagnose** — Run through the audit below. List every generic pattern, weak point, and missing state you find.
-3. **Fix** — Apply targeted upgrades working with the existing stack. Do not rewrite from scratch. Improve what's there.
+2. **Diagnose** — Run through the audit below. List every generic pattern, weak point, and missing state you find. Capture a "before" screenshot at 1440px and 390px.
+3. **Reference** — Read `.claude/skills/_shared/fontes-frontend.md`. Name 2-3 real references (user-provided > refero.design via browser > real products in the same category) and write the reference lock. The existing brand assets stay in the lock as constraints. No named reference, no fix.
+4. **Fix** — Apply targeted upgrades working with the existing stack. Do not rewrite from scratch. Improve what's there. When replacing a generic component, start from Arc (`@uiarc/*`) or Cult UI (`@cult-ui/*`) and port it to the project's stack (section 5 of the shared file) instead of migrating the stack. Never bring in Cult's `border-beam-*`, `halo-*`, `cosmic-button`, `metal-button`, `gradient-*`, `bg-animated-gradient`, `circuit-board`, `distorted-glass`.
+5. **Verify** — Capture "after" screenshots at the same widths, next to "before" and the primary reference. List the drift and fix it. No browser available: say so.
 
 ## Design Audit
 

@@ -1,0 +1,36 @@
+name: Bug
+description: Comportamento errado observado, com como reproduzir
+title: "BUG · <sintoma em uma frase>"
+labels: ["tipo:bug"]
+body:
+  - type: textarea
+    id: observado
+    attributes:
+      label: Observado
+      description: O que aconteceu, com a mensagem de erro exata se houver.
+    validations:
+      required: true
+  - type: textarea
+    id: esperado
+    attributes:
+      label: Esperado
+    validations:
+      required: true
+  - type: textarea
+    id: reproduzir
+    attributes:
+      label: Como reproduzir
+      placeholder: "1. ..."
+    validations:
+      required: true
+  - type: input
+    id: versao
+    attributes:
+      label: Versao / commit / ambiente
+  - type: textarea
+    id: pronto
+    attributes:
+      label: Criterio de pronto
+      placeholder: "- [ ] teste que falha antes e passa depois"
+    validations:
+      required: true

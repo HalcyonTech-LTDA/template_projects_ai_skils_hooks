@@ -122,6 +122,14 @@ winget install Python.Python.3.12
 
 When user requests UI/UX work (design, build, create, implement, review, fix, improve), follow this workflow:
 
+### Step 0: Sources and Reference Lock (mandatory, before any code)
+
+Read `.claude/skills/_shared/fontes-frontend.md` and follow it. If you cannot read it, these still hold:
+1. Name 2-3 real references (user-provided > refero.design via browser > real products from the brief) and what each contributes, then write the reference lock. No named reference, no code. For dashboards and tables, search for **screens** (data table with filters, empty state), not styles.
+2. Prefer an existing component from Arc (`@uiarc/*`) or Cult UI (`@cult-ui/*`) over writing one. Read its `.md` first.
+3. Never install Cult's `border-beam-*`, `halo-*`, `cosmic-button`, `metal-button`, `gradient-*`, `bg-animated-gradient`, `circuit-board`, `distorted-glass`.
+4. Close visual work with screenshots at 1440px and 390px next to the primary reference, and fix the drift. No browser available: say so.
+
 ### Step 1: Analyze User Requirements
 
 Extract key information from user request:
@@ -143,6 +151,8 @@ This command:
 2. Applies reasoning rules from `ui-reasoning.csv` to select best matches
 3. Returns complete design system: pattern, style, colors, typography, effects
 4. Includes anti-patterns to avoid
+
+The generated design system **supplements** the reference lock from Step 0. When the two disagree on palette, type or layout, the lock wins: it comes from real products, the CSV from generic rules.
 
 **Example:**
 ```bash

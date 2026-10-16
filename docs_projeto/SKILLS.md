@@ -3,14 +3,15 @@ title: Catalogo de skills e precedencia de design
 type: convencao
 status: aprovado
 created: 2026-09-07
-updated: 2026-10-12
+updated: 2026-10-15
 project: template_projetos
 tags: [convencao, skills, design, claude-code, tema/tooling]
 ---
 
 # Catalogo de skills e precedencia de design
 
-Este repositorio carrega **55 skills** em `.claude/skills/`. Diferente dos MCPs, skill
+Este repositorio carrega **55 skills** em `.claude/skills/` (mais `obsidian-skills/`, que e
+pacote e nao skill, e `_shared/`, que guarda texto comum a varias skills). Diferente dos MCPs, skill
 nao custa contexto por sessao: so a `description` de cada uma entra no prompt, e o corpo
 so e lido quando a skill dispara. O custo real e outro — **colisao de gatilho**: com 20+
 skills descrevendo "design de interface", o modelo escolhe uma diferente a cada sessao e
@@ -76,6 +77,8 @@ Estas nao competem com as esteticas e podem rodar junto:
 - `commit`, `worktree` — fluxo de entrada de trabalho no repo
 - `issue` — conduz uma issue pelo tamanho, escolhendo subagente e modelo; usa `commit` e
   `worktree` por dentro. Catalogo dos agentes em [[AGENTES]]
+- `trilha` — planeja e controla uma frente de trabalho no GitHub (marcos, sequencia, bloqueios,
+  progresso); cria as issues que a `issue` conduz. IDs do board em [[BOARD]]
 
 ## 5. Casos especiais
 
@@ -132,3 +135,39 @@ fase, e a `pcb-projeto` e a porta de entrada.
 
 Decisao e alternativas em [[decisoes/2026-10-12_skills_pcb_kicad]]. Fichas em
 [[referencias/README|referencias/]], secao "Eletronica e PCB".
+
+## 8. Fontes de frontend — protocolo comum
+
+A arvore da secao 2 escolhe **a estetica**. Ela nao diz de onde vem a evidencia nem o
+codigo. Isso fica num arquivo so, lido pelas quatro skills que produzem interface:
+
+`.claude/skills/_shared/fontes-frontend.md`
+
+| Skill | Onde o protocolo entra |
+|---|---|
+| `design-taste-frontend` | `STEP 0`, antes da inferencia de brief |
+| `ui-ux-pro-max` | `Step 0`, antes do `--design-system` (que vira suplemento) |
+| `frontend-design` | `Step 0`, antes do Design Thinking |
+| `redesign-existing-projects` | Passo `Reference` entre Diagnose e Fix, mais `Verify` no fim |
+
+As quatro regras que cada skill repete inline:
+
+1. **2 a 3 referencias reais nomeadas antes do codigo**, com o que cada uma contribui, e o
+   reference lock escrito. Ordem: do usuario → refero.design pelo navegador → produtos reais
+2. **Componente de registry antes de componente inventado**: Arc (`@uiarc/*`) ou Cult UI
+   (`@cult-ui/*`), lendo o `.md` do componente
+3. **Vetados do Cult**: `border-beam-*`, `halo-*`, `cosmic-button`, `metal-button`,
+   `gradient-*`, `bg-animated-gradient`, `circuit-board`, `distorted-glass`
+4. **Screenshot em 1440px e 390px ao lado da referencia principal** antes de entregar
+
+| Fonte | Papel | Ficha |
+|---|---|---|
+| Refero | Referencia — o que olhar. Sem MCP (pago) | [[referencias/refero]] |
+| Arc | Componente animado, CSS modules, sem Tailwind | [[referencias/ui-arc]] |
+| Cult UI | Ilustracao, device frame, secao de marketing (Tailwind) | [[referencias/cult-ui]] |
+
+Arc e Cult podem conviver, mas os tokens tem os mesmos nomes e o tema escuro usa seletores
+diferentes — regra na secao 3 do arquivo compartilhado.
+
+`_shared/` nao e skill (nao tem `SKILL.md`); o hook so lista pastas com `SKILL.md`.
+Decisao em [[decisoes/2026-10-15_fontes_frontend]].

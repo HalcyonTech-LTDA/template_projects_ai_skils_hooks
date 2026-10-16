@@ -20,6 +20,7 @@ try {
   skills = fs
     .readdirSync(skillsDir, { withFileTypes: true })
     .filter((d) => d.isDirectory())
+    .filter((d) => fs.existsSync(path.join(skillsDir, d.name, "SKILL.md")))
     .map((d) => d.name)
     .sort();
 } catch {}
@@ -40,7 +41,7 @@ try {
 } catch {}
 
 const agentsLine = agents.length
-  ? `\n   Subagentes do projeto em .claude/agents/: ${agents.join(", ")}. Issue ou tarefa de desenvolvimento passa pela skill /issue, que escolhe agente e modelo pelo tamanho (docs_projeto/AGENTES.md).`
+  ? `\n   Subagentes do projeto em .claude/agents/: ${agents.join(", ")}. Issue ou tarefa de desenvolvimento passa pela skill /issue, que escolhe agente e modelo pelo tamanho (docs_projeto/AGENTES.md). Planejar uma frente de trabalho no GitHub (marcos, sequencia, bloqueios, progresso) passa pela skill /trilha (IDs do board em docs_projeto/BOARD.md).`
   : "";
 
 const rules = `<project-rules>

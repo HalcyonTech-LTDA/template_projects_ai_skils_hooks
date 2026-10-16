@@ -1,0 +1,43 @@
+name: Epico (trilha)
+description: Uma frente de trabalho; as tarefas entram como sub-issues (skill /trilha)
+title: "<PREFIXO> · <nome da frente>"
+labels: ["tipo:epico"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        O epico agrupa o assunto; o milestone agrupa o momento de entrega. O progresso aparece em Sub-issues progress.
+        O plano e o manifesto da trilha ficam em `docs_projeto/.../Roadmap/`.
+  - type: input
+    id: prefixo
+    attributes:
+      label: Prefixo
+      description: 2 a 3 letras, unico no projeto (ex. SU, EM).
+    validations:
+      required: true
+  - type: textarea
+    id: objetivo
+    attributes:
+      label: Objetivo
+      description: O que muda para o dono/cliente quando a trilha termina.
+    validations:
+      required: true
+  - type: textarea
+    id: marcos
+    attributes:
+      label: Marcos
+      description: Um milestone por linha, com a entrega de cada um.
+      placeholder: "- <PREFIXO> M1 · <estado alcancado> — <entrega>"
+    validations:
+      required: true
+  - type: textarea
+    id: fora
+    attributes:
+      label: Fora da trilha
+  - type: input
+    id: plano
+    attributes:
+      label: Plano
+      placeholder: docs_projeto/.../Roadmap/<Nome>.md
+    validations:
+      required: true

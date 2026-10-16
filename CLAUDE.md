@@ -26,10 +26,11 @@ Detalhes completos em `docs_projeto/HOOKS.md`.
 
 ## Skills de fluxo
 
-Tres skills governam como o trabalho entra no repositorio:
+Quatro skills governam como o trabalho entra no repositorio:
 
 | Skill | Quando |
 |---|---|
+| `/trilha` | Planejar e controlar uma frente de trabalho no GitHub: epico, marcos (milestones), issues em sequencia, dependencias nativas (blocked by), progresso dos marcos e checagem de deriva do board. So issues, nunca draft. IDs do board em `docs_projeto/BOARD.md`. |
 | `/issue` | Conduzir uma issue ou tarefa de desenvolvimento do comeco ao merge. Classifica o tamanho (label `size/*` ou estimativa declarada) e escolhe subagente e modelo por ele. Usa `/worktree` e `/commit` por dentro. |
 | `/commit` | Gerar a mensagem e criar o commit. Le a convencao do proprio repositorio (`docs_projeto/COMMITS.md`, depois `CLAUDE.md`, depois o historico) antes de propor tipo e escopo. Nunca roda `git add` por conta propria. |
 | `/worktree` | Rodar tarefas independentes em paralelo, uma janela `claude` por tarefa, com merge de volta serializado por fila. |
@@ -91,6 +92,11 @@ Duas regras que valem sempre:
 - **Nao rode `npx skills update`.** As 13 skills de `Leonxlnx/taste-skill` sao fork proprio;
   `skills-lock.json` e registro de procedencia, nao mecanismo de atualizacao.
 
+Toda tarefa de interface segue `.claude/skills/_shared/fontes-frontend.md`: referencia real
+nomeada antes do codigo (Refero), componente de registry antes de inventado (Arc, Cult UI),
+screenshot ao lado da referencia antes de entregar. As quatro skills de UI apontam para ele;
+ver `docs_projeto/SKILLS.md` secao 8.
+
 ## Hardware: familia `pcb-*`
 
 Cinco skills para projetar placas no KiCad 10, do requisito ao pedido na JLCPCB:
@@ -113,10 +119,13 @@ tarefa, ou ela se perde no proximo projeto criado.
 - `.claude/settings.local.json` — ignorado pelo git, config pessoal e bloco `env` com segredos
 - `.mcp.json.example` — nucleo de MCPs comentado; copiar para `.mcp.json` e podar
 - `.claude/skills/` — skills locais do projeto (fonte canonica)
+- `.claude/skills/_shared/` — texto comum a varias skills (nao e skill; o hook ignora)
 - `skills-lock.json` — procedencia das skills vindas de `Leonxlnx/taste-skill`; versionado, nao atualizar
 - `.claude/worktrees/` — worktrees de agentes, ignorado pelo git
 - `.claude/agents/` — subagentes do projeto (fonte canonica)
 - `.claude/handoff/` — handoff entre fatias da skill `/issue`, ignorado pelo git
 - `docs_projeto/AGENTES.md` — catalogo dos agentes e do fluxo por tamanho (fonte canonica)
 - `docs_projeto/SKILLS.md` — catalogo e precedencia das skills (fonte canonica)
+- `docs_projeto/BOARD.md` — molde dos IDs do board do GitHub; preenchido em cada projeto derivado
+- `.github/ISSUE_TEMPLATE/` — formularios de issue (tarefa, epico, bug); issue em branco desligada
 - `docs_projeto/` — documentacao do projeto (atualizar sempre)

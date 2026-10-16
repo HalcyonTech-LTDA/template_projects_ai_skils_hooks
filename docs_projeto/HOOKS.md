@@ -16,7 +16,8 @@ obrigatorias em cada mensagem do usuario para o Claude Code.
 ### 1. Consulta de skills (por prompt)
 Antes de planejar ou agir, o Claude lista as skills em `.claude/skills/` e
 invoca a que combinar com a tarefa via Skill tool. O proprio hook lista as
-skills disponiveis no contexto injetado e, se `.claude/agents/` existir, os
+skills disponiveis no contexto injetado (so pastas com `SKILL.md`; `_shared/` e
+`obsidian-skills/` ficam de fora) e, se `.claude/agents/` existir, os
 subagentes do projeto, apontando a skill `/issue` para tarefa de desenvolvimento
 (ver [[AGENTES]]).
 
