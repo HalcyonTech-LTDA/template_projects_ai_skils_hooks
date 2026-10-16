@@ -1,0 +1,148 @@
+{
+  "projeto": "placa-exemplo",
+  "titulo": "Placa exemplo 12 V com ESP32-S3 e motor DC",
+  "revisao": "A",
+  "empresa": "Halcyon Tech",
+  "folha": "A3",
+  "tensao_max_v": 12,
+  "blocos": [
+    {
+      "id": "entrada",
+      "titulo": "Entrada 12 V e protecao",
+      "componentes": ["J1", "F1", "Q1", "D1", "R1", "D2", "C1"],
+      "notas": "F1 PTC SMD1812P200TF/16: 2 A de manutencao, 3,5 A de disparo, 16 V.\nQ1 AO3401A (P-MOSFET, Vds -30 V, Vgs max +-12 V) contra inversao: dreno na entrada, fonte na carga, gate ao GND por R1 10k.\nD1 zener 10 V (catodo na fonte) limita Vgs a -10 V; com 12 V na entrada, I(D1) = (12 - 10) / 10k = 0,2 mA.\nD2 SMAJ15A: VRWM 15 V > 12 V; Vc 24,4 V < 35 V (VIN max do AP63203) e < 45 V (VM maximo de operacao do DRV8871).\nC1 100 uF 25 V de volume na entrada protegida.\nPWR_FLAG em +12V e GND (chegam pelo borne) e em +12V_SYS (a fonte do Q1 e pino passivo; o ERC nao ve quem alimenta)."
+    },
+    {
+      "id": "buck",
+      "titulo": "Buck 12 V para 3,3 V (AP63203)",
+      "componentes": ["U2", "C2", "C3", "C4", "L1", "C5", "C6"],
+      "notas": "AP63203WU: saida fixa 3,3 V, 1,1 MHz, 2 A. Tabela 2 do datasheet: L 3,9 uH, entrada 10 uF, saida 2 x 22 uF, bootstrap 100 nF.\nL1 = 4,7 uH (FNR4018S4R7MT, Isat 2,2 A): 3,9 uH nao achado nessa serie na LCSC; 4,7 uH reduz o ripple. Conferir a Eq. 7 do datasheet.\nEN ligado direto em VIN (o datasheet permite: pino de alta tensao). FB direto na saida (versao fixa).\nPWR_FLAG em +3V3: a saida passa pela bobina (pino passivo), o ERC nao ve o regulador."
+    },
+    {
+      "id": "mcu",
+      "titulo": "ESP32-S3-WROOM-1",
+      "componentes": ["U1", "R2", "C7", "R3", "SW1", "C8", "C9"],
+      "notas": "EN: R2 10k ao 3V3 e C7 1 uF ao GND (tau = 10 ms).\nIO0: R3 10k de pull-up e SW1 (BOOT) ao GND.\nC8 10 uF + C9 100 nF junto ao pino 3V3 do modulo.\nIO4 e IO5 = MOTOR_IN1/IN2; IO6 = LED. Strapping (IO3, IO45, IO46) e USB (IO19/IO20) sem uso."
+    },
+    {
+      "id": "motor",
+      "titulo": "Driver de motor DC (DRV8871)",
+      "componentes": ["U3", "R4", "C10", "C11", "R5", "R6", "J2"],
+      "notas": "ITRIP = 64 / RILIM(kOhm) A (datasheet TI SLVSCY9B, Current Regulation; RILIM minimo 15k). R4 33k -> ITRIP = 1,94 A.\nC10 100 nF + C11 100 uF 25 V em VM, colados no CI.\nR5/R6 10k de pull-down em IN1/IN2: motor parado (coast) enquanto o ESP32 da boot.\nPino 7 (GND) e pad exposto (pino 9) no GND, com vias termicas."
+    },
+    {
+      "id": "gravacao",
+      "titulo": "Header UART0 de gravacao",
+      "componentes": ["J3"],
+      "notas": "1 GND, 2 3V3, 3 TX, 4 RX, 5 EN, 6 IO0.\nTX/RX do ponto de vista do ESP32: o RX do adaptador USB-serial vai no pino 3."
+    },
+    {
+      "id": "led",
+      "titulo": "LED de status",
+      "componentes": ["R7", "D3"],
+      "notas": "LED vermelho KT-0603R (Vf 2,0 a 2,4 V). R7 1k: I = (3,3 - 2,0) / 1k = 1,3 mA."
+    }
+  ],
+  "componentes": [
+    {"ref": "J1", "simbolo": "Connector:Screw_Terminal_01x02", "valor": "Entrada 12V", "footprint": "TerminalBlock:TerminalBlock_MaiXu_MX126-5.0-02P_1x02_P5.00mm",
+     "campos": {"MPN": "WJ126V-5.0-02P-14-00A", "Fabricante": "KANGNEX", "LCSC": "C8404", "Datasheet": "https://datasheet.lcsc.com/datasheet/pdf/d2015ab65e3be137b082d66edab6b9fd.pdf?productCode=C8404"}},
+    {"ref": "F1", "simbolo": "Device:Polyfuse", "valor": "PTC 2A 16V", "footprint": "Fuse:Fuse_1812_4532Metric",
+     "campos": {"MPN": "SMD1812P200TF/16", "Fabricante": "PTTC (Polytronics Tech)", "LCSC": "C545213", "Datasheet": "https://datasheet.lcsc.com/datasheet/pdf/5924fae82fd3309516a7c95a1674c927.pdf?productCode=C545213"}},
+    {"ref": "Q1", "simbolo": "Transistor_FET:AO3401A", "valor": "AO3401A", "footprint": "Package_TO_SOT_SMD:SOT-23",
+     "campos": {"MPN": "AO3401A", "Fabricante": "AOS", "LCSC": "C15127", "Datasheet": "https://datasheet.lcsc.com/datasheet/pdf/fee353dd1e9e0bc90b295f14f381aa4c.pdf?productCode=C15127"}},
+    {"ref": "D1", "simbolo": "Device:D_Zener", "valor": "BZT52C10", "footprint": "Diode_SMD:D_SOD-123",
+     "campos": {"MPN": "BZT52C10", "Fabricante": "JSCJ", "LCSC": "C2103", "Datasheet": "https://datasheet.lcsc.com/datasheet/pdf/748504625e418aa84c5305d597e87d6d.pdf?productCode=C2103"}},
+    {"ref": "R1", "simbolo": "Device:R", "valor": "10k", "footprint": "Resistor_SMD:R_0603_1608Metric",
+     "campos": {"MPN": "0603WAF1002T5E", "Fabricante": "UNI-ROYAL", "LCSC": "C25804", "Datasheet": "https://datasheet.lcsc.com/datasheet/pdf/0a975aaa49b7c97f38a963127be4a823.pdf?productCode=C25804"}},
+    {"ref": "D2", "simbolo": "Diode:SMAJ15A", "valor": "SMAJ15A", "footprint": "Diode_SMD:D_SMA",
+     "campos": {"MPN": "SMAJ15A", "Fabricante": "BORN", "LCSC": "C152121", "Datasheet": "https://datasheet.lcsc.com/datasheet/pdf/4b315c8f609e379d072a3b534c8ebfc5.pdf?productCode=C152121"}},
+    {"ref": "C1", "simbolo": "Device:C_Polarized", "valor": "100uF 25V", "footprint": "Capacitor_SMD:CP_Elec_6.3x7.7",
+     "campos": {"MPN": "25CE100AX", "Fabricante": "SUNCON", "LCSC": "C179802", "Datasheet": "https://datasheet.lcsc.com/datasheet/pdf/1707f1826857726041fb55548605df7e.pdf?productCode=C179802"}},
+
+    {"ref": "U2", "simbolo": "Regulator_Switching:AP63203WU", "valor": "AP63203WU", "footprint": "Package_TO_SOT_SMD:TSOT-23-6",
+     "campos": {"MPN": "AP63203WU-7", "Fabricante": "Diodes Incorporated", "LCSC": "C780769", "Datasheet": "https://www.diodes.com/assets/Datasheets/AP63200-AP63201-AP63203-AP63205.pdf"}},
+    {"ref": "C2", "simbolo": "Device:C", "valor": "10uF 50V X5R", "footprint": "Capacitor_SMD:C_1206_3216Metric",
+     "campos": {"MPN": "CL31A106KBHNNNE", "Fabricante": "Samsung Electro-Mechanics", "LCSC": "C13585", "Datasheet": "https://datasheet.lcsc.com/datasheet/pdf/02336ea48ea44ca18c72517dd3cb7b47.pdf?productCode=C13585"}},
+    {"ref": "C3", "simbolo": "Device:C", "valor": "100nF 50V X7R", "footprint": "Capacitor_SMD:C_0603_1608Metric",
+     "campos": {"MPN": "CC0603KRX7R9BB104", "Fabricante": "YAGEO", "LCSC": "C14663", "Datasheet": "https://datasheet.lcsc.com/datasheet/pdf/23ccee80ee542e7cf156a772bb589942.pdf?productCode=C14663"}},
+    {"ref": "C4", "simbolo": "Device:C", "valor": "100nF 50V X7R", "footprint": "Capacitor_SMD:C_0603_1608Metric",
+     "campos": {"MPN": "CC0603KRX7R9BB104", "Fabricante": "YAGEO", "LCSC": "C14663", "Datasheet": "https://datasheet.lcsc.com/datasheet/pdf/23ccee80ee542e7cf156a772bb589942.pdf?productCode=C14663"}},
+    {"ref": "L1", "simbolo": "Device:L", "valor": "4.7uH 1.8A", "footprint": "Inductor_SMD:L_Changjiang_FNR4018S",
+     "campos": {"MPN": "FNR4018S4R7MT", "Fabricante": "Changjiang Microelectronics (cjiang)", "LCSC": "C167806", "Datasheet": "https://datasheet.lcsc.com/datasheet/pdf/a0b12ba9dfe6b9e66b6bb852b7c71c03.pdf?productCode=C167806"}},
+    {"ref": "C5", "simbolo": "Device:C", "valor": "22uF 25V X5R", "footprint": "Capacitor_SMD:C_0805_2012Metric",
+     "campos": {"MPN": "CL21A226MAQNNNE", "Fabricante": "Samsung Electro-Mechanics", "LCSC": "C45783", "Datasheet": "https://datasheet.lcsc.com/datasheet/pdf/02336ea48ea44ca18c72517dd3cb7b47.pdf?productCode=C45783"}},
+    {"ref": "C6", "simbolo": "Device:C", "valor": "22uF 25V X5R", "footprint": "Capacitor_SMD:C_0805_2012Metric",
+     "campos": {"MPN": "CL21A226MAQNNNE", "Fabricante": "Samsung Electro-Mechanics", "LCSC": "C45783", "Datasheet": "https://datasheet.lcsc.com/datasheet/pdf/02336ea48ea44ca18c72517dd3cb7b47.pdf?productCode=C45783"}},
+
+    {"ref": "U1", "simbolo": "RF_Module:ESP32-S3-WROOM-1", "valor": "ESP32-S3-WROOM-1-N8R2", "footprint": "RF_Module:ESP32-S3-WROOM-1",
+     "campos": {"MPN": "ESP32-S3-WROOM-1-N8R2", "Fabricante": "Espressif Systems", "LCSC": "C2913204", "Datasheet": "https://datasheet.lcsc.com/datasheet/pdf/24a44651a4767a6582addcdaa9cab2ca.pdf?productCode=C2913204"}},
+    {"ref": "R2", "simbolo": "Device:R", "valor": "10k", "footprint": "Resistor_SMD:R_0603_1608Metric",
+     "campos": {"MPN": "0603WAF1002T5E", "Fabricante": "UNI-ROYAL", "LCSC": "C25804", "Datasheet": "https://datasheet.lcsc.com/datasheet/pdf/0a975aaa49b7c97f38a963127be4a823.pdf?productCode=C25804"}},
+    {"ref": "C7", "simbolo": "Device:C", "valor": "1uF 50V X5R", "footprint": "Capacitor_SMD:C_0603_1608Metric",
+     "campos": {"MPN": "CL10A105KB8NNNC", "Fabricante": "Samsung Electro-Mechanics", "LCSC": "C15849", "Datasheet": "https://datasheet.lcsc.com/datasheet/pdf/02336ea48ea44ca18c72517dd3cb7b47.pdf?productCode=C15849"}},
+    {"ref": "R3", "simbolo": "Device:R", "valor": "10k", "footprint": "Resistor_SMD:R_0603_1608Metric",
+     "campos": {"MPN": "0603WAF1002T5E", "Fabricante": "UNI-ROYAL", "LCSC": "C25804", "Datasheet": "https://datasheet.lcsc.com/datasheet/pdf/0a975aaa49b7c97f38a963127be4a823.pdf?productCode=C25804"}},
+    {"ref": "SW1", "simbolo": "Switch:SW_Push", "valor": "BOOT", "footprint": "Button_Switch_SMD:SW_Push_1P1T_XKB_TS-1187A",
+     "campos": {"MPN": "TS-1187A-B-A-B", "Fabricante": "XKB Connection", "LCSC": "C318884", "Datasheet": "https://datasheet.lcsc.com/datasheet/pdf/56c8799ae5193945a16a1ffbe378246a.pdf?productCode=C318884"}},
+    {"ref": "C8", "simbolo": "Device:C", "valor": "10uF 25V X5R", "footprint": "Capacitor_SMD:C_0805_2012Metric",
+     "campos": {"MPN": "CL21A106KAYNNNE", "Fabricante": "Samsung Electro-Mechanics", "LCSC": "C15850", "Datasheet": "https://datasheet.lcsc.com/datasheet/pdf/02336ea48ea44ca18c72517dd3cb7b47.pdf?productCode=C15850"}},
+    {"ref": "C9", "simbolo": "Device:C", "valor": "100nF 50V X7R", "footprint": "Capacitor_SMD:C_0603_1608Metric",
+     "campos": {"MPN": "CC0603KRX7R9BB104", "Fabricante": "YAGEO", "LCSC": "C14663", "Datasheet": "https://datasheet.lcsc.com/datasheet/pdf/23ccee80ee542e7cf156a772bb589942.pdf?productCode=C14663"}},
+
+    {"ref": "U3", "simbolo": "Driver_Motor:DRV8871DDA", "valor": "DRV8871DDA", "footprint": "Package_SO:Texas_HTSOP-8-1EP_3.9x4.9mm_P1.27mm_EP2.95x4.9mm_Mask2.4x3.1mm_ThermalVias",
+     "campos": {"MPN": "DRV8871DDAR", "Fabricante": "Texas Instruments", "LCSC": "C75864", "Datasheet": "https://www.ti.com/lit/ds/symlink/drv8871.pdf"}},
+    {"ref": "R4", "simbolo": "Device:R", "valor": "33k 1%", "footprint": "Resistor_SMD:R_0603_1608Metric",
+     "campos": {"MPN": "0603WAF3302T5E", "Fabricante": "UNI-ROYAL", "LCSC": "C4216", "Datasheet": "https://datasheet.lcsc.com/datasheet/pdf/0a975aaa49b7c97f38a963127be4a823.pdf?productCode=C4216"}},
+    {"ref": "C10", "simbolo": "Device:C", "valor": "100nF 50V X7R", "footprint": "Capacitor_SMD:C_0603_1608Metric",
+     "campos": {"MPN": "CC0603KRX7R9BB104", "Fabricante": "YAGEO", "LCSC": "C14663", "Datasheet": "https://datasheet.lcsc.com/datasheet/pdf/23ccee80ee542e7cf156a772bb589942.pdf?productCode=C14663"}},
+    {"ref": "C11", "simbolo": "Device:C_Polarized", "valor": "100uF 25V", "footprint": "Capacitor_SMD:CP_Elec_6.3x7.7",
+     "campos": {"MPN": "25CE100AX", "Fabricante": "SUNCON", "LCSC": "C179802", "Datasheet": "https://datasheet.lcsc.com/datasheet/pdf/1707f1826857726041fb55548605df7e.pdf?productCode=C179802"}},
+    {"ref": "R5", "simbolo": "Device:R", "valor": "10k", "footprint": "Resistor_SMD:R_0603_1608Metric",
+     "campos": {"MPN": "0603WAF1002T5E", "Fabricante": "UNI-ROYAL", "LCSC": "C25804", "Datasheet": "https://datasheet.lcsc.com/datasheet/pdf/0a975aaa49b7c97f38a963127be4a823.pdf?productCode=C25804"}},
+    {"ref": "R6", "simbolo": "Device:R", "valor": "10k", "footprint": "Resistor_SMD:R_0603_1608Metric",
+     "campos": {"MPN": "0603WAF1002T5E", "Fabricante": "UNI-ROYAL", "LCSC": "C25804", "Datasheet": "https://datasheet.lcsc.com/datasheet/pdf/0a975aaa49b7c97f38a963127be4a823.pdf?productCode=C25804"}},
+    {"ref": "J2", "simbolo": "Connector:Screw_Terminal_01x02", "valor": "Motor", "footprint": "TerminalBlock:TerminalBlock_MaiXu_MX126-5.0-02P_1x02_P5.00mm",
+     "campos": {"MPN": "WJ126V-5.0-02P-14-00A", "Fabricante": "KANGNEX", "LCSC": "C8404", "Datasheet": "https://datasheet.lcsc.com/datasheet/pdf/d2015ab65e3be137b082d66edab6b9fd.pdf?productCode=C8404"}},
+
+    {"ref": "J3", "simbolo": "Connector_Generic:Conn_01x06", "valor": "UART0", "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Vertical",
+     "campos": {"MPN": "PZ254V-11-06P", "Fabricante": "XFCN", "LCSC": "C492405", "Datasheet": "https://datasheet.lcsc.com/datasheet/pdf/3b85a1cdf6ed945f2e278f00c1e42442.pdf?productCode=C492405"}},
+
+    {"ref": "R7", "simbolo": "Device:R", "valor": "1k", "footprint": "Resistor_SMD:R_0603_1608Metric",
+     "campos": {"MPN": "0603WAF1001T5E", "Fabricante": "UNI-ROYAL", "LCSC": "C21190", "Datasheet": "https://datasheet.lcsc.com/datasheet/pdf/0a975aaa49b7c97f38a963127be4a823.pdf?productCode=C21190"}},
+    {"ref": "D3", "simbolo": "Device:LED", "valor": "Vermelho", "footprint": "LED_SMD:LED_0603_1608Metric",
+     "campos": {"MPN": "KT-0603R", "Fabricante": "Hubei KENTO Elec", "LCSC": "C2286", "Datasheet": "https://datasheet.lcsc.com/datasheet/pdf/011ec3e8cb1e825f6961d29bc4db4c7a.pdf?productCode=C2286"}}
+  ],
+  "redes": {
+    "+12V":       ["J1.1", "F1.1"],
+    "VIN_FUSE":   ["F1.2", "Q1.D"],
+    "+12V_SYS":   ["Q1.S", "D1.K", "D2.1", "C1.1", "U2.IN", "U2.EN", "C2.1", "C3.1", "U3.VM", "C10.1", "C11.1"],
+    "Q1_GATE":    ["Q1.G", "D1.A", "R1.1"],
+    "GND":        ["J1.2", "R1.2", "D2.2", "C1.2", "C2.2", "C3.2", "U2.GND", "C5.2", "C6.2",
+                   "U1.1", "U1.40", "U1.41", "C7.2", "SW1.2", "C8.2", "C9.2",
+                   "U3.1", "U3.7", "U3.9", "R4.2", "C10.2", "C11.2", "R5.2", "R6.2", "J3.1", "D3.K"],
+    "SW_BUCK":    ["U2.SW", "C4.2", "L1.1"],
+    "BST_BUCK":   ["U2.BST", "C4.1"],
+    "+3V3":       ["L1.2", "U2.FB", "C5.1", "C6.1", "U1.2", "R2.1", "R3.1", "C8.1", "C9.1", "J3.2"],
+    "ESP_EN":     ["U1.EN", "R2.2", "C7.1", "J3.5"],
+    "ESP_IO0":    ["U1.IO0", "R3.2", "SW1.1", "J3.6"],
+    "UART0_TX":   ["U1.TXD0", "J3.3"],
+    "UART0_RX":   ["U1.RXD0", "J3.4"],
+    "MOTOR_IN1":  ["U1.IO4", "U3.IN1", "R5.1"],
+    "MOTOR_IN2":  ["U1.IO5", "U3.IN2", "R6.1"],
+    "ILIM":       ["U3.ILIM", "R4.1"],
+    "MOTOR_A":    ["U3.OUT1", "J2.1"],
+    "MOTOR_B":    ["U3.OUT2", "J2.2"],
+    "LED_STATUS": ["U1.IO6", "R7.1"],
+    "LED_A":      ["R7.2", "D3.A"]
+  },
+  "pwr_flag": ["+12V", "GND", "+12V_SYS", "+3V3"],
+  "nao_conectar": [
+    "U1.7", "U1.8", "U1.9", "U1.10", "U1.11", "U1.12", "U1.13", "U1.14", "U1.15", "U1.16",
+    "U1.17", "U1.18", "U1.19", "U1.20", "U1.21", "U1.22", "U1.23", "U1.24", "U1.25", "U1.26",
+    "U1.28", "U1.29", "U1.30", "U1.31", "U1.32", "U1.33", "U1.34", "U1.35", "U1.38", "U1.39"
+  ],
+  "classes_de_rede": {
+    "Power": {"redes": ["+12V", "VIN_FUSE", "+12V_SYS", "MOTOR_A", "MOTOR_B"], "largura_mm": 0.8, "clearance_mm": 0.3},
+    "HV": {"redes": [], "largura_mm": 1.0, "clearance_mm": 2.5}
+  }
+}

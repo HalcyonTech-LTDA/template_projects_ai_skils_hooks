@@ -10,7 +10,7 @@ tags: [convencao, skills, design, claude-code, tema/tooling]
 
 # Catalogo de skills e precedencia de design
 
-Este repositorio carrega **57 skills** em `.claude/skills/` (mais `obsidian-skills/`, que e
+Este repositorio carrega **62 skills** em `.claude/skills/` (mais `obsidian-skills/`, que e
 pacote e nao skill, e `_shared/`, que guarda texto comum a varias skills). Diferente dos MCPs, skill
 nao custa contexto por sessao: so a `description` de cada uma entra no prompt, e o corpo
 so e lido quando a skill dispara. O custo real e outro — **colisao de gatilho**: com 20+
@@ -45,7 +45,7 @@ Leia de cima para baixo; para na primeira que casar.
 | Componente isolado ou artifact claude.ai | `frontend-design` + `artifacts-builder` | Skills de landing page trazem estrutura de pagina inteira que sobra aqui |
 | Tokens, escala tipografica, handoff para dev | `ui-design-system` | Ortogonal — pode combinar com a estetica escolhida |
 | App mobile (RN / nativo) | `mobile-design` | As taste-skills sao web-first |
-| Qualquer coisa 3D (cena web, peca, Blender) | ver secao 8 | Sete skills 3D com gatilhos que se sobrepoem |
+| Qualquer coisa 3D (cena web, peca, Blender) | ver secao 9 | Sete skills 3D com gatilhos que se sobrepoem |
 | Texto de venda, headline, CTA | `copywriting` | — |
 
 ## 3. Skills que exigem gerador de imagem — inertes hoje
@@ -101,11 +101,46 @@ mudanca do upstream, faca deliberadamente: leia o diff, decida, e propague por c
 
 Ficha da referencia em [[referencias/skills-taste-leonxlnx]].
 
-A mesma politica vale para as 6 skills 3D de terceiros (secao 8): `three-best-practices` e
+A mesma politica vale para as 6 skills 3D de terceiros (secao 9): `three-best-practices` e
 `r3f-best-practices` (`emalorenzo/three-agent-skills`) e as quatro `blender-*`
 (`TerminalSkills/skills`). Commit de origem e sha256 do upstream no `skills-lock.json`.
 
-## 7. Fontes de frontend — protocolo comum
+## 7. Eletronica e PCB: a familia `pcb-*`
+
+Cinco skills proprias (nao vem de terceiros) para projetar placas no **KiCad 10**, do
+requisito ao pedido na JLCPCB. Diferente das esteticas, elas **acumulam**: cada uma cobre uma
+fase, e a `pcb-projeto` e a porta de entrada.
+
+| Se a tarefa e... | Use |
+|---|---|
+| Placa nova, mudanca que atravessa fases, ou nao esta claro por onde comecar | `pcb-projeto` |
+| Escolher ou trocar peca, BOM, codigo LCSC, footprint, datasheet | `pcb-componentes` |
+| Gerar, editar ou revisar esquematico; ERC; netlist | `pcb-esquematico` |
+| Posicionar, rotear (Freerouting nos sinais simples), regras, stack-up, DRC | `pcb-layout` |
+| Gerber, BOM/CPL da JLC, portao de liberacao, pedido | `pcb-fabricacao` |
+
+- **Toolkit unico:** os scripts vivem em `.claude/skills/pcb-projeto/scripts/` (catalogo no
+  `README.md` de la) e as outras quatro apontam para eles. Copie a familia **inteira** para um
+  projeto derivado; uma skill sozinha fica sem os scripts.
+- **Prova mecanica:** nada e declarado pronto sem o `kicad-cli` (ERC e DRC com
+  `--exit-code-violations`, netlist comparada com a spec).
+- **Portoes humanos:** revisao do esquematico antes do layout e liberacao antes do pedido, como
+  notas `type: gate` em `03_Hardware/`. O agente prepara e verifica; quem aprova e uma pessoa.
+- **Dependencia de versao:** dois scripts usam o SWIG `pcbnew`, que sai no KiCad 11.
+
+### Terceiros relacionados (nao instalados)
+
+- `aklofas/kicad-happy` (MIT, 11 skills de analise: revisao, SPICE, EMC, BOM, sourcing). Fica
+  **fora** do template: as descricoes disputam gatilho com a familia (a `bom` diz "ALWAYS
+  trigger") e sao ~100 mil linhas nao revisadas. Quem quiser segunda opiniao antes do portao 2
+  instala no escopo do usuario. Precedencia: para gerar, editar, verificar e liberar, `pcb-*`
+  vence; `kicad-happy` so como revisao extra.
+- MCP de KiCad: ver [[MCPS]], secao 4.1.
+
+Decisao e alternativas em [[decisoes/2026-10-12_skills_pcb_kicad]]. Fichas em
+[[referencias/README|referencias/]], secao "Eletronica e PCB".
+
+## 8. Fontes de frontend — protocolo comum
 
 A arvore da secao 2 escolhe **a estetica**. Ela nao diz de onde vem a evidencia nem o
 codigo. Isso fica num arquivo so, lido pelas quatro skills que produzem interface:
@@ -141,7 +176,7 @@ diferentes — regra na secao 3 do arquivo compartilhado.
 `_shared/` nao e skill (nao tem `SKILL.md`); o hook so lista pastas com `SKILL.md`.
 Decisao em [[decisoes/2026-10-15_fontes_frontend]].
 
-## 8. 3D — precedencia
+## 9. 3D — precedencia
 
 Sete skills. Todas sao **so texto**: nenhuma traz script, servidor ou container. Ficam
 inertes em projeto sem 3D (so a `description` entra no prompt) — custo aceito.

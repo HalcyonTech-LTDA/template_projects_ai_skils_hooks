@@ -88,7 +88,7 @@ Como as skills, este catalogo e **fonte canonica** — correcao comeca aqui.
 
 ## Skills
 
-`.claude/skills/` tem 57 skills. Skill nao custa contexto por sessao (so a `description`
+`.claude/skills/` tem 62 skills. Skill nao custa contexto por sessao (so a `description`
 entra no prompt), mas **colide por gatilho**: mais de 15 delas descrevem design de interface.
 
 `docs_projeto/SKILLS.md` e o catalogo decisorio — arvore de precedencia de qual usar quando,
@@ -104,12 +104,21 @@ Duas regras que valem sempre:
 
 Sete skills de 3D, todas so texto: `3d-web-experience` decide a stack, `three-best-practices`
 ou `r3f-best-practices` implementa, `cad-parametrico` faz peca para fabricar (mm, STEP/STL) e
-as `blender-*` fazem asset e render. Precedencia em `docs_projeto/SKILLS.md` secao 8.
+as `blender-*` fazem asset e render. Precedencia em `docs_projeto/SKILLS.md` secao 9.
 
 Toda tarefa de interface segue `.claude/skills/_shared/fontes-frontend.md`: referencia real
 nomeada antes do codigo (Refero), componente de registry antes de inventado (Arc, Cult UI),
 screenshot ao lado da referencia antes de entregar. As quatro skills de UI apontam para ele;
-ver `docs_projeto/SKILLS.md` secao 7.
+ver `docs_projeto/SKILLS.md` secao 8.
+
+## Hardware: familia `pcb-*`
+
+Cinco skills para projetar placas no KiCad 10, do requisito ao pedido na JLCPCB:
+`pcb-projeto` (porta de entrada, fases e portoes), `pcb-componentes`, `pcb-esquematico`,
+`pcb-layout` e `pcb-fabricacao`. Os scripts ficam todos em `.claude/skills/pcb-projeto/scripts/`
+(stdlib; dois deles rodam no Python do KiCad) — copie a familia inteira. Precedencia e terceiros
+na secao 7 do `docs_projeto/SKILLS.md`; onde cada coisa fica num projeto derivado em
+`docs_projeto/docs_Template_Projeto/03_Hardware/README.md`.
 
 ## Este repositorio e a fonte das skills
 

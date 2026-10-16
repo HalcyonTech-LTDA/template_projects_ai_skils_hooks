@@ -54,4 +54,4 @@ Blender 5, `--python-exit-code 1`, `--factory-startup`). `blender-3d-modeling`, 
 - Varredura por injecao, rede e execucao (`curl`, `subprocess`, `eval`, segredo): limpa
 
 Guarda no topo de cada `SKILL.md` adotado; procedencia no `skills-lock.json`;
-`LICENSE.txt` copiado para cada pasta. Precedencia em [[../SKILLS|SKILLS.md]] secao 8.
+`LICENSE.txt` copiado para cada pasta. Precedencia em [[../SKILLS|SKILLS.md]] secao 9.

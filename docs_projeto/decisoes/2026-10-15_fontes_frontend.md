@@ -27,7 +27,7 @@ tags: [decisao, skills, design, frontend, tema/tooling]
    `obsidian-skills/` (pacote, nao skill) aparecia como skill, e `_shared/` apareceria
 4. Contagem corrigida: **49 skills**. O "50" anterior contava `obsidian-skills/`
 5. Fichas novas: [[../referencias/refero|refero]], [[../referencias/ui-arc|ui-arc]],
-   [[../referencias/cult-ui|cult-ui]]. Secao 7 nova em [[../SKILLS|SKILLS.md]]
+   [[../referencias/cult-ui|cult-ui]]. Secao 8 nova em [[../SKILLS|SKILLS.md]]
 
 ## Por que
 

@@ -33,7 +33,7 @@ Resumos de URLs, bibliotecas, normas ou conceitos citados durante o desenvolvime
 
 ### Frontend — referencia e componentes
 
-Protocolo de uso em `.claude/skills/_shared/fontes-frontend.md`; precedencia em [[../SKILLS|SKILLS.md]] secao 7.
+Protocolo de uso em `.claude/skills/_shared/fontes-frontend.md`; precedencia em [[../SKILLS|SKILLS.md]] secao 8.
 
 - [[refero]] — acervo de telas e fluxos reais. Fonte de pesquisa; MCP pago nao usado
 - [[ui-arc]] — componentes React animados, CSS modules sem Tailwind. Tokens colidem com shadcn
@@ -41,7 +41,7 @@ Protocolo de uso em `.claude/skills/_shared/fontes-frontend.md`; precedencia em 
 
 ### Skills 3D
 
-Precedencia em [[../SKILLS|SKILLS.md]] secao 8; decisao em [[../decisoes/2026-10-15_skills_3d]].
+Precedencia em [[../SKILLS|SKILLS.md]] secao 9; decisao em [[../decisoes/2026-10-15_skills_3d]].
 
 - [[skill3d-three-agent-skills]] — boas praticas Three.js e R3F. **Adotada** (fork de texto)
 - [[skill3d-terminalskills]] — origem das skills Blender. **Adotadas** quatro
@@ -71,3 +71,12 @@ Catalogo decisorio e criterio de escolha em [[../MCPS|MCPS.md]].
 - [[mcp-chrome-devtools]] — performance e rede. Depurar, nao dirigir
 - [[mcp-sentry]] — erro de producao com stack trace no contexto
 - [[mcp-notion]] — base de conhecimento externa
+
+### Eletronica e PCB
+
+Usadas pela familia de skills `pcb-*` (catalogo em [[../SKILLS|SKILLS.md]], secao 7).
+
+- [[kicad-cli-e-formatos]] — `kicad-cli` 10, jobsets, formato S-expression, KLC, `.kicad_dru`
+- [[kicad-mcp-e-skills]] — MCPs de KiCad, skills prontas (`kicad-happy`, circuit-synth) e bibliotecas Python
+- [[componentes-e-fabricacao-pcb]] — JLCPCB/LCSC, Mouser, DigiKey, importacao como PJ, fabricas e lojas no Brasil
+- [[boas-praticas-pcb]] — normas IPC, desacoplamento, aterramento, protecoes, drivers, DFM, checklists

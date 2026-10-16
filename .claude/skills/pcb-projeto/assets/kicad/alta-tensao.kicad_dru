@@ -1,0 +1,25 @@
+(version 1)
+
+# Regras de alta tensao (net class HV). Concatene ao final do <placa>.kicad_dru
+# (o novo_projeto.py --alta-tensao faz isso). O "(version 1)" repetido no meio do arquivo
+# concatenado e aceito pelo KiCad 10.0.0 (testado); sem ele, o arquivo e descartado em silencio.
+#
+# 2,5 mm de clearance e creepage e PONTO DE PARTIDA CONSERVADOR, nao aprovacao.
+# O valor definitivo vem da norma de seguranca do produto (IEC 62368-1 para TI/AV,
+# IEC 60335 para eletrodomestico, IEC 61010 para instrumento), em funcao de tensao de
+# trabalho, grau de poluicao, grupo de material e categoria de sobretensao. A tabela 6-1
+# da IPC-2221 e isolacao funcional e nao serve como distancia de seguranca.
+# Confira na ficha docs_projeto/referencias/boas-praticas-pcb.md antes de liberar e
+# registre o valor adotado na nota de aprovacao de alta tensao.
+
+(rule "hv_clearance"
+	(condition "A.hasNetclass('HV')")
+	(constraint clearance (min 2.5mm)))
+
+(rule "hv_creepage"
+	(condition "A.hasNetclass('HV')")
+	(constraint creepage (min 2.5mm)))
+
+(rule "hv_cobre_borda"
+	(condition "A.hasNetclass('HV')")
+	(constraint edge_clearance (min 2.5mm)))

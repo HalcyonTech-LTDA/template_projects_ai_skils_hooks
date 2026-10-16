@@ -45,6 +45,14 @@ Se voce vai inventar uma property nova, **primeiro adicione nesta pagina** — b
 | `participantes` | list | Atas: presentes |
 | `verificado_por` | list | Requisitos: testes que verificam |
 | `requisitos_cobertos` | list | Testes: requisitos cobertos |
+| `revisores` | list | Gates: pessoas que revisaram e aprovaram. Nunca o agente. O `portao_liberacao.py` exige lista nao vazia |
+| `gate` | enum | Gates de hardware: `esquematico` \| `liberacao` \| `alta-tensao` — o papel da nota; o portao confere |
+| `placa` | string | Hardware: slug da placa (`hardware/<placa>/`) |
+| `revisao` | string | Hardware: letra da revisao da placa (`A`, `B`) |
+| `fabricante` | string | Gate de liberacao: fabrica do pedido (`JLCPCB`) |
+| `tensao_max_v` | number | Gate de alta tensao: maior tensao presente na placa |
+| `norma_seguranca` | string | Gate de alta tensao: norma de onde vem a isolacao (`IEC 62368-1`) |
+| `clearance_mm` / `creepage_mm` | number | Gate de alta tensao: distancias tiradas da norma; o portao passa a exigi-las como minimo da regra `HV` |
 
 ### 1.3 Valores de `type`
 
@@ -67,6 +75,8 @@ Se voce vai inventar uma property nova, **primeiro adicione nesta pagina** — b
 | `procedimento` | Procedimento aplicavel |
 | `convencao` | Pagina de convencao/schema |
 | `referencia` | Referencia externa (norma, paper, datasheet) |
+| `diagrama` | Diagrama de blocos ou de arquitetura (hardware, sistema), com o orcamento que o acompanha |
+| `simulacao` | Simulacao eletronica, termica ou EMC (modelo `Simulacao_Template`) |
 
 ### 1.4 Valores de `status`
 
@@ -178,4 +188,5 @@ IDs sao **imutaveis**. Se uma nota for descontinuada, manter o ID e marcar `stat
 | Data | Mudanca | Motivo |
 |------|---------|--------|
 | 2026-05-28 | Versao inicial do schema | Configuracao inicial do template Obsidian |
+| 2026-10-12 | Tipos `diagrama` e `simulacao`; properties `revisores`, `gate`, `placa`, `revisao`, `fabricante`, `tensao_max_v`, `norma_seguranca`, `clearance_mm`, `creepage_mm` | Familia de skills `pcb-*`: portoes de revisao de hardware (`type: gate`) verificados por script. `simulacao` ja era usado pelo `Simulacao_Template` sem registro |
 | 2026-10-15 | Secao 7: teto de 300 linhas para `CLAUDE.md` e `docs_projeto/`, conferido por hook | Doc longo custa contexto a cada leitura; `MCPS.md` ja estava em 354 |

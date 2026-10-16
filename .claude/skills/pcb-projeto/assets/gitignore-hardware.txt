@@ -1,0 +1,22 @@
+# Projeto KiCad gerado pelo novo_projeto.py (familia pcb-*)
+
+# Saidas de trabalho do exportar_fab.py (regeneraveis; o liberado vai para releases/)
+fab/
+
+# Release interrompida no meio (exportar_fab.py --liberar apaga; se sobrar, nao e release)
+releases/.rev-*-parcial/
+
+# Backups, caches e travas do KiCad
+*-backups/
+fp-info-cache
+_autosave-*
+~*.lck
+\#auto_saved_files#
+
+# Preferencias locais de tela (camadas visiveis, zoom)
+*.kicad_prl
+
+# Intermediarios do Freerouting (rotear.py)
+*.dsn
+*.ses
+freerouting*.log
