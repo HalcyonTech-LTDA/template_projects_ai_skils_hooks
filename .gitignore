@@ -9,3 +9,6 @@ Thumbs.db
 
 # Handoff entre fatias de uma issue (skill /issue). Estado local de trabalho, nunca versionado.
 /.claude/handoff/
+
+# Cache do Python (scripts das skills, ex.: .claude/skills/pcb-projeto/scripts/)
+__pycache__/

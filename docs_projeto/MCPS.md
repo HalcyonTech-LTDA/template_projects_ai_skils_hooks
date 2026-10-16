@@ -3,7 +3,7 @@ title: Catalogo de MCPs para desenvolvimento
 type: convencao
 status: aprovado
 created: 2026-09-06
-updated: 2026-09-27
+updated: 2026-10-12
 project: template_projetos
 tags: [convencao, mcp, ferramentas, claude-code, tema/tooling]
 ---
@@ -236,6 +236,21 @@ Context7 e o de melhor relacao custo/beneficio do catalogo inteiro: 2 tools, e m
 classe de bug em que o modelo inventa uma API que nao existe mais. Se for ligar so um
 opcional, ligue esse.
 
+### 4.1 KiCad (experimental, fora do nucleo)
+
+| | |
+|---|---|
+| **O que faz** | Edita esquematico e placa do KiCad por conversa, com a GUI aberta |
+| **Escopo** | `local` — so na sessao exploratoria, desligar ao terminar |
+| **Custo de contexto** | **Muito alto** — 240+ tools (`mixelpixx/KiCAD-MCP-Server` ~244; `oaslananka/kicad-mcp-pro` ~241, com perfil `minimal`) |
+| **Verificado em** | 2026-10-12 |
+| **Referencia** | [[referencias/kicad-mcp-e-skills]] |
+
+Nao entra no nucleo: sozinho estoura a regra de 3 a 6 servidores da secao 1. A familia de
+skills `pcb-*` faz o mesmo trabalho com `kicad-cli` e scripts proprios, sem custo de contexto
+e com prova pelo ERC/DRC (ver [[SKILLS]], secao 7). Se for testar, prefira o `kicad-mcp-pro`
+(mira o KiCad 10; exige Python 3.13+ via `uvx`) com perfil `minimal`.
+
 ## 5. Nao instale isto
 
 Servidores populares que **duplicam o que o Claude Code ja faz nativamente**, com mais
@@ -352,3 +367,4 @@ desatualizado e pior que ausencia de doc.
 |------|---------|--------|
 | 2026-09-06 | Versao inicial do catalogo (8 no nucleo, 4 opcionais, 6 anti-recomendacoes) | Template nao orientava escolha de MCP; cada projeto derivado improvisava |
 | 2026-09-27 | Figma revalidado: limite de chamadas por plano e seat, `whoami` antes de planejar e escrita no canvas em beta | A ficha dizia "qualquer seat e plano", mas o Starter para em 20 leituras por mes |
+| 2026-10-12 | MCP de KiCad avaliado e registrado como experimental (secao 4.1), fora do nucleo | Pedido de skill de PCB; 240+ tools contrariam a regra de 3 a 6, e a familia `pcb-*` cobre o uso |

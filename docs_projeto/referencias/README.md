@@ -3,7 +3,7 @@ title: Referencias externas
 type: readme
 status: aprovado
 created: 2026-05-28
-updated: 2026-09-07
+updated: 2026-10-12
 tags: [readme, referencias]
 ---
 
@@ -46,3 +46,12 @@ Catalogo decisorio e criterio de escolha em [[../MCPS|MCPS.md]].
 - [[mcp-chrome-devtools]] — performance e rede. Depurar, nao dirigir
 - [[mcp-sentry]] — erro de producao com stack trace no contexto
 - [[mcp-notion]] — base de conhecimento externa
+
+### Eletronica e PCB
+
+Usadas pela familia de skills `pcb-*` (catalogo em [[../SKILLS|SKILLS.md]], secao 7).
+
+- [[kicad-cli-e-formatos]] — `kicad-cli` 10, jobsets, formato S-expression, KLC, `.kicad_dru`
+- [[kicad-mcp-e-skills]] — MCPs de KiCad, skills prontas (`kicad-happy`, circuit-synth) e bibliotecas Python
+- [[componentes-e-fabricacao-pcb]] — JLCPCB/LCSC, Mouser, DigiKey, importacao como PJ, fabricas e lojas no Brasil
+- [[boas-praticas-pcb]] — normas IPC, desacoplamento, aterramento, protecoes, drivers, DFM, checklists

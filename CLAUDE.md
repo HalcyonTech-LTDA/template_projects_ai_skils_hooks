@@ -78,7 +78,7 @@ Como as skills, este catalogo e **fonte canonica** — correcao comeca aqui.
 
 ## Skills
 
-`.claude/skills/` tem 50 skills. Skill nao custa contexto por sessao (so a `description`
+`.claude/skills/` tem 55 skills. Skill nao custa contexto por sessao (so a `description`
 entra no prompt), mas **colide por gatilho**: mais de 15 delas descrevem design de interface.
 
 `docs_projeto/SKILLS.md` e o catalogo decisorio — arvore de precedencia de qual usar quando,
@@ -90,6 +90,15 @@ Duas regras que valem sempre:
   produzem output incoerente.
 - **Nao rode `npx skills update`.** As 13 skills de `Leonxlnx/taste-skill` sao fork proprio;
   `skills-lock.json` e registro de procedencia, nao mecanismo de atualizacao.
+
+## Hardware: familia `pcb-*`
+
+Cinco skills para projetar placas no KiCad 10, do requisito ao pedido na JLCPCB:
+`pcb-projeto` (porta de entrada, fases e portoes), `pcb-componentes`, `pcb-esquematico`,
+`pcb-layout` e `pcb-fabricacao`. Os scripts ficam todos em `.claude/skills/pcb-projeto/scripts/`
+(stdlib; dois deles rodam no Python do KiCad) — copie a familia inteira. Precedencia e terceiros
+na secao 7 do `docs_projeto/SKILLS.md`; onde cada coisa fica num projeto derivado em
+`docs_projeto/docs_Template_Projeto/03_Hardware/README.md`.
 
 ## Este repositorio e a fonte das skills
 

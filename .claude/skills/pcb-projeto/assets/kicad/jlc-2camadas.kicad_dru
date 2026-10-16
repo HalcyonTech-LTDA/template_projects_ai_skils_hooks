@@ -1,0 +1,71 @@
+(version 1)
+
+# Regras de fabricacao JLCPCB - placa de 2 camadas, cobre externo 1 oz.
+# Fonte: https://jlcpcb.com/capabilities/pcb-capabilities (verificada em 2026-10-12;
+# resumo em docs_projeto/referencias/componentes-e-fabricacao-pcb.md, secao 1.4).
+# Os valores abaixo tem FOLGA sobre o minimo da JLC. Minimos da JLC na data: trilha/espaco
+# 0,10/0,10 mm em 2 camadas; via furo 0,15 / diametro 0,25 mm; via-trilha 0,2 mm; furo a furo 0,2 mm;
+# cobre a borda 0,2 mm (fresado) ou 0,4 mm (V-cut); NPTH 0,5 mm; serigrafia texto 1,0 mm e
+# traco 0,15 mm. Folga = rendimento melhor, sem taxa extra. Apertar so com motivo registrado
+# na revisao do layout.
+# Copie para <placa>.kicad_dru (o novo_projeto.py faz isso). O KiCad le um unico .kicad_dru
+# por projeto, com o mesmo nome do .kicad_pro.
+
+(rule "jlc_trilha_minima"
+	(constraint track_width (min 0.15mm)))
+
+(rule "jlc_espaco_minimo"
+	(constraint clearance (min 0.15mm)))
+
+(rule "jlc_via_trilha"
+	(condition "(A.Type == 'Via' && B.Type == 'Track') || (A.Type == 'Track' && B.Type == 'Via')")
+	(constraint clearance (min 0.2mm)))
+
+(rule "jlc_furo_minimo"
+	(constraint hole_size (min 0.3mm)))
+
+(rule "jlc_npth_minimo"
+	(condition "A.Type == 'Pad' && A.Pad_Type == 'NPTH, mechanical'")
+	(constraint hole_size (min 0.5mm)))
+
+# Excecao: vias termicas de pad dissipador DENTRO de footprint de biblioteca (ex.: ESP32-S3-WROOM-1,
+# furo 0,2 mm). A JLC fura ate 0,15 mm; abaixo de 0,3 mm pode haver custo extra - confira no pedido.
+# Vem depois da regra geral de furo (no .kicad_dru a regra mais especifica fica depois).
+(rule "jlc_furo_via_termica_footprint"
+	(condition "A.Type == 'Pad' && A.Fabrication_Property == 'Heatsink pad'")
+	(constraint hole_size (min 0.2mm)))
+
+(rule "jlc_via_diametro"
+	(condition "A.Type == 'Via'")
+	(constraint via_diameter (min 0.6mm)))
+
+(rule "jlc_via_anel"
+	(condition "A.Type == 'Via'")
+	(constraint annular_width (min 0.1mm)))
+
+# Anel de furo de componente (pad PTH): a JLC recomenda 0,25 mm e tem minimo absoluto de 0,18 mm.
+(rule "jlc_pth_anel"
+	(condition "A.Type == 'Pad' && A.Pad_Type == 'Through-hole'")
+	(constraint annular_width (min 0.18mm)))
+
+(rule "jlc_cobre_borda"
+	(constraint edge_clearance (min 0.3mm)))
+
+(rule "jlc_furo_a_furo"
+	(constraint hole_to_hole (min 0.25mm)))
+
+(rule "jlc_furo_a_cobre"
+	(constraint hole_clearance (min 0.25mm)))
+
+# Serigrafia: a JLC pede altura de texto >= 1,0 mm e traco >= 0,15 mm. Aviso, nao erro.
+(rule "jlc_serigrafia_texto"
+	(layer "F.SilkS")
+	(severity warning)
+	(constraint text_height (min 1.0mm))
+	(constraint text_thickness (min 0.15mm)))
+
+(rule "jlc_serigrafia_texto_verso"
+	(layer "B.SilkS")
+	(severity warning)
+	(constraint text_height (min 1.0mm))
+	(constraint text_thickness (min 0.15mm)))

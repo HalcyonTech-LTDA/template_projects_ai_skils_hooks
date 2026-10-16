@@ -3,14 +3,14 @@ title: Catalogo de skills e precedencia de design
 type: convencao
 status: aprovado
 created: 2026-09-07
-updated: 2026-10-10
+updated: 2026-10-12
 project: template_projetos
 tags: [convencao, skills, design, claude-code, tema/tooling]
 ---
 
 # Catalogo de skills e precedencia de design
 
-Este repositorio carrega **50 skills** em `.claude/skills/`. Diferente dos MCPs, skill
+Este repositorio carrega **55 skills** em `.claude/skills/`. Diferente dos MCPs, skill
 nao custa contexto por sessao: so a `description` de cada uma entra no prompt, e o corpo
 so e lido quando a skill dispara. O custo real e outro — **colisao de gatilho**: com 20+
 skills descrevendo "design de interface", o modelo escolhe uma diferente a cada sessao e
@@ -97,3 +97,38 @@ no upstream, hash do conteudo instalado) — nao como mecanismo de atualizacao. 
 mudanca do upstream, faca deliberadamente: leia o diff, decida, e propague por copia.
 
 Ficha da referencia em [[referencias/skills-taste-leonxlnx]].
+
+## 7. Eletronica e PCB: a familia `pcb-*`
+
+Cinco skills proprias (nao vem de terceiros) para projetar placas no **KiCad 10**, do
+requisito ao pedido na JLCPCB. Diferente das esteticas, elas **acumulam**: cada uma cobre uma
+fase, e a `pcb-projeto` e a porta de entrada.
+
+| Se a tarefa e... | Use |
+|---|---|
+| Placa nova, mudanca que atravessa fases, ou nao esta claro por onde comecar | `pcb-projeto` |
+| Escolher ou trocar peca, BOM, codigo LCSC, footprint, datasheet | `pcb-componentes` |
+| Gerar, editar ou revisar esquematico; ERC; netlist | `pcb-esquematico` |
+| Posicionar, rotear (Freerouting nos sinais simples), regras, stack-up, DRC | `pcb-layout` |
+| Gerber, BOM/CPL da JLC, portao de liberacao, pedido | `pcb-fabricacao` |
+
+- **Toolkit unico:** os scripts vivem em `.claude/skills/pcb-projeto/scripts/` (catalogo no
+  `README.md` de la) e as outras quatro apontam para eles. Copie a familia **inteira** para um
+  projeto derivado; uma skill sozinha fica sem os scripts.
+- **Prova mecanica:** nada e declarado pronto sem o `kicad-cli` (ERC e DRC com
+  `--exit-code-violations`, netlist comparada com a spec).
+- **Portoes humanos:** revisao do esquematico antes do layout e liberacao antes do pedido, como
+  notas `type: gate` em `03_Hardware/`. O agente prepara e verifica; quem aprova e uma pessoa.
+- **Dependencia de versao:** dois scripts usam o SWIG `pcbnew`, que sai no KiCad 11.
+
+### Terceiros relacionados (nao instalados)
+
+- `aklofas/kicad-happy` (MIT, 11 skills de analise: revisao, SPICE, EMC, BOM, sourcing). Fica
+  **fora** do template: as descricoes disputam gatilho com a familia (a `bom` diz "ALWAYS
+  trigger") e sao ~100 mil linhas nao revisadas. Quem quiser segunda opiniao antes do portao 2
+  instala no escopo do usuario. Precedencia: para gerar, editar, verificar e liberar, `pcb-*`
+  vence; `kicad-happy` so como revisao extra.
+- MCP de KiCad: ver [[MCPS]], secao 4.1.
+
+Decisao e alternativas em [[decisoes/2026-10-12_skills_pcb_kicad]]. Fichas em
+[[referencias/README|referencias/]], secao "Eletronica e PCB".

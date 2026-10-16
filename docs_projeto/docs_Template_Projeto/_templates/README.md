@@ -3,7 +3,7 @@ title: Templates
 area: _templates
 tags: [templates, convencoes]
 created: 2026-05-28
-updated: 2026-05-28
+updated: 2026-10-12
 project: _Template_Projeto
 type: readme
 status: aprovado
@@ -23,6 +23,13 @@ Notas-molde usadas pelo core plugin **Templates** do Obsidian. Inserir com `Ctrl
 | [[Ata_Template]] | `ATA-YYYYMMDD` | 01_Gestao | Ata de reuniao com decisoes e action items |
 | [[Bug_Template]] | `BUG-XXX` | 06_Testes_Validacao | Registro de defeito com passos para reproduzir |
 | [[Release_Template]] | `REL-vX.Y.Z` | 04_Firmware | Release notes versionadas |
+
+### Notas de hardware (fora desta pasta)
+
+As notas de placa — diagrama de blocos, revisao do esquematico (portao 1), liberacao para
+fabricacao (portao 2), bring-up e aprovacao de alta tensao — **nao** ficam aqui. Elas vem da skill
+`pcb-projeto` (`.claude/skills/pcb-projeto/assets/docs/` e `assets/opcionais/`) e sao copiadas ja
+preenchidas com placa, revisao e data pelo `novo_projeto.py --docs`. Uma fonte so: corrija la.
 
 ## Convencao para criar novos templates
 
