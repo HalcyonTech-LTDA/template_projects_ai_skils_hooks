@@ -39,6 +39,19 @@ Protocolo de uso em `.claude/skills/_shared/fontes-frontend.md`; precedencia em 
 - [[ui-arc]] — componentes React animados, CSS modules sem Tailwind. Tokens colidem com shadcn
 - [[cult-ui]] — registry shadcn com ilustracoes; Pro virou gratis. Tem lista de vetados
 
+### Skills 3D
+
+Precedencia em [[../SKILLS|SKILLS.md]] secao 8; decisao em [[../decisoes/2026-10-15_skills_3d]].
+
+- [[skill3d-three-agent-skills]] — boas praticas Three.js e R3F. **Adotada** (fork de texto)
+- [[skill3d-terminalskills]] — origem das skills Blender. **Adotadas** quatro
+- [[skill3d-dominations]] — jogo 2D; so mapa para achar as skills Blender
+- [[skill3d-anatomy]] — figura isometrica SVG; fora (depende do `kit/` Node + Chrome)
+- [[skill3d-cad-agent]] — servidor CAD em Docker; fora (exec remoto sem auth, PolyForm)
+- [[skill3d-atlas-agent-teams]] — plugin de times de agentes; fora (duplica agentes)
+- [[skill3d-claude-skill-registry]] — indice de skills; fonte de busca, nao de instalacao
+- [[skill3d-code-buddy]] — outro agente, sem 3D, BUSL-1.1
+
 ### Servidores MCP — nucleo
 
 Catalogo decisorio e criterio de escolha em [[../MCPS|MCPS.md]].

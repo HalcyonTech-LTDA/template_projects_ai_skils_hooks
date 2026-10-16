@@ -1,14 +1,17 @@
 # Hooks do projeto
 
-Este repositorio versiona um hook `UserPromptSubmit` que injeta seis regras
-obrigatorias em cada mensagem do usuario para o Claude Code.
+Este repositorio versiona dois hooks:
+
+- `UserPromptSubmit` — injeta seis regras obrigatorias em cada mensagem do usuario.
+- `PostToolUse` — depois de todo Write/Edit, confere o teto de 300 linhas da documentacao.
 
 ## Arquivos
 
 | Caminho | Papel |
 |---|---|
-| `.claude/settings.json` | Registra o hook, versionado no git |
+| `.claude/settings.json` | Registra os hooks, versionado no git |
 | `.claude/hooks/inject-rules.js` | Script Node cross-platform que monta o lembrete |
+| `.claude/hooks/limit-doc-lines.js` | Script Node que confere o teto de linhas dos docs |
 | `.claude/settings.local.json` | Configuracoes pessoais, **ignoradas pelo git** |
 
 ## Regras injetadas
@@ -46,13 +49,33 @@ Quando o usuario cita URL, biblioteca ou conceito que o Claude nao domina, ele
 ingere via defuddle/WebFetch e salva um resumo em
 `docs_projeto/referencias/<slug>.md` antes de prosseguir.
 
+## Teto de linhas da documentacao (PostToolUse)
+
+`CLAUDE.md` e todo `.md` de `docs_projeto/` tem no maximo **300 linhas** (regra em
+[[CONVENCOES|CONVENCOES.md]] secao 7). O hook roda com matcher `Write|Edit`, le o
+`file_path` do payload e:
+
+- arquivo fora do escopo, ou dentro do teto → sai com 0, silencioso;
+- arquivo no escopo acima de 300 linhas → escreve no stderr qual arquivo e quantas
+  linhas, e sai com **codigo 2**. A escrita ja aconteceu; o codigo 2 devolve a mensagem
+  ao Claude, que deve dividir o arquivo antes de seguir.
+
+Foi escolhido `PostToolUse` e nao `PreToolUse` porque dividir um arquivo exige escrever
+um pedaco de cada vez: bloquear a escrita travaria a propria correcao. E foi escolhido
+hook e nao uma setima regra no `inject-rules.js` porque a regra textual custa contexto
+em todo prompt e nao confere nada.
+
+Skills e agentes ficam fora: muitas skills sao fork de terceiros com centenas de linhas.
+
 ## Como testar localmente
 
 ```powershell
 echo "{}" | node .claude/hooks/inject-rules.js
+node .claude/hooks/limit-doc-lines.js --all
 ```
 
-A saida e o bloco de regras que sera injetado em cada turno.
+A primeira saida e o bloco de regras injetado em cada turno. A segunda lista os docs
+acima do teto (codigo 1) ou confirma que nenhum passou (codigo 0).
 
 ## Como desativar temporariamente
 

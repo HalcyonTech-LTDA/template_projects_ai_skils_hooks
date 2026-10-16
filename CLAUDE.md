@@ -24,6 +24,14 @@ echo "{}" | node .claude/hooks/inject-rules.js
 
 Detalhes completos em `docs_projeto/HOOKS.md`.
 
+## Teto de 300 linhas na documentacao
+
+`CLAUDE.md` e todo `.md` de `docs_projeto/` tem **no maximo 300 linhas**. Passou, divida:
+secao mais autonoma vai para arquivo irmao, resumo com link fica no lugar. Um hook
+`PostToolUse` (`.claude/hooks/limit-doc-lines.js`) confere depois de todo Write/Edit e
+devolve o erro na hora. Skills e agentes ficam fora. Regra em `docs_projeto/CONVENCOES.md`
+secao 7; varredura completa com `node .claude/hooks/limit-doc-lines.js --all`.
+
 ## Skills de fluxo
 
 Quatro skills governam como o trabalho entra no repositorio:
@@ -61,8 +69,9 @@ Como as skills, os agentes e o `AGENTES.md` sao **fonte canonica** — correcao 
 ## MCPs
 
 `docs_projeto/MCPS.md` e o catalogo curado de servidores MCP para projetos derivados:
-nucleo, opcionais, anti-lista, politica de segredo e de escopo. Ficha tecnica de cada
-servidor em `docs_projeto/referencias/mcp-*.md`.
+nucleo, opcionais, anti-lista, politica de segredo e de escopo. Fichas do nucleo (comando,
+credencial, limites) em `docs_projeto/MCPS_NUCLEO.md`; ficha tecnica de cada servidor em
+`docs_projeto/referencias/mcp-*.md`.
 
 Duas regras que valem antes de ligar qualquer coisa:
 
@@ -79,7 +88,7 @@ Como as skills, este catalogo e **fonte canonica** — correcao comeca aqui.
 
 ## Skills
 
-`.claude/skills/` tem 50 skills. Skill nao custa contexto por sessao (so a `description`
+`.claude/skills/` tem 57 skills. Skill nao custa contexto por sessao (so a `description`
 entra no prompt), mas **colide por gatilho**: mais de 15 delas descrevem design de interface.
 
 `docs_projeto/SKILLS.md` e o catalogo decisorio — arvore de precedencia de qual usar quando,
@@ -89,8 +98,13 @@ Duas regras que valem sempre:
 
 - **Uma skill estetica por tarefa.** `minimalist-ui` e `industrial-brutalist-ui` juntas
   produzem output incoerente.
-- **Nao rode `npx skills update`.** As 13 skills de `Leonxlnx/taste-skill` sao fork proprio;
-  `skills-lock.json` e registro de procedencia, nao mecanismo de atualizacao.
+- **Nao rode `npx skills update`.** As 13 skills de `Leonxlnx/taste-skill` e as 6 skills 3D de
+  terceiros sao fork proprio; `skills-lock.json` e registro de procedencia, nao mecanismo de
+  atualizacao.
+
+Sete skills de 3D, todas so texto: `3d-web-experience` decide a stack, `three-best-practices`
+ou `r3f-best-practices` implementa, `cad-parametrico` faz peca para fabricar (mm, STEP/STL) e
+as `blender-*` fazem asset e render. Precedencia em `docs_projeto/SKILLS.md` secao 8.
 
 Toda tarefa de interface segue `.claude/skills/_shared/fontes-frontend.md`: referencia real
 nomeada antes do codigo (Refero), componente de registry antes de inventado (Arc, Cult UI),
@@ -107,6 +121,7 @@ tarefa, ou ela se perde no proximo projeto criado.
 ## Estrutura
 
 - `.claude/settings.json` — versionado, hooks publicos
+- `.claude/hooks/` — `inject-rules.js` (regras por prompt) e `limit-doc-lines.js` (teto de 300 linhas)
 - `.claude/settings.local.json` — ignorado pelo git, config pessoal e bloco `env` com segredos
 - `.mcp.json.example` — nucleo de MCPs comentado; copiar para `.mcp.json` e podar
 - `.claude/skills/` — skills locais do projeto (fonte canonica)

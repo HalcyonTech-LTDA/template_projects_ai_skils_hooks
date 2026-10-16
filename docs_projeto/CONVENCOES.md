@@ -3,7 +3,7 @@ title: Convencoes da Documentacao
 type: convencao
 status: aprovado
 created: 2026-05-28
-updated: 2026-05-28
+updated: 2026-10-15
 tags: [convencao, schema, properties, naming, tags]
 ---
 
@@ -143,21 +143,39 @@ IDs sao **imutaveis**. Se uma nota for descontinuada, manter o ID e marcar `stat
 - `updated` atualiza a cada edicao significativa (nao a cada salvar).
 - `date` (quando existe) e a data do evento factual (reuniao, teste, decisao).
 
-## 7. Como evoluir este schema
+## 7. Tamanho maximo: 300 linhas
+
+`CLAUDE.md` e todo `.md` dentro de `docs_projeto/` (inclusive `referencias/`, `decisoes/` e
+`docs_Template_Projeto/`) tem **no maximo 300 linhas**. Sem excecao.
+
+- **Por que**: `CLAUDE.md` entra no contexto de toda sessao, e os docs sao lidos inteiros
+  pelo Claude quando consultados. Arquivo longo custa contexto e esconde a regra que importa.
+- **Como dividir**: mova a secao mais autonoma para um arquivo irmao (`NOME_PARTE.md`),
+  deixe no original um resumo com link e atualize quem apontava para a secao movida.
+  Exemplo: `MCPS.md` → `MCPS_NUCLEO.md`.
+- **Quem confere**: o hook `PostToolUse` `.claude/hooks/limit-doc-lines.js` roda depois de
+  todo Write/Edit e, se o arquivo passou do teto, devolve o erro ao Claude para dividir na
+  hora (ver [[HOOKS|HOOKS.md]]). Para varrer o repositorio inteiro:
+  `node .claude/hooks/limit-doc-lines.js --all`.
+- **Fora do escopo**: skills em `.claude/skills/` e agentes em `.claude/agents/` — muitas
+  sao fork de terceiros e seguem o limite da propria origem.
+
+## 8. Como evoluir este schema
 
 1. Editar este arquivo com a mudanca.
-2. Documentar em [[#9-changelog|changelog]] abaixo (data + o que mudou + motivo).
+2. Documentar em [[#10-changelog|changelog]] abaixo (data + o que mudou + motivo).
 3. Atualizar templates afetados em [[docs_Template_Projeto/_templates/README]].
 4. Atualizar bases afetadas em [[_views/]].
 
-## 8. Referencias
+## 9. Referencias
 
 - [[HOWTO|HOWTO.md]] — como clonar e usar este template
 - [[docs_Template_Projeto/Home|Home do template]]
 - [[docs_Template_Projeto/_templates/README|Templates disponiveis]]
 
-## 9. Changelog
+## 10. Changelog
 
 | Data | Mudanca | Motivo |
 |------|---------|--------|
 | 2026-05-28 | Versao inicial do schema | Configuracao inicial do template Obsidian |
+| 2026-10-15 | Secao 7: teto de 300 linhas para `CLAUDE.md` e `docs_projeto/`, conferido por hook | Doc longo custa contexto a cada leitura; `MCPS.md` ja estava em 354 |

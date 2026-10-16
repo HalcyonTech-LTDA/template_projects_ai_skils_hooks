@@ -78,6 +78,60 @@
       "sourceType": "github",
       "skillPath": "skills/stitch-skill/SKILL.md",
       "computedHash": "c96b580192b34167efa01f460bbc669ff4315cf97f3cf6ff85ded8029aa720b8"
+    },
+    "three-best-practices": {
+      "source": "emalorenzo/three-agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/three-best-practices/SKILL.md",
+      "sourceCommit": "f950f95ae3b13581546e6d6d8b2f88a08eb3e577",
+      "upstreamSha256": "a2acf41848ac6370cdd86008d885721bf618f5d27c19c1c3a86d38713f8e9b78",
+      "license": "MIT (package.json; repo sem arquivo LICENSE)",
+      "forkChanges": "bloco de guardas apos o frontmatter; rules/ copiado sem alteracao"
+    },
+    "r3f-best-practices": {
+      "source": "emalorenzo/three-agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/r3f-best-practices/SKILL.md",
+      "sourceCommit": "f950f95ae3b13581546e6d6d8b2f88a08eb3e577",
+      "upstreamSha256": "9962ab62194f30758bfe65b2f6cb83e385e49e8a648ea52c209612a9e544d65d",
+      "license": "MIT (package.json; repo sem arquivo LICENSE)",
+      "forkChanges": "bloco de guardas apos o frontmatter; rules/ copiado sem alteracao"
+    },
+    "blender-scripting": {
+      "source": "TerminalSkills/skills",
+      "sourceType": "github",
+      "skillPath": "skills/blender-scripting/SKILL.md",
+      "sourceCommit": "6edcf94159d9f46b0759d2e1b59dd545cfaca254",
+      "upstreamSha256": "65825ff433f69e773d9d1cc318f1628791071a0078a625b618d413cd73952eb4",
+      "license": "Apache-2.0",
+      "forkChanges": "bloco de guardas apos o frontmatter; description exclui peca de fabricacao (cad-parametrico)"
+    },
+    "blender-render-automation": {
+      "source": "TerminalSkills/skills",
+      "sourceType": "github",
+      "skillPath": "skills/blender-render-automation/SKILL.md",
+      "sourceCommit": "6edcf94159d9f46b0759d2e1b59dd545cfaca254",
+      "upstreamSha256": "6b17351e4c97e244e2a9b2fa3fe03cb768a469a2c76ebe3de46bff666328fbbe",
+      "license": "Apache-2.0",
+      "forkChanges": "bloco de guardas apos o frontmatter"
+    },
+    "blender-animation": {
+      "source": "TerminalSkills/skills",
+      "sourceType": "github",
+      "skillPath": "skills/blender-animation/SKILL.md",
+      "sourceCommit": "6edcf94159d9f46b0759d2e1b59dd545cfaca254",
+      "upstreamSha256": "e83349a5344b2f5ba005056017811ff0d4c7b06a25a49e4022cfd9ca13dade99",
+      "license": "Apache-2.0",
+      "forkChanges": "bloco de guardas apos o frontmatter"
+    },
+    "blender-compositing": {
+      "source": "TerminalSkills/skills",
+      "sourceType": "github",
+      "skillPath": "skills/blender-compositing/SKILL.md",
+      "sourceCommit": "6edcf94159d9f46b0759d2e1b59dd545cfaca254",
+      "upstreamSha256": "430f99f2ea10dc6a86b324a579b273cb1d16ac17c89aa5b3d26671236637cf09",
+      "license": "Apache-2.0",
+      "forkChanges": "bloco de guardas apos o frontmatter"
     }
   }
 }

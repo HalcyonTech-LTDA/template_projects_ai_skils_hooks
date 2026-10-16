@@ -10,7 +10,7 @@ tags: [convencao, skills, design, claude-code, tema/tooling]
 
 # Catalogo de skills e precedencia de design
 
-Este repositorio carrega **49 skills** em `.claude/skills/` (mais `obsidian-skills/`, que e
+Este repositorio carrega **57 skills** em `.claude/skills/` (mais `obsidian-skills/`, que e
 pacote e nao skill, e `_shared/`, que guarda texto comum a varias skills). Diferente dos MCPs, skill
 nao custa contexto por sessao: so a `description` de cada uma entra no prompt, e o corpo
 so e lido quando a skill dispara. O custo real e outro — **colisao de gatilho**: com 20+
@@ -45,7 +45,7 @@ Leia de cima para baixo; para na primeira que casar.
 | Componente isolado ou artifact claude.ai | `frontend-design` + `artifacts-builder` | Skills de landing page trazem estrutura de pagina inteira que sobra aqui |
 | Tokens, escala tipografica, handoff para dev | `ui-design-system` | Ortogonal — pode combinar com a estetica escolhida |
 | App mobile (RN / nativo) | `mobile-design` | As taste-skills sao web-first |
-| Cena 3D / WebGL | `3d-web-experience` | — |
+| Qualquer coisa 3D (cena web, peca, Blender) | ver secao 8 | Sete skills 3D com gatilhos que se sobrepoem |
 | Texto de venda, headline, CTA | `copywriting` | — |
 
 ## 3. Skills que exigem gerador de imagem — inertes hoje
@@ -101,6 +101,10 @@ mudanca do upstream, faca deliberadamente: leia o diff, decida, e propague por c
 
 Ficha da referencia em [[referencias/skills-taste-leonxlnx]].
 
+A mesma politica vale para as 6 skills 3D de terceiros (secao 8): `three-best-practices` e
+`r3f-best-practices` (`emalorenzo/three-agent-skills`) e as quatro `blender-*`
+(`TerminalSkills/skills`). Commit de origem e sha256 do upstream no `skills-lock.json`.
+
 ## 7. Fontes de frontend — protocolo comum
 
 A arvore da secao 2 escolhe **a estetica**. Ela nao diz de onde vem a evidencia nem o
@@ -136,3 +140,41 @@ diferentes — regra na secao 3 do arquivo compartilhado.
 
 `_shared/` nao e skill (nao tem `SKILL.md`); o hook so lista pastas com `SKILL.md`.
 Decisao em [[decisoes/2026-10-15_fontes_frontend]].
+
+## 8. 3D — precedencia
+
+Sete skills. Todas sao **so texto**: nenhuma traz script, servidor ou container. Ficam
+inertes em projeto sem 3D (so a `description` entra no prompt) — custo aceito.
+
+| Se a tarefa e... | Use | Acumula com |
+|---|---|---|
+| Decidir **se** o site tem 3D e com qual stack (Spline, R3F, three puro) | `3d-web-experience` | a de implementacao abaixo |
+| Implementar ou revisar cena **Three.js puro** (import maps, WebGPU, TSL) | `three-best-practices` | `3d-web-experience` |
+| Implementar ou revisar cena em **React** (`@react-three/*`) | `r3f-best-practices` | `3d-web-experience` |
+| **Peca para fabricar**: gabinete, suporte, cota em mm, STEP/STL/3MF | `cad-parametrico` | nada 3D |
+| Asset, cena, render ou animacao **no Blender** via `bpy` | `blender-scripting` | `blender-render-automation`, `-animation`, `-compositing` |
+| Figura isometrica explicativa para docs | **nenhuma instalada** | ver abaixo |
+
+Exclusoes:
+
+- **`three-best-practices` x `r3f-best-practices`**: uma por projeto, pela stack do
+  `package.json`. R3F ja encapsula o loop e o dispose que a outra ensina a fazer a mao
+- **`cad-parametrico` x `blender-*`**: a pergunta e "vai ser fabricado?". Sim → CAD (mm,
+  STEP, folga de encaixe). Nao → Blender (metro, malha, render). A `description` das duas
+  ja exclui a outra
+- Skill 3D nao e direcao de arte: cena 3D numa landing page usa **tambem** uma estetica da
+  secao 2, e a regra de uma estetica por tarefa continua valendo
+
+Guardas do fork (bloco logo abaixo do frontmatter de cada uma): `three`/R3F conferem a
+versao no `package.json` antes de aplicar regra de API 0.182+; Blender comeca cena nova com
+`read_factory_settings(use_empty=True)`, nunca sobrescreve o `.blend` de entrada e nao usa
+`/tmp` fixo.
+
+**`anatomy` ficou de fora.** O produto dela e o `kit/` em Node mais checagem no Chrome, e o
+`publish.mjs` usa rede — contradiz "so texto". E a `description` disputa gatilho com as
+esteticas ("landing page", "even if they never say isometric"). Se entrar, entra com o
+`kit/` auditado e com a regra: **so figura de documentacao, nunca UI de produto**.
+
+Fichas: [[referencias/skill3d-three-agent-skills]], [[referencias/skill3d-terminalskills]],
+[[referencias/skill3d-anatomy]], [[referencias/skill3d-cad-agent]]. Decisao em
+[[decisoes/2026-10-15_skills_3d]].

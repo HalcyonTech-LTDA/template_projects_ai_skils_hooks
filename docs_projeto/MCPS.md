@@ -3,7 +3,7 @@ title: Catalogo de MCPs para desenvolvimento
 type: convencao
 status: aprovado
 created: 2026-09-06
-updated: 2026-09-27
+updated: 2026-10-15
 project: template_projetos
 tags: [convencao, mcp, ferramentas, claude-code, tema/tooling]
 ---
@@ -11,8 +11,8 @@ tags: [convencao, mcp, ferramentas, claude-code, tema/tooling]
 # Catalogo de MCPs para desenvolvimento
 
 Quais servidores MCP ligar num projeto derivado deste template, **quando ligar cada um
-e quando desligar**. Cada ficha traz comando copiavel, escopo recomendado, custo de
-contexto e data de verificacao.
+e quando desligar**. As fichas do nucleo, com comando copiavel, escopo recomendado,
+custo de contexto e data de verificacao, estao em [[MCPS_NUCLEO|MCPS_NUCLEO.md]].
 
 Detalhe tecnico de cada servidor vive em [[referencias/README|referencias/]] — um arquivo
 por MCP. Este documento e o **indice decisorio**; as referencias sao a fonte ingerida.
@@ -49,179 +49,19 @@ descartaveis: ligue no inicio da tarefa, desligue quando ela acabar.
 
 ## 3. Nucleo
 
-### 3.1 GitHub
+Comando de instalacao, credencial, limites e armadilhas de cada um estao em
+[[MCPS_NUCLEO|MCPS_NUCLEO.md]]. Aqui fica so o que serve para decidir.
 
-| | |
-|---|---|
-| **O que faz** | PRs, issues, code search, releases, Actions, branches |
-| **Escopo** | `user` — transversal, serve todo projeto |
-| **Custo de contexto** | **Alto** — ~50 tools no conjunto padrao, 100+ com `all` |
-| **Credencial** | OAuth no primeiro uso (`/mcp`), sem token em disco |
-| **Verificado em** | 2026-09-06 |
-| **Referencia** | [[referencias/mcp-github]] |
-
-```bash
-claude mcp add -s user -t http github https://api.githubcopilot.com/mcp/
-```
-
-- **Ligue** quando o trabalho toca PR, issue, review ou busca cross-repo.
-- **Desligue** se voce so mexe em codigo local — `gh` no Bash resolve o caso simples por
-  uma fracao do contexto.
-- **Corte o custo** limitando toolsets pelo header em vez de carregar tudo:
-  `-H "X-MCP-Toolsets: repos,issues,pull_requests"`.
-
-### 3.2 Figma
-
-| | |
-|---|---|
-| **O que faz** | Extrai codigo, variaveis, tokens e specs do frame selecionado |
-| **Escopo** | `project` — so faz sentido em projeto com design |
-| **Custo de contexto** | **Baixo** — punhado de tools |
-| **Credencial** | Remoto: OAuth. Desktop: nenhuma, mas exige seat Dev/Full em plano pago |
-| **Limite** | Leituras: Starter 20/mes; View/Collab pago 6/mes; Dev/Full pago de 200/dia (Pro) a 600/dia (Enterprise) |
-| **Verificado em** | 2026-09-27 |
-| **Referencia** | [[referencias/mcp-figma]] |
-
-```bash
-# Remoto (preferido — qualquer seat e plano, mas veja o limite)
-claude mcp add -s project -t http figma https://mcp.figma.com/mcp
-
-# Desktop (alternativa; exige app Figma aberto em Dev Mode com o servidor ligado)
-claude mcp add -s project -t http figma-desktop http://127.0.0.1:3845/mcp
-```
-
-- **Antes de planejar** um ciclo de design para codigo, rode a tool `whoami`, que nao gasta
-  chamada. No Starter, 20 leituras por mes nao sustentam o ciclo.
-- **Ligue** ao implementar tela a partir de design.
-- **Desligue** depois que a tela saiu do Figma — ele nao ajuda em logica de negocio.
-- **Casa com** as skills `frontend-design`, `ui-ux-pro-max` e `ui-design-system` do repo.
-- **Armadilha**: o servidor desktop morre junto com o app Figma. Se as tools somem do
-  `/mcp`, o Figma fechou.
-
-### 3.3 mobile-next (mobile-mcp)
-
-| | |
-|---|---|
-| **O que faz** | Dirige simulador, emulador e device fisico iOS/Android pela arvore de acessibilidade |
-| **Escopo** | `project` — inutil fora de projeto mobile |
-| **Custo de contexto** | **Medio-alto** — ~30 tools |
-| **Credencial** | Nenhuma (local) |
-| **Verificado em** | 2026-09-06 |
-| **Referencia** | [[referencias/mcp-mobile-next]] |
-
-```bash
-claude mcp add -s project -t stdio mobile -- npx -y @mobilenext/mobile-mcp@latest
-```
-
-- **Pre-requisitos**: Node 20+, Android Platform Tools (`adb`) e/ou Xcode command line
-  tools. **No Windows so ha caminho Android** — simulador iOS exige macOS.
-- **Ligue** para testar fluxo em device, reproduzir bug, validar navegacao.
-- **Desligue** ao voltar para logica pura — 30 tools paradas custam caro.
-- **Vantagem real**: usa a arvore de acessibilidade, nao visao. Sem token de imagem.
-
-### 3.4 Playwright (teste de aplicacao web)
-
-| | |
-|---|---|
-| **O que faz** | Dirige Chromium, Firefox e WebKit; snapshot por arvore de acessibilidade |
-| **Escopo** | `project` |
-| **Custo de contexto** | **Medio** — ~25 tools |
-| **Credencial** | Nenhuma (local) |
-| **Verificado em** | 2026-09-06 |
-| **Referencia** | [[referencias/mcp-playwright]] |
-
-```bash
-claude mcp add -s project -t stdio playwright -- npx -y @playwright/mcp@latest
-```
-
-- **Ligue** para E2E, verificacao pre-release, reproduzir bug de UI.
-- **Desligue** fora de tarefa de browser.
-- **Escolha entre ele e o Chrome DevTools**: Playwright para **dirigir** (cross-browser,
-  deterministico, barato em token); Chrome DevTools para **depurar** (performance,
-  rede, CDP). Ver [[referencias/mcp-chrome-devtools]].
-
-### 3.5 Terminator (teste de aplicacao desktop)
-
-| | |
-|---|---|
-| **O que faz** | Automacao de app desktop Windows pela UI Automation (arvore de acessibilidade) |
-| **Escopo** | `project` |
-| **Custo de contexto** | **Alto** — 50+ tools |
-| **Credencial** | Nenhuma (local) |
-| **Verificado em** | 2026-09-06 |
-| **Referencia** | [[referencias/mcp-terminator]] |
-
-```bash
-claude mcp add -s project -t stdio terminator -- npx -y terminator-mcp-agent@latest
-```
-
-- **So Windows.** Nao ha suporte macOS/Linux.
-- **Ligue** para automatizar ou testar app desktop nativo (Win32, WinForms, WPF, Electron).
-- **Desligue** sempre que a tarefa sair do desktop — e o servidor mais caro do catalogo.
-- **Risco**: dirige a maquina de verdade. Nao aponte para app com dado de producao sem
-  saber exatamente o que o agente vai fazer.
-
-### 3.6 Supabase
-
-| | |
-|---|---|
-| **O que faz** | Schema, migracoes, branches de banco, Edge Functions, logs, docs |
-| **Escopo** | `project` |
-| **Custo de contexto** | **Medio** — varia com o parametro `features` |
-| **Credencial** | OAuth (`/mcp`) |
-| **Verificado em** | 2026-09-06 |
-| **Referencia** | [[referencias/mcp-supabase]] |
-
-```bash
-claude mcp add -s project -t http supabase "https://mcp.supabase.com/mcp?features=docs,database,debugging,development,functions"
-```
-
-- **Ligue** ao mexer em schema, migracao ou RLS.
-- **Desligue** em trabalho puro de frontend.
-- **Corte o custo** removendo features do querystring (`account` e `branching` raramente
-  valem o peso).
-- **Regra de seguranca**: aponte para projeto de **desenvolvimento**, nunca producao, e
-  prefira modo somente-leitura quando o servidor oferecer.
-
-### 3.7 Vercel
-
-| | |
-|---|---|
-| **O que faz** | Deploys, logs de build, dominios, variaveis de ambiente, docs |
-| **Escopo** | `user` ou `project`, conforme voce use Vercel em tudo ou so num projeto |
-| **Custo de contexto** | **Medio-baixo** |
-| **Credencial** | OAuth (`/mcp`) |
-| **Verificado em** | 2026-09-06 |
-| **Referencia** | [[referencias/mcp-vercel]] |
-
-```bash
-claude mcp add -s user -t http vercel https://mcp.vercel.com
-```
-
-- **Ligue** ao investigar build quebrado ou deploy que nao subiu.
-- **Desligue** durante desenvolvimento local — nao contribui nada ali.
-
-### 3.8 Google Workspace
-
-| | |
-|---|---|
-| **O que faz** | Gmail, Drive, Docs, Sheets, Calendar |
-| **Escopo** | `user` |
-| **Custo de contexto** | **Alto** — muitas tools, varia muito por implementacao |
-| **Credencial** | OAuth. Conector claude.ai ou servidor remoto do Google |
-| **Verificado em** | 2026-09-06 |
-| **Referencia** | [[referencias/mcp-google-workspace]] |
-
-Ha tres caminhos e eles **nao sao equivalentes** — leia a referencia antes de escolher.
-Na conta em uso hoje, Gmail/Drive/Calendar aparecem como **conectores claude.ai** e
-precisam ser autorizados nas configuracoes de conectores do claude.ai; ate la, as tools
-existem no papel e nao funcionam.
-
-- **Ligue** para ata de reuniao, requisito que veio por e-mail, planilha de dados.
-- **Desligue** em sessao de codigo. E o MCP com pior relacao custo/beneficio dentro de
-  uma tarefa tecnica.
-- **Risco de dado**: da ao agente acesso de leitura ao seu e-mail corporativo inteiro.
-  Trate como decisao de seguranca, nao de conveniencia.
+| MCP | Escopo | Custo de contexto | Ligue quando | Ficha |
+|---|---|---|---|---|
+| **GitHub** | `user` | Alto (~50 tools) | PR, issue, review, busca cross-repo | [[MCPS_NUCLEO#1. GitHub\|1]] |
+| **Figma** | `project` | Baixo | Tela a partir de design (rode `whoami` antes: Starter = 20 leituras/mes) | [[MCPS_NUCLEO#2. Figma\|2]] |
+| **mobile-next** | `project` | Medio-alto (~30) | Fluxo em device, bug mobile. No Windows, so Android | [[MCPS_NUCLEO#3. mobile-next (mobile-mcp)\|3]] |
+| **Playwright** | `project` | Medio (~25) | E2E, verificacao pre-release, bug de UI web | [[MCPS_NUCLEO#4. Playwright (teste de aplicacao web)\|4]] |
+| **Terminator** | `project` | Alto (50+) | App desktop Windows. O mais caro do catalogo | [[MCPS_NUCLEO#5. Terminator (teste de aplicacao desktop)\|5]] |
+| **Supabase** | `project` | Medio | Schema, migracao, RLS. Nunca em producao | [[MCPS_NUCLEO#6. Supabase\|6]] |
+| **Vercel** | `user`/`project` | Medio-baixo | Build quebrado, deploy que nao subiu | [[MCPS_NUCLEO#7. Vercel\|7]] |
+| **Google Workspace** | `user` | Alto | Ata, requisito por e-mail, planilha. Le o e-mail inteiro | [[MCPS_NUCLEO#8. Google Workspace\|8]] |
 
 ## 4. Catalogo opcional
 
@@ -333,14 +173,15 @@ num projeto backend liga mobile e figma a toa.
 O ecossistema MCP troca nome de pacote e transporte em questao de meses. Comando
 desatualizado e pior que ausencia de doc.
 
-- Toda ficha tem **Verificado em**.
+- Toda ficha em [[MCPS_NUCLEO|MCPS_NUCLEO.md]] tem **Verificado em**.
 - **Revalide a cada 3 meses** ou quando um comando falhar.
 - Ao revalidar: confira o comando na fonte oficial, atualize `verificado_em` na referencia
-  correspondente em `referencias/`, atualize a data aqui e registre no changelog.
+  correspondente em `referencias/`, atualize a data na ficha e registre no changelog daqui.
 - Fonte da verdade e sempre a doc oficial do servidor, nunca este arquivo.
 
 ## 9. Referencias
 
+- [[MCPS_NUCLEO|MCPS_NUCLEO.md]] — fichas do nucleo: comando, credencial, limites, armadilhas
 - [[HOOKS|HOOKS.md]] — regras injetadas por prompt
 - [[CONVENCOES|CONVENCOES.md]] — schema de frontmatter
 - [[referencias/README|referencias/]] — ficha tecnica de cada MCP
@@ -352,3 +193,4 @@ desatualizado e pior que ausencia de doc.
 |------|---------|--------|
 | 2026-09-06 | Versao inicial do catalogo (8 no nucleo, 4 opcionais, 6 anti-recomendacoes) | Template nao orientava escolha de MCP; cada projeto derivado improvisava |
 | 2026-09-27 | Figma revalidado: limite de chamadas por plano e seat, `whoami` antes de planejar e escrita no canvas em beta | A ficha dizia "qualquer seat e plano", mas o Starter para em 20 leituras por mes |
+| 2026-10-15 | Fichas da secao 3 movidas para `MCPS_NUCLEO.md`; aqui ficou uma tabela-resumo | O arquivo tinha 354 linhas e o teto de documentacao passou a ser 300 (`CONVENCOES.md` secao 7) |
