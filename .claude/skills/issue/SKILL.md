@@ -56,7 +56,7 @@ Decisao:
 
 ## 3. Perguntar
 
-- **XS e S:** pergunte so o que for ambiguo, de 0 a 2 perguntas. Esta e a excecao a regra 3 do hook.
+- **XS e S:** pergunte so o que for ambiguo, de 0 a 2 perguntas, como manda a regra 3 do hook.
 - **M, L e XL:** pelo menos 5 perguntas de decisao real via `AskUserQuestion` (escopo, restricoes, estilo, aceite, casos de borda), com a recomendacao primeiro. Se uma resposta contrariar a recomendacao e invadir outra issue, pergunte de novo mostrando o custo.
 
 ## 4. Executar pelo tamanho

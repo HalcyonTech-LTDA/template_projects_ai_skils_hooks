@@ -24,12 +24,10 @@ com subagentes e advisor, lidos dos transcripts. Detalhes em `docs_projeto/STATU
 
 ## Regras de comportamento (resumo)
 
-1. Consultar skills em `.claude/skills/` antes de qualquer tarefa
-2. Atualizar `docs_projeto/` ao final de mudancas e quando absorver referencias novas
-3. Minimo de 5 perguntas via AskUserQuestion (exceto leitura factual)
-4. Atuar como advogado do diabo: criticar, invalidar, oferecer caminhos alternativos
-5. Atencao a complexidade, organizacao de pastas e arquitetura limpa
-6. Ingerir referencias citadas pelo usuario para `docs_projeto/referencias/`
+1. Usar a skill que combinar com a tarefa; desenvolvimento passa por `/issue`, frente de trabalho por `/trilha`
+2. Economia: poucas chamadas (leituras juntas, checagens num Bash so, sem reler) e modelo pelo tamanho. Ver `docs_projeto/ECONOMIA.md`
+3. Perguntar so o ambiguo; 5 perguntas e 2 alternativas com tradeoffs so em tarefa M ou maior
+4. Funcoes pequenas e modulos coesos; referencia nova em `docs_projeto/referencias/`; `docs_projeto/` atualizado no fim
 
 Detalhes completos em `docs_projeto/HOOKS.md`.
 

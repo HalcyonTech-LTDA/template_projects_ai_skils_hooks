@@ -2,7 +2,7 @@
 
 Este repositorio versiona tres hooks:
 
-- `UserPromptSubmit` — injeta seis regras obrigatorias em cada mensagem do usuario.
+- `UserPromptSubmit` — injeta quatro regras curtas (~0,7 KB) em cada mensagem do usuario.
 - `UserPromptSubmit` — `.claude/statusline/hook-capturar-issue.js`: prompt que comeca com
   `/issue <ref>` liga a sessao a issue na statusline. Qualquer outro prompt sai com 0 e sem saida.
   Detalhes em [[STATUSLINE]].
@@ -20,38 +20,32 @@ Este repositorio versiona tres hooks:
 
 ## Regras injetadas
 
-### 1. Consulta de skills (por prompt)
-Antes de planejar ou agir, o Claude lista as skills em `.claude/skills/` e
-invoca a que combinar com a tarefa via Skill tool. O proprio hook lista as
-skills disponiveis no contexto injetado (so pastas com `SKILL.md`; `_shared/` e
-`obsidian-skills/` ficam de fora) e, se `.claude/agents/` existir, os
-subagentes do projeto, apontando a skill `/issue` para tarefa de desenvolvimento
-(ver [[AGENTES]]).
+O texto injetado e relido em toda chamada da sessao e acumula a cada prompt. Por isso ele
+cabe em quatro linhas e o detalhe fica aqui. Ate 2026-10-18 eram seis regras em 5,3 KB, com a
+lista de skills e agentes que o prompt do sistema ja traz ([[ECONOMIA]]).
 
-### 2. Atualizacao de documentacao
-Ao final de qualquer alteracao de codigo, ou quando o usuario citar referencias,
-o Claude deve atualizar `docs_projeto/` com o que mudou ou foi aprendido.
+### 1. Skills e fluxo
+O Claude usa a skill que combinar com a tarefa. Tarefa de desenvolvimento passa pela `/issue`,
+que escolhe agente e modelo pelo tamanho ([[AGENTES]]). Frente de trabalho no GitHub (marcos,
+sequencia, bloqueios) passa pela `/trilha`. O hook nao lista as skills: elas ja estao no prompt do
+sistema, com descricao.
 
-### 3. Minimo de 5 perguntas
-Para qualquer pedido nao-trivial, o Claude chama `AskUserQuestion` com pelo
-menos 5 perguntas cobrindo: escopo, restricoes tecnicas, preferencias,
-criterios de aceite e edge cases. Excecoes: leitura factual pura, e issue ou
-tarefa que a skill `/issue` classificou como XS ou S — nela o Claude pergunta so
-o que for ambiguo (0 a 2 perguntas). A excecao existe porque uma correcao de uma
-linha nao justifica 5 perguntas, e cada rodada de perguntas tambem custa contexto.
+### 2. Economia
+Poucas chamadas por tarefa: leituras independentes numa so resposta, varias checagens num unico
+Bash, nada de reler o que ja esta na conversa. Modelo escolhido pelo tamanho da tarefa. Detalhe e
+numeros em [[ECONOMIA]].
 
-### 4. Advogado do diabo
-Em todo prompt, o Claude critica a abordagem proposta, aponta riscos, invalida
-premissas fracas e apresenta no minimo 2 caminhos alternativos com tradeoffs.
+### 3. Perguntas e alternativas, pelo tamanho
+O Claude pergunta so o que for ambiguo. Em tarefa M ou maior (criterio da `/issue`), chama
+`AskUserQuestion` com pelo menos 5 perguntas (escopo, restricoes tecnicas, estilo, criterios de
+aceite e edge cases) e, antes de executar, critica a abordagem e apresenta 2 alternativas com
+tradeoffs. Em XS e S, de 0 a 2 perguntas e nenhuma rodada de alternativas: uma correcao de uma
+linha nao justifica o turno extra, e cada turno custa contexto.
 
-### 5. Qualidade arquitetural
-Atencao continua a complexidade ciclomatica, organizacao de pastas, separacao
-de responsabilidades, arquitetura limpa e abstracao em arquivos coesos.
-
-### 6. Ingestao de referencias
-Quando o usuario cita URL, biblioteca ou conceito que o Claude nao domina, ele
-ingere via defuddle/WebFetch e salva um resumo em
-`docs_projeto/referencias/<slug>.md` antes de prosseguir.
+### 4. Qualidade e documentacao
+Funcoes pequenas, modulos coesos, separacao de responsabilidades; funcao monolitica e quebrada
+em modulos. Referencia que o Claude nao domina (URL, biblioteca, conceito) e ingerida e resumida
+em `docs_projeto/referencias/<slug>.md`. Toda mudanca termina com `docs_projeto/` atualizado.
 
 ## Teto de linhas da documentacao (PostToolUse)
 
@@ -92,4 +86,5 @@ Edite `.claude/settings.json` e remova o bloco `UserPromptSubmit`, ou use
 
 Para adicionar uma nova regra, edite a string `rules` em
 `.claude/hooks/inject-rules.js`. Mantenha o conteudo dentro do bloco
-`<project-rules>...</project-rules>` para deixar claro de onde veio a injecao.
+`<project-rules>...</project-rules>` para deixar claro de onde veio a injecao. Cada linha
+nova custa em toda chamada de toda sessao: prefira detalhar aqui e deixar no hook so a frase.

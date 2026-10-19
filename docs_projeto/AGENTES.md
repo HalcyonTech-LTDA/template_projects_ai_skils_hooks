@@ -35,6 +35,7 @@ Consequencias que viraram regra:
    de um agente vivo.
 4. **Busca exploratoria vai para o `explorer`** (Haiku), que devolve `caminho:linha` em vez de
    encher a sessao principal com arquivos inteiros.
+5. **Poucas chamadas e modelo pela tarefa** em toda sessao, com ou sem `/issue`: [[ECONOMIA]].
 
 ## 2. Os agentes
 
@@ -77,7 +78,7 @@ segredo, criptografia, dado de cliente) e no minimo M.
 | M | 5 ou mais | Lista de fatias na sessao | `implementer` sonnet, um por fatia | `worker` | Se sensivel |
 | L / XL | 5 ou mais | `Plan` opus | `implementer` opus, um por fatia | `worker` | **Sempre** (`reviewer`) |
 
-A excecao de XS e S as 5 perguntas esta na regra 3 do hook (`HOOKS.md`).
+A regra 3 do hook (`HOOKS.md`) escala as perguntas pelo tamanho do mesmo jeito.
 
 **Testar, em todos os tamanhos, sao duas coisas.** Cada fatia entrega os testes unitarios do que mudou:
 logica nova ou alterada ganha teste, e bug ganha teste de regressao. Quem escreve e o `implementer`, ou a
