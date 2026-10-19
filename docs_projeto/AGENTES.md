@@ -3,7 +3,7 @@ title: Agentes e fluxo de issue por tamanho
 type: convencao
 status: aprovado
 created: 2026-10-10
-updated: 2026-10-15
+updated: 2026-10-18
 project: template_projetos
 tags: [convencao, agentes, subagentes, custo, claude-code, tema/tooling]
 ---
@@ -43,7 +43,7 @@ Consequencias que viraram regra:
 | `explorer` | haiku (sonnet ao classificar) | — | Read, Grep, Glob, Bash (so leitura) | Achar onde esta X, quem chama Y. Devolve `caminho:linha`. Na `/issue`, propoe o tamanho |
 | `researcher` | sonnet | medium | Web, leitura, Write (so `referencias/`) | Pesquisa externa com URL em cada afirmacao |
 | `worker` | sonnet | medium | todas | Rodar testes, bancada, docs por ficha de fatos. Nao decide desenho, nao commita |
-| `implementer` | opus (sonnet em M) | high | todas | Uma fatia de um plano aprovado. So compila; termina com handoff |
+| `implementer` | opus (sonnet em M) | high | todas | Uma fatia de um plano aprovado, com os testes unitarios dela. Compila e roda so os testes da fatia; termina com handoff |
 | `reviewer` | opus | high | Read, Grep, Glob, Bash (so leitura) | Revisao independente do diff antes do merge |
 
 O planejamento usa o agente embutido `Plan` com `model: opus`. Nao ha arquivo para ele.
@@ -78,6 +78,21 @@ segredo, criptografia, dado de cliente) e no minimo M.
 | L / XL | 5 ou mais | `Plan` opus | `implementer` opus, um por fatia | `worker` | **Sempre** (`reviewer`) |
 
 A excecao de XS e S as 5 perguntas esta na regra 3 do hook (`HOOKS.md`).
+
+**Testar, em todos os tamanhos, sao duas coisas.** Cada fatia entrega os testes unitarios do que mudou:
+logica nova ou alterada ganha teste, e bug ganha teste de regressao. Quem escreve e o `implementer`, ou a
+propria sessao em XS/S. A fatia so fica verde com esses unitarios **e** o portao de teste do projeto
+passando. Projeto sem framework de teste para antes da primeira fatia.
+
+**Entrega, em todos os tamanhos:**
+- branch `issue/<n>-<slug>` a partir da branch atual;
+- a issue vai para In progress ao iniciar a implementacao;
+- PR com `Refs #N` e base na branch de origem, espera o CI se houver e faz o merge com squash;
+- depois do merge, a issue vai para Done se todo criterio de aceite foi provado por teste automatizado, e para In review se nao foi;
+- CI vermelho ou conflito param o fluxo com o PR aberto;
+- o relatorio termina com a URL da issue.
+
+Passo a passo na skill (secao "Entrega e estados" e passos 4.3 e 5).
 
 **Plano formal (`Plan` opus + advisor) so em L e XL.** Na M, a propria sessao escreve de 3 a 6
 linhas de fatias a partir do que o `explorer` achou. Se uma fatia pedir decisao de desenho que nao

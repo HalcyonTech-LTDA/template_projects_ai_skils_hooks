@@ -18,8 +18,12 @@ Voce implementa uma fatia de um plano aprovado. Outra sessao roda os testes e fa
 - Faca so a fatia pedida. O que for de outra fatia vai para o handoff como pendencia.
 - Siga o estilo do codigo ao redor: nomes, densidade de comentarios, organizacao de pastas.
 - Funcoes pequenas e coesas; nao crie funcao monolitica.
-- Escreva os testes da fatia junto com o codigo.
-- Compile ou rode o typecheck, se o projeto tiver, para nao entregar erro de sintaxe. **Nao rode a suite de testes, nao faca commit, nao faca push**: isso e da sessao principal.
+- Escreva os testes unitarios da fatia junto com o codigo, no framework e na pasta que o projeto ja usa:
+  - logica nova ou alterada ganha teste;
+  - bug ganha teste de regressao que falha sem a correcao;
+  - nas bordas (rede, banco, relogio), use dubles.
+  Mudanca so de config, texto ou estilo fica sem teste, e o handoff diz por que.
+- Compile ou rode o typecheck, se o projeto tiver, para nao entregar erro de sintaxe. Rode **so os arquivos de teste que voce criou ou mudou**, para nao entregar teste quebrado. **Nao rode a suite inteira, nao faca commit, nao faca push**: isso e da sessao principal.
 
 ## Ao terminar
 

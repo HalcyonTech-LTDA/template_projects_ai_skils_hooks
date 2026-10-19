@@ -150,12 +150,16 @@ Quem executa: **<agente | dono | externo>** · Repo do codigo: `<repo>` · Base:
 | **Ready** | todos os bloqueadores fechados; pode ser pega | checagem sugere, agente aplica |
 | **In progress** | alguem trabalhando agora (limite WIP do projeto, padrao 3) | quem pega |
 | **In review** | feita e commitada; espera prova em ambiente real, revisao ou decisao do dono | agente, com comentario de prova |
-| **Done** | aceita | **so o dono** (fecha a issue) |
+| **Done** | aceita | o dono (fecha a issue), ou a `/issue` com toda a prova automatizada |
 
 - Mover para In review vem com comentario: comando, saida, commit/PR e o que **nao** foi provado.
 - Fechar aceitando risco e valido; o comentario registra o que ficou sem prova.
-- O agente nunca fecha issue, nunca move para Done e nunca faz merge sem pedido explicito.
-- PR usa `Refs #N`. `Closes #N` so quando o merge **e** o aceite (sem prova em ambiente real pendente).
+- Fora da `/issue`, o agente nunca fecha issue, nunca move para Done e nunca faz merge sem pedido explicito.
+- **A `/issue` e o pedido explicito.** Ela faz o merge do PR e so entao poe o estado final:
+  - Done quando todo criterio de aceite foi provado por teste automatizado;
+  - In review em qualquer outro caso.
+  O criterio esta no passo 5.7 dela, e o comando e `node .claude/statusline/issue.js mover`.
+- PR usa `Refs #N`. A `/issue` nunca usa `Closes`. Fora dela, `Closes #N` so quando o merge **e** o aceite (sem prova em ambiente real pendente).
 
 ### Workflows nativos do Project (configure uma vez)
 

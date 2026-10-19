@@ -78,6 +78,10 @@ Os ids saem de `gh project field-list N --owner "@me" --format json` (ids GraphQ
 | Pull request merged | **In review** |
 | Item reopened | In progress |
 
+A `/issue` usa sempre `Refs #N`, entao o merge cai em In review por este workflow. Quando toda a prova e
+automatizada, ela mesma poe Done depois do merge (`issue.js mover "Done" --conferir`, que reaplica se o
+workflow chegar depois). Ver `.claude/skills/issue/SKILL.md`, passo 5.7.
+
 ## 6. Trilhas
 
 | Prefixo | Epico | Milestones | Issues | Plano e manifesto | Estado |

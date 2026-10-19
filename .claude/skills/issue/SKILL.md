@@ -1,8 +1,8 @@
 ---
 name: issue
-description: Conduz uma issue do comeco ao merge escolhendo agentes e modelos pelo tamanho (XS a XL) — le a issue, classifica, pergunta, planeja, implementa por fatias com handoff escrito, testa, revisa e documenta. Use quando o usuario pedir /issue, colar a URL ou o numero de uma issue, ou disser "pega a issue", "trabalha nessa issue", "implementa essa tarefa".
+description: Conduz uma issue do comeco ao merge escolhendo agentes e modelos pelo tamanho (XS a XL) — le a issue, classifica, pergunta, planeja, implementa por fatias com testes unitarios e handoff escrito, move a issue no board (em andamento, em revisao ou feito), revisa, documenta, abre o PR e faz o merge na branch de origem. Use quando o usuario pedir /issue, colar a URL ou o numero de uma issue, ou disser "pega a issue", "trabalha nessa issue", "implementa essa tarefa", "resolve essa issue e faz o PR".
 allowed-tools: Bash, Read, Grep, Glob, Edit, Write, Agent, AskUserQuestion, Skill
-version: 1.1
+version: 1.2
 ---
 
 # /issue — fluxo de agentes por tamanho
@@ -16,9 +16,18 @@ O catalogo dos agentes, a tabela completa e o porque de cada regra estao em `doc
 - **Busca no codigo vai para o `explorer`**, que devolve `caminho:linha`. Nao leia dezenas de arquivos na sessao principal.
 - **O advisor entra em so tres momentos:** antes de executar o plano de uma L ou XL, quando o mesmo erro se repete e antes de declarar concluido.
 
+## Entrega e estados (valem em todos os tamanhos)
+
+- **Chamar a `/issue` e o pedido de push, PR e merge.** A branch de destino e a que estava em checkout quando a implementacao comecou (passo 4.3), nao necessariamente `main`. Uma **Adaptacao local** que diga outra coisa vence.
+- **A issue anda no board em dois momentos:** **In progress** ao iniciar a implementacao (4.3) e **In review** ou **Done** depois do merge (5.7). Nunca no passo 1: ler e perguntar nao e trabalhar.
+- Comando, sempre na sessao principal: `node .claude/statusline/issue.js mover "<Status>" [ref] [--conferir]`. Sem `ref`, vale a issue registrada no passo 1. Aceita os nomes em ingles ou portugues (`In progress` acha `Em andamento`; `Done` acha `Feito`) e descobre os ids pelo item da issue, sem depender do `BOARD.md`.
+- Saida 3 (issue fora de Project, ou board sem a opcao) ou 1 (`gh` falhou; sem escopo, `gh auth refresh -s project`): **avise e siga**. Nao trave a issue por causa do board; o aviso entra no relatorio final.
+- Texto solto sem issue no GitHub: nao ha o que mover nem link para dar. Branch, PR e merge seguem.
+
 ## 1. Ler a issue
 
 - Entrada: URL ou numero (`gh issue view <n> --json number,title,body,labels,milestone,comments`) ou texto solto colado pelo usuario.
+- Com a issue identificada, registre-a na statusline **na sessao principal**, antes de abrir qualquer agente: `node .claude/statusline/issue.js definir <n | owner/repo#n | URL>`. Issue de outro repo vai como `owner/repo#n` ou URL. Texto solto sem issue no GitHub nao registra nada. Detalhes em `docs_projeto/STATUSLINE.md`.
 - Leia os links do corpo: docs do projeto, decisoes e issues relacionadas. Se a issue e os docs discordam, **os docs vencem**: aponte a divergencia.
 - Referencia externa (biblioteca, norma, API de terceiro) vai para o `researcher`, que arquiva a ficha em `docs_projeto/referencias/`.
 
@@ -73,26 +82,53 @@ O handoff fica em `.claude/handoff/<issue>.md` **do checkout principal**, por ca
 2. Grave o plano no handoff, secao `## Plano`.
 3. **Advisor, momento 1:** consulte antes de executar. Se mudar o plano, regrave.
 
-### 4.3 Cada fatia
+### 4.3 Iniciar a implementacao
+
+Logo antes do primeiro Edit (XS/S) ou do primeiro `implementer` (M, L, XL):
+
+1. **Base:** `git branch --show-current`. Grave `base: <branch>` no topo do handoff (em XS/S, guarde na sessao). HEAD solta, ou base que ja e branch de outra issue: pergunte.
+2. **Branch:** `git switch -c issue/<n>-<slug>` a partir da base. Com worktree, `/worktree` com o nome `issue-<n>` (cria `wt/issue-<n>` a partir da branch atual).
+3. **Testes:** se o projeto nao tiver framework de teste unitario, pare e proponha configurar um como fatia 0. Nao implemente sem onde por o teste.
+4. **Board:** `issue.js mover "In progress"`. Se o `BOARD.md` tiver limite de WIP e ele estourar, avise.
+
+### 4.4 Cada fatia
 
 1. Abra um `implementer` **novo**, com este briefing:
    - o caminho de `.claude/handoff/<issue>.md`;
    - qual fatia fazer;
-   - a ordem de ler o codigo atual em vez de confiar no resumo.
+   - a ordem de ler o codigo atual em vez de confiar no resumo;
+   - a regra de testes unitarios abaixo.
 2. Acrescente o bloco `## Handoff — fatia <n>` que ele devolver ao arquivo de handoff.
-3. Rode o portao de teste do projeto, ou mande o `worker` rodar e devolver a saida.
+3. Rode **os unitarios da fatia e depois o portao de teste do projeto** (suite existente, build, typecheck), em comandos separados, ou mande o `worker` rodar e devolver as duas saidas.
 4. Falhou: corrija o que for trivial na propria sessao, que sai mais barato que reabrir o agente, ou devolva ao mesmo `implementer` por `SendMessage`. **Advisor, momento 2:** se o mesmo erro voltar, consulte antes da terceira tentativa.
-5. Verde: faca o commit da fatia com a skill `/commit`.
+5. Verde nos dois: faca o commit da fatia com a skill `/commit`.
 
-### 4.4 Revisao
+**Testes unitarios.** Alem do portao do projeto, cada fatia entrega os unitarios do que mudou. XS e S seguem a mesma regra, na propria sessao.
+
+- Logica nova ou alterada ganha teste unitario, no framework e na pasta que o projeto ja usa.
+- Bug ganha teste de regressao que falha sem a correcao.
+- O unitario isola a unidade: sem rede, banco ou relogio real (dubles nas bordas). Teste com dependencia real e de integracao e conta no portao, nao aqui.
+- Mudanca so de config, texto, docs ou estilo fica sem unitario, e o handoff diz por que.
+
+### 4.5 Revisao
 
 Para L e XL, ou para codigo sensivel, abra **um ou dois** `reviewer` independentes sobre `git diff <base>...<branch>` antes do merge. Achado que bloqueia volta como uma nova fatia.
 
 ## 5. Fechar
 
-1. Docs: rode a regra 2 do hook. Para mais de 3 arquivos de docs, use um `worker` com uma ficha de fatos ja conferidos.
-2. Marque os criterios de aceite no corpo da issue e comente a prova (comando, saida, link do CI) **antes** do merge.
-3. **Advisor, momento 3:** consulte antes de declarar concluido, com o trabalho ja commitado.
-4. Se a issue pertence a uma trilha (`/trilha`): mova-a para **In review** com o comentario de prova e o que nao foi provado; Done e fechamento sao do dono. PR usa `Refs #N`, e `Closes #N` so quando o merge e o aceite.
-5. PR e merge conforme o projeto. Nao use "closes #N" ou "fixes #N" em texto de commit se o projeto nao quiser fechamento automatico. Faca push so se o usuario pedir.
-6. Termine com: tamanho usado, agentes e modelos usados, o que ficou pendente, e a sugestao de `/clear`.
+1. **Docs:** rode a regra 2 do hook. Para mais de 3 arquivos de docs, use um `worker` com uma ficha de fatos ja conferidos.
+2. **Aceite:** marque os criterios de aceite cumpridos no corpo da issue.
+3. **Advisor, momento 3:** consulte antes de abrir o PR, com o trabalho ja commitado.
+4. **PR:** `git push -u origin <branch>` e `gh pr create --base <base>`. O titulo segue a convencao de commit do projeto. O corpo traz resumo, prova (comandos e saidas dos unitarios e do portao) e `Refs #N` (`Refs owner/repo#N` se a issue mora noutro repo). **Nunca `Closes`/`Fixes`**, nem em commit: o estado final e posto no passo 7, e o fechamento automatico disputaria com o workflow "PR merged".
+5. **CI:** se o repo tem workflow em `.github/workflows/` que roda em `pull_request`, `gh pr checks <pr> --watch --fail-fast`. Logo apos o `pr create` os checks podem ainda nao ter registrado ("no checks reported"): com workflow no repo, repita uma vez antes de seguir. Sem workflow, o portao local ja rodou e e o unico; siga.
+6. **Merge:** `gh pr merge <pr> --squash --delete-branch` e depois `git switch <base> && git pull --ff-only`. Com worktree, remova-o com `clean.mjs --remove issue-<n>` (skill `/worktree`); o merge foi pelo PR, nao pela fila dela.
+   - Saida diferente de zero nao prova que o merge falhou: num worktree, o `--delete-branch` tenta trocar para a base, que ja esta em checkout na arvore principal, e o git recusa. Confira com `gh pr view <pr> --json state,mergedAt` antes de concluir.
+   - CI vermelho, conflito, branch protegida pedindo review ou merge que de fato nao aconteceu: **pare**.
+   - O PR fica aberto e a issue fica In progress.
+   - Comente na issue o link do PR e o motivo, e reporte. Nao force e nao contorne a protecao.
+7. **Estado final.** Primeiro comente a prova na issue (`gh issue comment`): comandos e saidas, link do PR e o que **nao** foi provado. Depois:
+   - **Done** quando todo criterio de aceite foi provado por teste automatizado nesta issue: `issue.js mover "Done" --conferir` e, se ela seguir aberta, `gh issue close <n> --reason completed` (com `-R owner/repo` se a issue mora noutro repo).
+   - **In review** quando algum criterio depende de ambiente real, UI vista por gente, hardware, servico externo ou dado de producao: `issue.js mover "In review" --conferir`. Nao feche.
+   - Na duvida, In review. O `--conferir` espera 10 s e reaplica se o workflow do board tiver passado por cima.
+8. **Trilha:** se a issue pertence a uma (`/trilha`), atualize a linha dela no plano com estado, prova e link (secao 15 da `/trilha`).
+9. **Relatorio.** Termine com: tamanho usado, agentes e modelos, PR e merge, estado final no board (ou o aviso de que nao moveu), o que ficou pendente e a sugestao de `/clear`. **A ultima linha e a URL da issue.**

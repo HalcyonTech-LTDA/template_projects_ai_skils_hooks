@@ -13,6 +13,15 @@ Para inspecionar o que e injetado:
 echo "{}" | node .claude/hooks/inject-rules.js
 ```
 
+## Statusline
+
+`.claude/settings.json` liga a statusline de `.claude/statusline/`:
+`#42 Titulo · In progress │ Opus 5.5 · high │ ctx 34% │ tok 4.6M (sub 870k)`. A issue e da sessao. Quem a grava
+e o hook de `/issue <ref>` ou a skill `/issue`, no passo 1
+(`node .claude/statusline/issue.js definir <ref>`). O status vem do board por um cache de 60 s,
+renovado em segundo plano: a statusline nunca chama o `gh`. Os tokens somam a sessao inteira,
+com subagentes e advisor, lidos dos transcripts. Detalhes em `docs_projeto/STATUSLINE.md`.
+
 ## Regras de comportamento (resumo)
 
 1. Consultar skills em `.claude/skills/` antes de qualquer tarefa
@@ -39,7 +48,7 @@ Quatro skills governam como o trabalho entra no repositorio:
 | Skill | Quando |
 |---|---|
 | `/trilha` | Planejar e controlar uma frente de trabalho no GitHub: epico, marcos (milestones), issues em sequencia, dependencias nativas (blocked by), progresso dos marcos e checagem de deriva do board. So issues, nunca draft. IDs do board em `docs_projeto/BOARD.md`. |
-| `/issue` | Conduzir uma issue ou tarefa de desenvolvimento do comeco ao merge. O `explorer` em Sonnet localiza o codigo e propoe o tamanho (vale o maior entre ele e a label `size/*`); subagente e modelo saem do tamanho, e plano formal so em L/XL. Usa `/worktree` e `/commit` por dentro. |
+| `/issue` | Conduzir uma issue ou tarefa de desenvolvimento do comeco ao merge. O `explorer` em Sonnet localiza o codigo e propoe o tamanho (vale o maior entre ele e a label `size/*`); subagente e modelo saem do tamanho, e plano formal so em L/XL. Cada fatia entrega testes unitarios alem do portao do projeto. Move a issue no board (In progress ao comecar; Done ou In review depois do merge, por `issue.js mover`), abre o PR para a branch de origem, faz o merge com squash e termina com a URL da issue. Usa `/worktree` e `/commit` por dentro. |
 | `/commit` | Gerar a mensagem e criar o commit. Le a convencao do proprio repositorio (`docs_projeto/COMMITS.md`, depois `CLAUDE.md`, depois o historico) antes de propor tipo e escopo. Nunca roda `git add` por conta propria. |
 | `/worktree` | Rodar tarefas independentes em paralelo, uma janela `claude` por tarefa, com merge de volta serializado por fila. |
 
@@ -147,6 +156,7 @@ tarefa, ou ela se perde no proximo projeto criado.
 
 - `.claude/settings.json` — versionado, hooks publicos
 - `.claude/hooks/` — `inject-rules.js` (regras por prompt) e `limit-doc-lines.js` (teto de 300 linhas)
+- `.claude/statusline/` — statusline, hook de captura da issue e CLI `issue.js`; estado em `~/.claude/halcyon-statusline/`, fora do repo
 - `.claude/settings.local.json` — ignorado pelo git, config pessoal e bloco `env` com segredos
 - `.mcp.json.example` — nucleo de MCPs comentado; copiar para `.mcp.json` e podar
 - `.claude/skills/` — skills locais do projeto (fonte canonica)

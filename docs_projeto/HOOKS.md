@@ -1,8 +1,11 @@
 # Hooks do projeto
 
-Este repositorio versiona dois hooks:
+Este repositorio versiona tres hooks:
 
 - `UserPromptSubmit` — injeta seis regras obrigatorias em cada mensagem do usuario.
+- `UserPromptSubmit` — `.claude/statusline/hook-capturar-issue.js`: prompt que comeca com
+  `/issue <ref>` liga a sessao a issue na statusline. Qualquer outro prompt sai com 0 e sem saida.
+  Detalhes em [[STATUSLINE]].
 - `PostToolUse` — depois de todo Write/Edit, confere o teto de 300 linhas da documentacao.
 
 ## Arquivos
@@ -12,6 +15,7 @@ Este repositorio versiona dois hooks:
 | `.claude/settings.json` | Registra os hooks, versionado no git |
 | `.claude/hooks/inject-rules.js` | Script Node cross-platform que monta o lembrete |
 | `.claude/hooks/limit-doc-lines.js` | Script Node que confere o teto de linhas dos docs |
+| `.claude/statusline/hook-capturar-issue.js` | Liga a sessao a issue de `/issue <ref>` para a statusline ([[STATUSLINE]]) |
 | `.claude/settings.local.json` | Configuracoes pessoais, **ignoradas pelo git** |
 
 ## Regras injetadas
@@ -72,6 +76,7 @@ Skills e agentes ficam fora: muitas skills sao fork de terceiros com centenas de
 ```powershell
 echo "{}" | node .claude/hooks/inject-rules.js
 node .claude/hooks/limit-doc-lines.js --all
+echo '{"session_id":"x","prompt":"/issue 1","cwd":"."}' | node .claude/statusline/hook-capturar-issue.js
 ```
 
 A primeira saida e o bloco de regras injetado em cada turno. A segunda lista os docs
