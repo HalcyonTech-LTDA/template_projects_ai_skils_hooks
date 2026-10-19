@@ -44,7 +44,13 @@ Se o repositorio tiver atalhos em `package.json`, prefira-os:
 - O usuario tem **N tarefas que nao dependem entre si** e quer paraleliza-las.
 - O usuario pede explicitamente worktree/isolamento para uma tarefa.
 
+- A skill `/issue`, sempre: toda implementacao de issue roda num worktree e volta pelo
+  merge do PR, nao pelo `merge.mjs` (secao 4.3 dela).
+
 ## Quando NAO usar
+
+Os casos abaixo valem para tarefas avulsas. Na `/issue` o worktree e obrigatorio e ela
+diz como tratar `package.json` e prova com o app rodando.
 
 - Tarefa unica, ou tarefas que se encostam nos mesmos arquivos — o custo de
   merge supera o ganho.

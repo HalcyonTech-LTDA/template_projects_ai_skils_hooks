@@ -86,7 +86,7 @@ propria sessao em XS/S. A fatia so fica verde com esses unitarios **e** o portao
 passando. Projeto sem framework de teste para antes da primeira fatia.
 
 **Entrega, em todos os tamanhos:**
-- branch `issue/<n>-<slug>` a partir da branch atual;
+- toda implementacao num worktree (`/worktree`, nome `issue-<n>`, branch `wt/issue-<n>`) criado a partir da branch atual; a arvore principal so recebe o merge;
 - a issue vai para In progress ao iniciar a implementacao;
 - PR com `Refs #N` e base na branch de origem, espera o CI se houver e faz o merge com squash;
 - depois do merge, a issue vai para Done se todo criterio de aceite foi provado por teste automatizado, e para In review se nao foi;
@@ -102,7 +102,7 @@ fica no handoff, e a sessao diz so quantas fatias sao.
 
 ## 4. Handoff entre fatias
 
-- Arquivo: `.claude/handoff/<issue>.md` do **checkout principal**, ignorado pelo git, sempre por caminho absoluto, mesmo quando a issue roda num worktree (que tem o proprio `.claude/` e some no fim). Sobrevive a `/clear` e a troca de sessao.
+- Arquivo: `.claude/handoff/<issue>.md` do **checkout principal**, ignorado pelo git, sempre por caminho absoluto, porque a issue roda num worktree (que tem o proprio `.claude/` e some no fim). Sobrevive a `/clear` e a troca de sessao.
 - Secoes: `## Fatias` (M, escrita pela sessao) ou `## Plano` (L/XL, do `Plan`, depois do advisor),
   e um `## Handoff — fatia <n>` por fatia, no formato que o `implementer` devolve.
 - O handoff e um resumo: o `implementer` seguinte le o codigo atual e o codigo vence.

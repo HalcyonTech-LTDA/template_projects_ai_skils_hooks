@@ -105,3 +105,10 @@ aparece depois do merge. O Obsidian nao indexa `.claude/` (pasta com ponto), ent
 os wikilinks nao duplicam.
 
 **`.claude/worktrees/` e ignorado pelo git.**
+
+## Na skill `/issue`
+
+Toda issue roda num worktree, em todos os tamanhos: `new.mjs issue-<n>` a partir da branch
+atual, trabalho e commits so la dentro, e a volta para a branch atual pelo merge do PR, nao
+pelo `merge.mjs`. Issue que altera `package.json` desfaz o vinculo `node_modules` do worktree
+e instala as dependencias la. Passo a passo na secao 4.3 e no passo 5.6 da skill.
