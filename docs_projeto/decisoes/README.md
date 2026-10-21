@@ -3,7 +3,7 @@ title: Decisoes do repo template
 type: readme
 status: aprovado
 created: 2026-05-28
-updated: 2026-10-18
+updated: 2026-10-21
 tags: [readme, decisoes]
 ---
 
@@ -27,5 +27,6 @@ Registro de mudancas estruturais feitas **neste repositorio** (nao nos projetos 
 - [[2026-10-15_padroes_halcyon]] — 54 skills e 5 agentes dos repos `modern-*` copiados do GitHub por script com `padroes-lock.json`; guardrail em `_shared/padroes-*.md`; marketplace nao publicado; `java-clean-architecture-scaffolding` como base Java
 - [[2026-10-18_statusline_issue]] — statusline com issue da sessao, status do board (cache de 60 s renovado em segundo plano), modelo, esforco, contexto e tokens da sessao inteira (subagentes e advisor, lidos dos transcripts); hook + `/issue` gravam por `session_id`
 - [[2026-10-18_issue_entrega_e_estados]] — `/issue` v1.2: testes unitarios por fatia alem do portao, In progress ao iniciar, PR `Refs #N` para a branch de origem, squash apos o CI, Done (prova toda automatizada) ou In review depois do merge via `issue.js mover`, URL da issue no fim
+- [[2026-10-21_beui]] — beUI como quarta fonte de frontend (terceiro registry): controles com motion, UI de agente, React Native; skill e MCP dele fora; quatro itens vetados
 - [[2026-10-18_economia_de_contexto]] — `ECONOMIA.md` (menos chamadas, contexto menor, modelo pela tarefa); hook de 5,3 KB para 0,7 KB sem a lista de skills; perguntas e alternativas escalam pelo tamanho
 - [[2026-10-15_galerias_de_secao]] — degrau "galeria da secao" no passo 2 (navbar, footer, CTA, 404, bento, motion); scrolltide so como ficha, pago e sem redistribuicao

@@ -15,15 +15,18 @@ screenshot antes de entregar.**
 
 ---
 
-## 1. As tres fontes
+## 1. As fontes
 
 | Fonte | O que e | Papel no fluxo |
 |---|---|---|
 | [Refero](https://refero.design) | Acervo de telas, fluxos e estilos de produtos reais | **Referencia.** Diz o que olhar. Nao fornece codigo |
 | [Arc](https://uiarc.dev) | Componentes e blocos React animados. CSS modules + tokens proprios, **sem Tailwind** | **Componente.** Controles, charts, blocos de produto |
 | [Cult UI](https://www.cult-ui.com) | Registry shadcn com Tailwind, `motion` e Base UI. Inclui ilustracoes SVG e device frames | **Componente.** Ilustracoes, mockups de device, secoes de marketing |
+| [beUI](https://beui.dev) | Registry shadcn com Tailwind 4 e `motion`; edicao React Native (Reanimated) | **Componente.** Controles com motion, UI de chat e agente de IA, charts, blocos; codigo para React Native |
 
-Fichas completas em `docs_projeto/referencias/` (`refero.md`, `ui-arc.md`, `cult-ui.md`).
+Fichas completas em `docs_projeto/referencias/` (`refero.md`, `ui-arc.md`, `cult-ui.md`, `beui.md`).
+O guia de motion do beUI (`https://beui.dev/docs/motion-patterns.md`) vale como regra de
+tempo e easing mesmo quando nenhum componente dele e instalado.
 As galerias por tipo de secao (navbar, footer, CTA, 404, bento, motion) entram no passo 2,
 em `galerias-de-secao.md`.
 
@@ -36,6 +39,10 @@ npx shadcn@latest add @uiarc/button @uiarc/dialog
 
 # Cult UI
 npx shadcn@latest add @cult-ui/folded-card
+
+# beUI (web) e beUI Native
+npx shadcn@latest add @beui/animated-toast-stack
+npx beui-native add button
 ```
 
 Para instalar Arc por nome, registre o namespace em `components.json`:
@@ -48,7 +55,8 @@ Depois do `arc-foundation`, importe os tokens uma vez no layout raiz:
 `import "@/components/arc/foundation.css";`
 
 Catalogo pesquisavel: `https://uiarc.dev/llms.txt` e `https://uiarc.dev/r/catalog.json`
-(marca o que e Pro); `https://www.cult-ui.com/llms.txt` e `https://www.cult-ui.com/r/registry.json`.
+(marca o que e Pro); `https://www.cult-ui.com/llms.txt` e `https://www.cult-ui.com/r/registry.json`;
+`https://beui.dev/llms.txt` e `https://beui.dev/r` (detalhe e source em `/r/{slug}`).
 Cada componente tem uma pagina `.md` legivel por WebFetch.
 
 ---
@@ -79,7 +87,7 @@ desca so quando o degrau de cima nao render:
    para a camada **Tela** de uma secao especifica; **nunca** como referencia principal da
    pagina. Abra o link de origem antes de travar o lock
 4. **Produtos reais citados no brief ou concorrentes diretos**, capturados por screenshot
-5. **Pagina viva do componente no Arc ou no Cult** — vale para o tratamento de um
+5. **Pagina viva do componente no Arc, no Cult ou no beUI** — vale para o tratamento de um
    componente (estado, motion, densidade), **nunca** como direcao visual da pagina
 
 | Secao | Galeria | Observacao |
@@ -131,7 +139,7 @@ Tres regras de sintese:
 ### Passo 4 — Componentes
 
 Ordem de preferencia:
-1. Componente ou bloco pronto do Arc ou do Cult
+1. Componente ou bloco pronto do Arc, do Cult ou do beUI
 2. Composicao de componentes desses registries
 3. Escrever do zero — so quando 1 e 2 nao existem, e dizer isso na entrega
 
@@ -156,20 +164,22 @@ Sem navegador disponivel, **declare na entrega que o passo 6 nao rodou**. Nao fi
 
 ---
 
-## 3. Misturar Arc e Cult no mesmo projeto
+## 3. Misturar Arc, Cult e beUI no mesmo projeto
 
-**Liberado**, mas os dois colidem em dois pontos que quebram em silencio:
+**Liberado**, mas eles colidem em pontos que quebram em silencio. Cult e beUI seguem a
+convencao do shadcn e convivem bem entre si; o atrito e com o Arc:
 
-| Colisao | Arc | Cult / shadcn | Como resolver |
+| Colisao | Arc | Cult / beUI / shadcn | Como resolver |
 |---|---|---|---|
 | Nomes de token | `--background`, `--foreground`, `--border`, `--accent` em `foundation.css` | Os **mesmos nomes** em `globals.css` | Um arquivo e o dono dos valores. O que for importado por ultimo vence; escolha de proposito e confira os dois temas |
 | Tema escuro | `data-theme="dark"` no `<html>` | Classe `.dark` no `<html>` | O toggle de tema seta **os dois** |
+| `data-theme` | Guarda o modo (`dark`) | beUI usa para a paleta (`violet`, `blue`...) | Com Arc no projeto, nao use as paletas do beUI por `data-theme`: copie os valores para o arquivo dono dos tokens |
 
-`motion` e dependencia dos dois; uma versao so no `package.json`.
+`motion` e dependencia dos tres; uma versao so no `package.json`.
 
 ---
 
-## 4. Vetados do Cult UI
+## 4. Vetados do Cult UI e do beUI
 
 Estes componentes **nao entram**. Sao a assinatura visual do output de IA: borda com feixe
 animado, brilho, gradiente animado e vidro fosco. O proprio Arc proibe "decorative gradients
@@ -184,7 +194,18 @@ or glows" nas regras para agentes.
 | Brilho e vidro | `circuit-board`, `distorted-glass` |
 
 `halo-field` (so layout de label, descricao e erro) fica liberado.
-Para os controles, use o equivalente do Arc ou o shadcn base.
+Para os controles, use o equivalente do Arc, do beUI ou o shadcn base.
+
+No beUI o criterio e o mesmo:
+
+| Item | Por que |
+|---|---|
+| `shader-background` | Fundo de gradiente em malha, grao e ondas animados por shader |
+| `tilt-card` | Reflexo de brilho que segue o cursor |
+| Variante `MetallicButton` do `button` | Brilho metalico; o `button` base e as outras variantes ficam liberados |
+| Varredura cromatica do `text-animation` | Gradiente animado no texto; reveal, shimmer de loading e scramble ficam liberados |
+
+`bottom-sheet` e `drawer` entram, mas com superficie solida no lugar do vidro com blur.
 
 ---
 
@@ -200,6 +221,9 @@ Os registries sao React. Fora de React, o source serve de base e e portado:
 | HTML puro | `motion` → transicao CSS ou Web Animations API | `<dialog>`, atributo `popover`, `<details>` |
 | Mobile nativo | So o visual: tokens, espacamento, curvas de motion. Nao o codigo | Idem |
 
+beUI segue a coluna do Cult (Tailwind + `motion`). Em **React Native** nao porte: use o
+beUI Native (`npx beui-native add <nome>`), que ja traz o codigo em Reanimated.
+
 Ao portar: mantenha o ramo de `prefers-reduced-motion`, o comportamento de teclado e o
 **aviso de copyright** no topo do arquivo (Arc gratuito e Cult sao MIT; a licenca exige o aviso).
 Item Arc Pro nunca vai para template, kit ou biblioteca: a licenca proibe.
@@ -212,7 +236,8 @@ Item Arc Pro nunca vai para template, kit ou biblioteca: a licenca proibe.
 |---|---|
 | Refero (`https://api.refero.design/mcp`) | **Nao usado.** Exige plano pago; 8.000 chamadas por mes por usuario |
 | Arc (`https://uiarc.dev/api/mcp`) | Opcional, gratis com conta (OAuth). Fora do catalogo de `MCPS.md`; avaliar antes de ligar |
-| shadcn | Instala dos dois registries pelo namespace. Conta no limite de 3 a 6 servidores por projeto |
+| beUI (`https://mcp.beui.dev/mcp`) | **Nao usado.** `llms.txt` e `/r` respondem o mesmo por WebFetch. A skill `beui` tambem fica fora: colide por gatilho com as skills de design |
+| shadcn | Instala dos tres registries pelo namespace. Conta no limite de 3 a 6 servidores por projeto |
 
 ---
 

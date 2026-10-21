@@ -115,7 +115,7 @@ ou `r3f-best-practices` implementa, `cad-parametrico` faz peca para fabricar (mm
 as `blender-*` fazem asset e render. Precedencia em `docs_projeto/SKILLS.md` secao 9.
 
 Toda tarefa de interface segue `.claude/skills/_shared/fontes-frontend.md`: referencia real
-nomeada antes do codigo (Refero), componente de registry antes de inventado (Arc, Cult UI),
+nomeada antes do codigo (Refero), componente de registry antes de inventado (Arc, Cult UI, beUI),
 screenshot ao lado da referencia antes de entregar. As quatro skills de UI apontam para ele;
 ver `docs_projeto/SKILLS.md` secao 8.
 

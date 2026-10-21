@@ -3,7 +3,7 @@ title: Referencias externas
 type: readme
 status: aprovado
 created: 2026-05-28
-updated: 2026-10-15
+updated: 2026-10-21
 tags: [readme, referencias]
 ---
 
@@ -50,6 +50,7 @@ Protocolo de uso em `.claude/skills/_shared/fontes-frontend.md`; precedencia em 
 - [[galerias-de-secao]] — navbar.gallery, footer.design, cta.gallery, 404s.design, unsection, bentogrids, 60fps; scrolltide so como ficha (pago)
 - [[ui-arc]] — componentes React animados, CSS modules sem Tailwind. Tokens colidem com shadcn
 - [[cult-ui]] — registry shadcn com ilustracoes; Pro virou gratis. Tem lista de vetados
+- [[beui]] — registry shadcn animado (Tailwind 4 + motion), UI de agente de IA, charts e edicao React Native; guia de motion. Tem vetados
 
 ### Skills 3D
 

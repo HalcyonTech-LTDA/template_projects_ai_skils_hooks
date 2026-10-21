@@ -126,8 +126,8 @@ When user requests UI/UX work (design, build, create, implement, review, fix, im
 
 Read `.claude/skills/_shared/fontes-frontend.md` and follow it. If you cannot read it, these still hold:
 1. Name 2-3 real references (user-provided > refero.design via browser > real products from the brief) and what each contributes, then write the reference lock. No named reference, no code. For dashboards and tables, search for **screens** (data table with filters, empty state), not styles.
-2. Prefer an existing component from Arc (`@uiarc/*`) or Cult UI (`@cult-ui/*`) over writing one. Read its `.md` first.
-3. Never install Cult's `border-beam-*`, `halo-*`, `cosmic-button`, `metal-button`, `gradient-*`, `bg-animated-gradient`, `circuit-board`, `distorted-glass`.
+2. Prefer an existing component from Arc (`@uiarc/*`), Cult UI (`@cult-ui/*`) or beUI (`@beui/*`) over writing one. Read its `.md` first.
+3. Never install Cult's `border-beam-*`, `halo-*`, `cosmic-button`, `metal-button`, `gradient-*`, `bg-animated-gradient`, `circuit-board`, `distorted-glass`, nor beUI's `shader-background`, `tilt-card`, `MetallicButton`.
 4. Close visual work with screenshots at 1440px and 390px next to the primary reference, and fix the drift. No browser available: say so.
 
 ### Step 1: Analyze User Requirements

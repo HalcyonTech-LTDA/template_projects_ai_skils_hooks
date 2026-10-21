@@ -163,10 +163,11 @@ As quatro regras que cada skill repete inline:
 1. **2 a 3 referencias reais nomeadas antes do codigo**, com o que cada uma contribui, e o
    reference lock escrito. Ordem: do usuario → refero.design pelo navegador → galeria da
    secao (navbar, footer, CTA, 404, bento, motion) → produtos reais
-2. **Componente de registry antes de componente inventado**: Arc (`@uiarc/*`) ou Cult UI
-   (`@cult-ui/*`), lendo o `.md` do componente
+2. **Componente de registry antes de componente inventado**: Arc (`@uiarc/*`), Cult UI
+   (`@cult-ui/*`) ou beUI (`@beui/*`), lendo o `.md` do componente
 3. **Vetados do Cult**: `border-beam-*`, `halo-*`, `cosmic-button`, `metal-button`,
-   `gradient-*`, `bg-animated-gradient`, `circuit-board`, `distorted-glass`
+   `gradient-*`, `bg-animated-gradient`, `circuit-board`, `distorted-glass`; **do beUI**:
+   `shader-background`, `tilt-card`, `MetallicButton`
 4. **Screenshot em 1440px e 390px ao lado da referencia principal** antes de entregar
 
 | Fonte | Papel | Ficha |
@@ -175,12 +176,13 @@ As quatro regras que cada skill repete inline:
 | Galerias de secao | Referencia de um bloco (navbar, footer, CTA, 404, bento, motion). Nunca a principal | [[referencias/galerias-de-secao]] |
 | Arc | Componente animado, CSS modules, sem Tailwind | [[referencias/ui-arc]] |
 | Cult UI | Ilustracao, device frame, secao de marketing (Tailwind) | [[referencias/cult-ui]] |
+| beUI | Controle com motion, UI de chat e agente, charts; codigo React Native (Tailwind) | [[referencias/beui]] |
 
-Arc e Cult podem conviver, mas os tokens tem os mesmos nomes e o tema escuro usa seletores
-diferentes — regra na secao 3 do arquivo compartilhado.
+Arc, Cult e beUI podem conviver, mas os tokens tem os mesmos nomes e o tema escuro usa seletores
+diferentes (Cult e beUI seguem o shadcn; o atrito e com o Arc) — regra na secao 3 do arquivo compartilhado.
 
 `_shared/` nao e skill (nao tem `SKILL.md`); o hook so lista pastas com `SKILL.md`.
-Decisao em [[decisoes/2026-10-15_fontes_frontend]].
+Decisoes em [[decisoes/2026-10-15_fontes_frontend]] e [[decisoes/2026-10-21_beui]].
 
 ## 9. 3D — precedencia
 
