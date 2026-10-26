@@ -26,7 +26,7 @@ com subagentes e advisor, lidos dos transcripts. Detalhes em `docs_projeto/STATU
 
 O plugin `.claude/skills/progresso-shell/` (plugin, nao skill: carrega sozinho pela pasta)
 fixa embaixo da caixa de escrita o progresso do Bash em andamento: `▶ Testes unitários 4/12 ·
-1 falha`, `▶ Shell 45%`; o resultado do ultimo teste fica ate o proximo. Ele reescreve o comando para gravar a saida num log com `tee`. So cobre a
+1 falha`, `▶ Shell 45%`; o resultado de um teste fica ate o proximo comando ou prompt. Ele reescreve o comando para gravar a saida num log com `tee`. So cobre a
 ferramenta Bash. Detalhes e limites em `docs_projeto/PROGRESSO_SHELL.md`.
 
 ## Regras de comportamento (resumo)

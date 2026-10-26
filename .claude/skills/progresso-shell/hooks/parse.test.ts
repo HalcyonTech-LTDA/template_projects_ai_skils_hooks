@@ -1,7 +1,7 @@
 import { expect, test } from 'claude-code/testing'
 
 import type { Job } from '../types'
-import { classify, describe, parse, shouldWrap, wrap } from './parse'
+import { classify, describe, hasResult, parse, resultLine, runningLine, shouldWrap, wrap } from './parse'
 
 function show(output: string, job: Job) {
   return describe({ ...job, id: 't', ...parse(output, job.kind) })
@@ -19,6 +19,24 @@ test('classify separa teste de shell e nomeia o tipo de teste', async () => {
   expect(classify('npx playwright test').label).toBe('Testes e2e')
   expect(classify('ls -la')).toEqual({ kind: 'shell', label: 'Shell' })
   expect(classify('git log --grep test').kind).toBe('shell')
+  expect(classify('python -m pytest -q').kind).toBe('test')
+  expect(classify('FOO=1 npx vitest run').kind).toBe('test')
+  expect(classify('make build | tee out.log; yarn test').kind).toBe('test')
+})
+
+test('regressao: runner citado em texto nao e teste', async () => {
+  expect(classify('git commit -m "add pytest and unit tests"').kind).toBe('shell')
+  expect(classify("gh pr create --body 'runs node --test and jest'").kind).toBe('shell')
+  const heredoc = 'git commit -m "$(cat <<\'MSG\'\nfeat: parse pytest, jest, vitest\n- Testes unitários\nMSG\n)"'
+  expect(classify(heredoc).kind).toBe('shell')
+  expect(classify('echo pytest').kind).toBe('shell')
+})
+
+test('regressao: teste que terminou sem contar nada nao vira resultado', async () => {
+  const empty = { kind: 'test' as const, label: 'Testes', id: 't', ...parse('', 'test') }
+  expect(hasResult(empty)).toBe(false)
+  expect(hasResult({ ...empty, passed: 1 })).toBe(true)
+  expect(hasResult({ ...empty, total: 3 })).toBe(true)
 })
 
 test('shouldWrap recusa background, & solto, exec e comando vazio', async () => {
@@ -98,4 +116,19 @@ test('shell: ultimo percentual, senao linhas, senao nada', async () => {
   expect(show('a\nb\n\nc\n', SHELL)).toBe('Shell · 3 linhas')
   expect(show('uso 250%\n', SHELL)).toBe('Shell · 1 linhas')
   expect(show('', SHELL)).toBe(null)
+})
+
+test('regressao: shell que termina limpa a linha em vez de repetir teste antigo', async () => {
+  const shell = { ...SHELL, id: 's', ...parse('a\nb\n', 'shell') }
+  expect(runningLine(shell)).toBe('▶ Shell · 2 linhas')
+  expect(resultLine(shell)).toBe(undefined)
+  expect(runningLine({ ...SHELL, id: 's', ...parse('', 'shell') })).toBe(undefined)
+})
+
+test('resultado de teste: marca de sucesso ou falha, e nada sem contagem', async () => {
+  const ok = { ...TESTS, id: 't', ...parse('collected 2 items\nt.py .. [100%]\n', 'test') }
+  expect(resultLine(ok)).toBe('✔ Testes 2/2')
+  const bad = { ...TESTS, id: 't', ...parse('✔ a\n✖ b\n', 'test') }
+  expect(resultLine(bad)).toBe('✖ Testes 2 feitos · 1 falha')
+  expect(resultLine({ ...TESTS, id: 't', ...parse('', 'test') })).toBe(undefined)
 })
