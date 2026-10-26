@@ -1,0 +1,6 @@
+{
+  "name": "progresso-shell",
+  "version": "0.1.0",
+  "description": "Mostra embaixo do prompt o progresso de testes (7/12) e de comandos shell (40%) enquanto rodam.",
+  "types": "./types/index.d.ts"
+}

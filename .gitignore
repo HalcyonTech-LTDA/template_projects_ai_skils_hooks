@@ -10,5 +10,8 @@ Thumbs.db
 # Handoff entre fatias de uma issue (skill /issue). Estado local de trabalho, nunca versionado.
 /.claude/handoff/
 
+# Tipos que o Claude Code grava ao carregar um plugin (regerados a cada versao)
+.claude-plugin/types/
+
 # Cache do Python (scripts das skills, ex.: .claude/skills/pcb-projeto/scripts/)
 __pycache__/

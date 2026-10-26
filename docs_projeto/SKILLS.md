@@ -12,7 +12,8 @@ tags: [convencao, skills, design, claude-code, tema/tooling]
 
 Este repositorio carrega **116 skills** em `.claude/skills/` (62 proprias ou de fork e 54
 copiadas dos padroes Halcyon, secao 10) (mais `obsidian-skills/`, que e
-pacote e nao skill, e `_shared/`, que guarda texto comum a varias skills). Diferente dos MCPs, skill
+pacote e nao skill, `progresso-shell/`, que e plugin do Claude Code ([[PROGRESSO_SHELL]]),
+e `_shared/`, que guarda texto comum a varias skills). Diferente dos MCPs, skill
 nao custa contexto por sessao: so a `description` de cada uma entra no prompt, e o corpo
 so e lido quando a skill dispara. O custo real e outro — **colisao de gatilho**: com 20+
 skills descrevendo "design de interface", o modelo escolhe uma diferente a cada sessao e

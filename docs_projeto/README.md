@@ -18,6 +18,7 @@ Documentacao do **repositorio template** e do **template de projeto** que ele en
 - [[HOWTO]] — como clonar este repo e iniciar um projeto novo
 - [[CONVENCOES]] — schema de properties, naming, tags, IDs
 - [[HOOKS]] — regras do projeto injetadas via hook do Claude Code
+- [[PROGRESSO_SHELL]] — plugin que mostra embaixo do prompt o progresso de testes e shell
 - [[STATUSLINE]] — barra com a issue da sessao, status do board, modelo, esforco, contexto e tokens da sessao com subagentes
 - [[MCPS]] — catalogo de servidores MCP: quais ligar, quando desligar, custo de contexto
 - [[SKILLS]] — catalogo de skills e precedencia entre as de design (qual usar quando)
