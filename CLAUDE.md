@@ -22,6 +22,13 @@ e o hook de `/issue <ref>` ou a skill `/issue`, no passo 1
 renovado em segundo plano: a statusline nunca chama o `gh`. Os tokens somam a sessao inteira,
 com subagentes e advisor, lidos dos transcripts. Detalhes em `docs_projeto/STATUSLINE.md`.
 
+## Progresso na linha de status
+
+O plugin `.claude/skills/progresso-shell/` (plugin, nao skill: carrega sozinho pela pasta)
+fixa embaixo da caixa de escrita o progresso do Bash em andamento: `▶ Testes unitários 4/12 ·
+1 falha`, `▶ Shell 45%`; o resultado do ultimo teste fica ate o proximo. Ele reescreve o comando para gravar a saida num log com `tee`. So cobre a
+ferramenta Bash. Detalhes e limites em `docs_projeto/PROGRESSO_SHELL.md`.
+
 ## Regras de comportamento (resumo)
 
 1. Usar a skill que combinar com a tarefa; desenvolvimento passa por `/issue`, frente de trabalho por `/trilha`
@@ -159,6 +166,7 @@ tarefa, ou ela se perde no proximo projeto criado.
 - `.mcp.json.example` — nucleo de MCPs comentado; copiar para `.mcp.json` e podar
 - `.claude/skills/` — skills locais do projeto (fonte canonica)
 - `.claude/skills/_shared/` — texto comum a varias skills (nao e skill; o hook ignora)
+- `.claude/skills/progresso-shell/` — plugin do Claude Code: progresso de testes e shell na linha de status
 - `skills-lock.json` — procedencia das skills vindas de `Leonxlnx/taste-skill`; versionado, nao atualizar
 - `padroes-lock.json` — repo, commit e versao de cada padrao `modern-*` copiado; gravado pelo script
 - `.claude/scripts/importar-padroes.js` — reimporta os padroes Halcyon do GitHub
