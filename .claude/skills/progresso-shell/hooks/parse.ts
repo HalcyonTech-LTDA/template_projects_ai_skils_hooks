@@ -5,14 +5,20 @@ export type Counts = Pick<
   'passed' | 'failed' | 'skipped' | 'suites' | 'total' | 'percent' | 'lines'
 >
 
+// Each one matches the start of a command, never text inside it.
 const RUNNERS = [
-  /\b(?:pytest|py\.test|jest|vitest|mocha|ava|phpunit|rspec|ctest|unittest)\b/,
-  /\b(?:npm|pnpm|yarn|bun)(?: run)? test\b/,
-  /\bnode\b[^|;&]*\s--test\b/,
-  /\b(?:playwright test|cypress run|go test|cargo (?:test|nextest)|dotnet test)\b/,
-  /\bmvnw?\b[^|;&]*\b(?:test|verify|install)\b/,
-  /\bgradlew?\b[^|;&]*\b(?:test|check|build)\b/,
+  /^(?:pytest|py\.test|jest|vitest|mocha|ava|phpunit|rspec|ctest|unittest)\b/,
+  /^(?:npm|pnpm|yarn|bun)(?: run)? test\b/,
+  /^node\b.*\s--test\b/,
+  /^(?:playwright test|cypress run|go test|cargo (?:test|nextest)|dotnet test)\b/,
+  /^(?:\.\/)?mvnw?\b.*\b(?:test|verify|install)\b/,
+  /^(?:\.\/)?gradlew?(?:\.bat)?\b.*\b(?:test|check|build)\b/,
 ]
+
+// What may stand before the runner: env assignments and a launcher.
+const LAUNCHER = /^(?:\w+=\S*\s+)*(?:(?:npx|bunx|pnpm exec|uv run|poetry run|pipenv run|python3?|py)\s+(?:-m\s+)?)?/
+
+const HEREDOC = /<<-?\s*(['"]?)(\w+)\1[\s\S]*?\n\s*\2(?=\s|$)/g
 
 // A lone `&` sends a job to the background: the wrap would wait on it.
 const LONE_AMP = /(^|[^&>|<\d])&(?![&>])/
@@ -42,11 +48,33 @@ const FAIL = [
 const SKIP = [/\s>\s.+\sSKIPPED$/, /::\S+\s+SKIPPED\b/, /^\s*--- SKIP:/]
 
 export function classify(command: string): Job {
-  if (!RUNNERS.some(re => re.test(command))) {
-    return { kind: 'shell', label: 'Shell' }
-  }
+  const runner = commandsOf(command).find(isRunner)
 
-  return { kind: 'test', label: testLabel(command) }
+  return runner === undefined
+    ? { kind: 'shell', label: 'Shell' }
+    : { kind: 'test', label: testLabel(runner) }
+}
+
+// The simple commands of a line, with quoted text and heredoc bodies blanked:
+// a commit message that names pytest is not a test run.
+function commandsOf(command: string): string[] {
+  const bare = command
+    .replace(HEREDOC, '')
+    .replace(/'[^']*'/g, "''")
+    .replace(/"(?:\\.|[^"\\])*"/g, '""')
+
+  return bare.split(/&&|\|\||[;|\n(){}]/).map(part => part.trim())
+}
+
+function isRunner(part: string): boolean {
+  const candidates = [part, part.replace(LAUNCHER, '')]
+
+  return candidates.some(text => RUNNERS.some(re => re.test(text)))
+}
+
+// A run that ended without one counted test has nothing worth pinning.
+export function hasResult(p: Progress): boolean {
+  return p.passed + p.failed + p.skipped > 0 || p.total !== null || p.suites > 0
 }
 
 function testLabel(command: string): string {

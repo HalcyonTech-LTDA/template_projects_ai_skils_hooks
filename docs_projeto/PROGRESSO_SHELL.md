@@ -27,6 +27,11 @@ O shell comum some ao terminar; o ultimo resultado de teste volta para a linha. 
 do comando: `e2e`, `playwright` ou `cypress` vira **Testes e2e**; `integra`, **Testes de
 integração**; `unit`, **Testes unitários**; o resto, **Testes**.
 
+So conta como teste o comando que **comeca** com o runner, em qualquer elo de `&&`, `;` ou `|`,
+depois de variaveis (`FOO=1`) e de um lancador (`npx`, `python -m`, `uv run`, `poetry run`).
+Runner citado entre aspas ou em heredoc nao conta: `git commit -m "add pytest"` e shell. Um
+teste que termina sem contar nada (`0/?`) nao vira resultado fixo; a linha volta ao anterior.
+
 A primeira versao desenhava no spinner ("Sauteing..."), mas o spinner e redesenhado o tempo
 todo e o texto aparecia so por um instante. A linha de status fica parada.
 
@@ -41,7 +46,7 @@ Code carrega sozinho um plugin que esteja em `.claude/skills/<nome>/` do projeto
 | `.claude-plugin/plugin.json` | Manifesto |
 | `hooks/register.tsx` | Hook `tool.call` no Bash: embrulha, le o log a cada 1 s, atualiza a linha |
 | `hooks/parse.ts` | Funcoes puras: classifica o comando, embrulha, le a saida, monta o texto |
-| `hooks/parse.test.ts` | 15 testes unitarios do parser |
+| `hooks/parse.test.ts` | Testes unitarios do parser, com regressoes |
 | `types/index.d.ts` | Tipos `Job` e `Progress` |
 
 ## Como funciona

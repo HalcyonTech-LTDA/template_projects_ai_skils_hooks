@@ -1,7 +1,7 @@
 import type { EngineInterface, Register } from 'claude-code'
 
 import type { Job, Progress } from '../types'
-import { classify, describe, parse, shouldWrap, wrap } from './parse'
+import { classify, describe, hasResult, parse, shouldWrap, wrap } from './parse'
 
 const TICK_MS = 1000
 
@@ -40,7 +40,7 @@ function finish($: EngineInterface, progress: Progress) {
   if (progress.id !== activeId) return
 
   activeId = undefined
-  const text = progress.kind === 'test' ? describe(progress) : null
+  const text = progress.kind === 'test' && hasResult(progress) ? describe(progress) : null
   if (text !== null) lastTest = `${progress.failed > 0 ? '✖' : '✔'} ${text}`
   $.ui.status(lastTest)
 }
