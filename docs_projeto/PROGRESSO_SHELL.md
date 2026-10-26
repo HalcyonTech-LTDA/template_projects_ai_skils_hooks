@@ -21,9 +21,10 @@ Code; nao mexe na statusline de `.claude/statusline/`):
 | jest no reporter padrao (so arquivos ao vivo) | `▶ Testes · 3 arquivos` |
 | Shell cuja saida traz percentual (npm install, docker build, curl) | `▶ Shell 45%` |
 | Shell sem percentual | `▶ Shell · 230 linhas` |
-| Teste terminou | `✔ Testes 12/12` ou `✖ Testes 12/12 · 1 falha`, fixo ate o proximo teste |
+| Teste terminou | `✔ Testes 12/12` ou `✖ Testes 12/12 · 1 falha`, fixo ate o proximo comando ou prompt |
 
-O shell comum some ao terminar; o ultimo resultado de teste volta para a linha. O rotulo sai
+O shell comum some ao terminar, e o proximo comando ou prompt apaga o resultado de teste. Ao
+recarregar, o plugin limpa a linha que uma versao anterior tenha deixado. O rotulo sai
 do comando: `e2e`, `playwright` ou `cypress` vira **Testes e2e**; `integra`, **Testes de
 integração**; `unit`, **Testes unitários**; o resto, **Testes**.
 
@@ -44,7 +45,7 @@ Code carrega sozinho um plugin que esteja em `.claude/skills/<nome>/` do projeto
 | Arquivo | Papel |
 |---|---|
 | `.claude-plugin/plugin.json` | Manifesto |
-| `hooks/register.tsx` | Hook `tool.call` no Bash: embrulha, le o log a cada 1 s, atualiza a linha |
+| `hooks/register.tsx` | Hooks: `tool.call` no Bash (embrulha, le o log a cada 1 s), `prompt.submit` e `session.start` (limpam) |
 | `hooks/parse.ts` | Funcoes puras: classifica o comando, embrulha, le a saida, monta o texto |
 | `hooks/parse.test.ts` | Testes unitarios do parser, com regressoes |
 | `types/index.d.ts` | Tipos `Job` e `Progress` |

@@ -1,13 +1,12 @@
 import type { EngineInterface, Register } from 'claude-code'
 
 import type { Job, Progress } from '../types'
-import { classify, describe, hasResult, parse, shouldWrap, wrap } from './parse'
+import { classify, parse, resultLine, runningLine, shouldWrap, wrap } from './parse'
 
 const TICK_MS = 1000
 
 // Module state: a reload drops it, and the next command sets it again.
 let activeId: string | undefined
-let lastTest: string | undefined
 
 async function prepareLog($: EngineInterface, id: string): Promise<string> {
   const tmp = (await $.env.get('TEMP')) ?? (await $.env.get('TMPDIR')) ?? '/tmp'
@@ -27,22 +26,20 @@ async function readLog($: EngineInterface, path: string, base: Progress): Promis
   return typeof text === 'string' ? { ...base, ...parse(text, base.kind) } : base
 }
 
-// While a command runs, its line; with nothing to say, the last test result.
 function show($: EngineInterface, progress: Progress) {
-  if (progress.id !== activeId) return
-
-  const text = describe(progress)
-  $.ui.status(text === null ? lastTest : `▶ ${text}`)
+  if (progress.id === activeId) $.ui.status(runningLine(progress))
 }
 
-// A finished test run stays pinned until the next one, so it does not flash by.
+// A test result stays until the next command or prompt; anything else clears.
 function finish($: EngineInterface, progress: Progress) {
   if (progress.id !== activeId) return
 
   activeId = undefined
-  const text = progress.kind === 'test' && hasResult(progress) ? describe(progress) : null
-  if (text !== null) lastTest = `${progress.failed > 0 ? '✖' : '✔'} ${text}`
-  $.ui.status(lastTest)
+  $.ui.status(resultLine(progress))
+}
+
+function clearIdle($: EngineInterface) {
+  if (activeId === undefined) $.ui.status(undefined)
 }
 
 async function tick($: EngineInterface, path: string, base: Progress) {
@@ -50,6 +47,19 @@ async function tick($: EngineInterface, path: string, base: Progress) {
 }
 
 export const register: Register = on => {
+  // A reload runs this again: a line an older version pinned goes away.
+  on('session.start', ($, e, next) => {
+    clearIdle($)
+
+    return next(e)
+  })
+
+  on('prompt.submit', ($, e, next) => {
+    clearIdle($)
+
+    return next(e)
+  })
+
   on('tool.call', { tool: 'Bash' }, async ($, e, next) => {
     if (!shouldWrap(e.command, e.run_in_background)) return next(e)
 

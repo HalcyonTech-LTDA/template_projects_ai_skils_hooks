@@ -238,3 +238,17 @@ export function describe(p: Progress): string | null {
 
   return `${p.label} 0/?`
 }
+
+// The line while a command runs; undefined when there is nothing to say.
+export function runningLine(p: Progress): string | undefined {
+  const text = describe(p)
+
+  return text === null ? undefined : `▶ ${text}`
+}
+
+// The line a finished command leaves: a test result, or nothing.
+export function resultLine(p: Progress): string | undefined {
+  if (p.kind !== 'test' || !hasResult(p)) return undefined
+
+  return `${p.failed > 0 ? '✖' : '✔'} ${describe(p) ?? ''}`
+}

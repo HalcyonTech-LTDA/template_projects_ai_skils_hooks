@@ -1,7 +1,7 @@
 import { expect, test } from 'claude-code/testing'
 
 import type { Job } from '../types'
-import { classify, describe, hasResult, parse, shouldWrap, wrap } from './parse'
+import { classify, describe, hasResult, parse, resultLine, runningLine, shouldWrap, wrap } from './parse'
 
 function show(output: string, job: Job) {
   return describe({ ...job, id: 't', ...parse(output, job.kind) })
@@ -116,4 +116,19 @@ test('shell: ultimo percentual, senao linhas, senao nada', async () => {
   expect(show('a\nb\n\nc\n', SHELL)).toBe('Shell · 3 linhas')
   expect(show('uso 250%\n', SHELL)).toBe('Shell · 1 linhas')
   expect(show('', SHELL)).toBe(null)
+})
+
+test('regressao: shell que termina limpa a linha em vez de repetir teste antigo', async () => {
+  const shell = { ...SHELL, id: 's', ...parse('a\nb\n', 'shell') }
+  expect(runningLine(shell)).toBe('▶ Shell · 2 linhas')
+  expect(resultLine(shell)).toBe(undefined)
+  expect(runningLine({ ...SHELL, id: 's', ...parse('', 'shell') })).toBe(undefined)
+})
+
+test('resultado de teste: marca de sucesso ou falha, e nada sem contagem', async () => {
+  const ok = { ...TESTS, id: 't', ...parse('collected 2 items\nt.py .. [100%]\n', 'test') }
+  expect(resultLine(ok)).toBe('✔ Testes 2/2')
+  const bad = { ...TESTS, id: 't', ...parse('✔ a\n✖ b\n', 'test') }
+  expect(resultLine(bad)).toBe('✖ Testes 2 feitos · 1 falha')
+  expect(resultLine({ ...TESTS, id: 't', ...parse('', 'test') })).toBe(undefined)
 })
