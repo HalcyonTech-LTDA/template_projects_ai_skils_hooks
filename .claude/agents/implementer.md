@@ -1,6 +1,6 @@
 ---
 name: implementer
-description: Implementa UMA fatia de um plano ja aprovado e termina com um resumo de handoff. Opus por padrao (issues L/XL); a sessao passa model sonnet em issues M. Um agente novo por fatia — nao continue entre fatias por SendMessage.
+description: Implementa UMA fatia de um plano ja aprovado em issue L ou XL e termina com um resumo de handoff. Opus. Ate M a propria sessao implementa, sem subagente. Um agente novo por fatia — nao continue entre fatias por SendMessage.
 model: opus
 effort: high
 ---

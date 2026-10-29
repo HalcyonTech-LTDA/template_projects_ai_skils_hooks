@@ -16,9 +16,10 @@ echo "{}" | node .claude/hooks/inject-rules.js
 ## Statusline
 
 `.claude/settings.json` liga a statusline de `.claude/statusline/`:
-`#42 Titulo · In progress │ Opus 5.5 · high │ ctx 34% │ tok 4.6M (sub 870k)`. A issue e da sessao. Quem a grava
+`#42 Titulo · In progress │ F5 · rec. sonnet │ Opus 5.5 · high │ ctx 34% │ tok 4.6M (sub 870k)`. A issue e da sessao. Quem a grava
 e o hook de `/issue <ref>` ou a skill `/issue`, no passo 1
-(`node .claude/statusline/issue.js definir <ref>`). O status vem do board por um cache de 60 s,
+(`node .claude/statusline/issue.js definir <ref>`). A skill tambem grava a fase da issue e o modelo
+recomendado a cada fase (`issue.js fase F5 --modelo sonnet`); `⚠` avisa quando o modelo ativo e outro. O status vem do board por um cache de 60 s,
 renovado em segundo plano: a statusline nunca chama o `gh`. Os tokens somam a sessao inteira,
 com subagentes e advisor, lidos dos transcripts. Detalhes em `docs_projeto/STATUSLINE.md`.
 
@@ -53,7 +54,7 @@ Quatro skills governam como o trabalho entra no repositorio:
 | Skill | Quando |
 |---|---|
 | `/trilha` | Planejar e controlar uma frente de trabalho no GitHub: epico, marcos (milestones), issues em sequencia, dependencias nativas (blocked by), progresso dos marcos e checagem de deriva do board. So issues, nunca draft. IDs do board em `docs_projeto/BOARD.md`. |
-| `/issue` | Conduzir uma issue ou tarefa de desenvolvimento do comeco ao merge. O `explorer` em Sonnet localiza o codigo e propoe o tamanho (vale o maior entre ele e a label `size/*`); subagente e modelo saem do tamanho, e plano formal so em L/XL. Cada fatia entrega testes unitarios alem do portao do projeto. Move a issue no board (In progress ao comecar; Done ou In review depois do merge, por `issue.js mover`), abre o PR para a branch de origem, faz o merge com squash e termina com a URL da issue. Toda implementacao roda num worktree (`/worktree`) criado da branch atual e volta para ela pelo merge do PR; usa `/commit` por dentro. |
+| `/issue` | Conduzir uma issue ou tarefa de desenvolvimento do comeco ao merge, por fases F1 a F8 gravadas na barra. A sessao classifica o tamanho (vale o maior entre ela e a label `size/*`); XS a M rodam numa sessao so, em Sonnet, sem subagentes, e L/XL usam `Plan`, `implementer` por fatia e `reviewer` (Opus); plano formal so em L/XL; modelo so troca por `/clear` e handoff. Cada fatia entrega testes unitarios alem do portao do projeto. Move a issue no board (In progress ao comecar; Done ou In review depois do merge, por `issue.js mover`), abre o PR para a branch de origem, faz o merge com squash e termina com a URL da issue. Toda implementacao roda num worktree (`/worktree`) criado da branch atual e volta para ela pelo merge do PR; usa `/commit` por dentro. |
 | `/commit` | Gerar a mensagem e criar o commit. Le a convencao do proprio repositorio (`docs_projeto/COMMITS.md`, depois `CLAUDE.md`, depois o historico) antes de propor tipo e escopo. Nunca roda `git add` por conta propria. |
 | `/worktree` | Rodar tarefas independentes em paralelo, uma janela `claude` por tarefa, com merge de volta serializado por fila. |
 
@@ -65,15 +66,18 @@ ignorado pelo git.
 ## Agentes
 
 `.claude/agents/` tem 5 subagentes de desenvolvimento (mais os 5 do blueprint de negocio, ver
-"Padroes Halcyon"): `explorer` (haiku, busca so de leitura; sonnet ao classificar na `/issue`), `researcher`
-(sonnet, web), `worker` (sonnet, testes e docs), `implementer` (opus, uma fatia) e `reviewer`
-(opus, revisao do diff). `docs_projeto/AGENTES.md` e o catalogo: tabela tamanho → modelo,
-handoff entre fatias, os tres momentos do advisor e os numeros de custo que justificam tudo.
+"Padroes Halcyon"): `explorer` (haiku, busca so de leitura), `researcher`
+(sonnet, web), `worker` (sonnet, testes e docs), `implementer` (opus, uma fatia de L/XL) e `reviewer`
+(opus, revisao do diff). `docs_projeto/AGENTES.md` e o catalogo: fases e tabela tamanho → modelo,
+handoff, os tres momentos do advisor e os numeros de custo que justificam tudo.
 
-Tres regras que valem sempre:
+Quatro regras que valem sempre:
 
-- **Um `implementer` novo por fatia.** Estado entre fatias vai para `.claude/handoff/<issue>.md`
+- **Ate M, sem subagente** (sessao unica em Sonnet, medido ~45% mais barato). **Em L e XL, um
+  `implementer` novo por fatia.** Estado entre fatias vai para `.claude/handoff/<issue>.md`
   (ignorado pelo git), nunca para um agente mantido vivo por `SendMessage`.
+- **Modelo so troca por `/clear` e handoff.** O cache e por modelo; `/model` no meio da sessao
+  regrava o contexto inteiro.
 - **Uma issue por sessao**, `/clear` entre issues. O custo esta no contexto relido a cada
   chamada, nao na resposta.
 - **Agente de projeto vence agente de usuario com o mesmo nome.** Nao mantenha copias destes

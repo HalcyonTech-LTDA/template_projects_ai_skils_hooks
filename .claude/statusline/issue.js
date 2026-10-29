@@ -5,15 +5,18 @@
 //   node .claude/statusline/issue.js mostrar
 //   node .claude/statusline/issue.js limpar
 //   node .claude/statusline/issue.js mover "<Status>" [ref] [--conferir]
+//   node .claude/statusline/issue.js fase [F1..F8 [--modelo <nome>] | --limpar]
 // A sessao vem de CLAUDE_CODE_SESSION_ID, que o Claude Code poe no ambiente do Bash.
 // mover sai com 0 ao mover, 3 quando nao ha o que mover (sem Project ou sem a opcao) e 1 em erro.
+// fase grava a fase da /issue e o modelo recomendado (sem argumento, mostra); limpar tira issue e fase.
 const { registrar } = require("./lib/registro");
 const { lerSessao, apagarSessao } = require("./lib/estado");
+const { USO_FASE, lerFase, apagarFase, registrarFase, interpretarArgs, descreverFase } = require("./lib/fase");
 const { lerCache, disparar } = require("./lib/board");
 const { interpretar, repoDoCheckout } = require("./lib/referencia");
 const { mover } = require("./lib/mover");
 
-const USO = 'uso: issue.js definir <ref> | mostrar | limpar | mover "<Status>" [ref] [--conferir]';
+const USO = 'uso: issue.js definir <ref> | mostrar | limpar | mover "<Status>" [ref] [--conferir] | fase [F1..F8 [--modelo <nome>] | --limpar]';
 
 function sair(mensagem, codigo) {
   (codigo ? console.error : console.log)(mensagem);
@@ -65,15 +68,30 @@ function moverIssue(sessionId, args) {
   sair(...descreverMovimento(ref, resultado));
 }
 
+function comandoFase(sessionId, args) {
+  const pedido = interpretarArgs(args);
+  if (!pedido) sair(USO_FASE, 1);
+  const id = exigirSessao(sessionId);
+  if (pedido.acao === "limpar") {
+    apagarFase(id);
+    return sair("statusline: fase removida desta sessao", 0);
+  }
+  if (pedido.acao === "definir") registrarFase(id, pedido.fase, pedido.modelo);
+  sair(descreverFase(lerFase(id)), 0);
+}
+
 function main() {
   const sessionId = process.env.CLAUDE_CODE_SESSION_ID;
   const [comando, ...resto] = process.argv.slice(2);
   if (comando === "definir") return definir(sessionId, resto[0]);
   if (comando === "mostrar") return mostrar(sessionId);
   if (comando === "mover") return moverIssue(sessionId, resto);
+  if (comando === "fase") return comandoFase(sessionId, resto);
   if (comando === "limpar") {
-    apagarSessao(exigirSessao(sessionId));
-    return sair("statusline: issue removida desta sessao", 0);
+    const id = exigirSessao(sessionId);
+    apagarSessao(id);
+    apagarFase(id);
+    return sair("statusline: issue e fase removidas desta sessao", 0);
   }
   sair(USO, 1);
 }

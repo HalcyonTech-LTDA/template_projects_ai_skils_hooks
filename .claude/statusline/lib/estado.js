@@ -27,6 +27,10 @@ function caminhoTokens(sessionId) {
   return path.join(raiz(), "tokens", `${seguro(sessionId)}.json`);
 }
 
+function caminhoFase(sessionId) {
+  return path.join(raiz(), "fases", `${seguro(sessionId)}.json`);
+}
+
 function lerJson(arquivo) {
   try {
     return JSON.parse(fs.readFileSync(arquivo, "utf8"));
@@ -54,9 +58,9 @@ function apagarSessao(sessionId) {
   fs.rmSync(caminhoSessao(sessionId), { force: true });
 }
 
-// Sessao, cache do board e contagem de tokens: tudo que nao e tocado ha 7 dias sai.
+// Sessao, cache do board, contagem de tokens e fase: tudo que nao e tocado ha 7 dias sai.
 function expirarSessoes(agora = Date.now()) {
-  for (const subpasta of ["sessoes", "cache", "tokens"]) expirarPasta(path.join(raiz(), subpasta), agora);
+  for (const subpasta of ["sessoes", "cache", "tokens", "fases"]) expirarPasta(path.join(raiz(), subpasta), agora);
 }
 
 function expirarPasta(pasta, agora) {
@@ -79,6 +83,7 @@ module.exports = {
   caminhoSessao,
   caminhoCache,
   caminhoTokens,
+  caminhoFase,
   lerJson,
   gravarJson,
   lerSessao,

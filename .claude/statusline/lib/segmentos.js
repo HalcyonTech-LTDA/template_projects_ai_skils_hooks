@@ -1,4 +1,4 @@
-// Monta a linha: issue · status │ modelo · esforco │ ctx % │ tokens da sessao.
+// Monta a linha: issue · status │ fase · modelo recomendado │ modelo · esforco │ ctx % │ tokens da sessao.
 // Funcoes puras sobre o payload da statusline, a sessao, o cache e a contagem de tokens.
 const ANSI = {
   reset: "\x1b[0m",
@@ -49,10 +49,22 @@ function segmentoIssue(sessao, cache) {
   return `${numero}${titulo}${PONTO}${segmentoStatus(cache)}`;
 }
 
+function nomeDoModelo(payload) {
+  return String((payload.model && (payload.model.display_name || payload.model.id)) || "");
+}
+
 function segmentoModelo(payload) {
-  const modelo = (payload.model && (payload.model.display_name || payload.model.id)) || "?";
+  const modelo = nomeDoModelo(payload) || "?";
   const esforco = payload.effort && payload.effort.level;
   return esforco ? `${modelo}${PONTO}${esforco}` : modelo;
+}
+
+// F5 · rec. sonnet; ⚠ quando o modelo ativo nao e o recomendado. Sem fase, sem segmento.
+function segmentoFase(payload, fase) {
+  if (!fase) return null;
+  if (!fase.modelo) return fase.fase;
+  const diverge = !nomeDoModelo(payload).toLowerCase().includes(fase.modelo.toLowerCase());
+  return `${fase.fase}${PONTO}rec. ${fase.modelo}${diverge ? ` ${pintar("⚠", "amarelo")}` : ""}`;
 }
 
 function corDoContexto(percentual) {
@@ -81,10 +93,15 @@ function segmentoTokens(tokens) {
   return pintar(`tok ${aproximado}${formatarTokens(tokens.total)}${sub}`, "cinza");
 }
 
-function montar(payload, sessao, cache, tokens) {
-  return [segmentoIssue(sessao, cache), segmentoModelo(payload), segmentoContexto(payload), segmentoTokens(tokens)]
-    .filter(Boolean)
-    .join(SEPARADOR);
+function montar(payload, sessao, cache, tokens, fase) {
+  const segmentos = [
+    segmentoIssue(sessao, cache),
+    segmentoFase(payload, fase),
+    segmentoModelo(payload),
+    segmentoContexto(payload),
+    segmentoTokens(tokens),
+  ];
+  return segmentos.filter(Boolean).join(SEPARADOR);
 }
 
-module.exports = { montar, segmentoModelo, encurtar, formatarTokens };
+module.exports = { montar, segmentoModelo, segmentoFase, encurtar, formatarTokens };

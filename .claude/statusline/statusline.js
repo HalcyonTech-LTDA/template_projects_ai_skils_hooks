@@ -4,6 +4,7 @@
 const fs = require("fs");
 const { lerSessao } = require("./lib/estado");
 const { lerCache, precisaAtualizar, disparar } = require("./lib/board");
+const { lerFase } = require("./lib/fase");
 const { contarSessao } = require("./lib/tokens");
 const { montar, segmentoModelo } = require("./lib/segmentos");
 
@@ -27,7 +28,7 @@ function linha(payload) {
   const sessao = lerSessao(payload.session_id);
   const cache = sessao ? lerCache(sessao) : null;
   if (sessao && precisaAtualizar(cache)) disparar(sessao);
-  return montar(payload, sessao, cache, tokensDaSessao(payload));
+  return montar(payload, sessao, cache, tokensDaSessao(payload), lerFase(payload.session_id));
 }
 
 const payload = lerPayload();

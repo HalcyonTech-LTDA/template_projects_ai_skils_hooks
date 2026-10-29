@@ -12,6 +12,8 @@ tags: [decisao, agentes, custo, issue, tema/tooling]
 
 Ajusta [[2026-10-10_agentes_e_fluxo_de_issue]].
 
+Ajustada por [[2026-10-29_issue_por_fases]]: a classificacao sai do `explorer` e passa a ser da sessao.
+
 ## O que mudou
 
 1. **Classificacao:** a `/issue` abre o `explorer` com `model: sonnet` no passo 2. Ele localiza o codigo afetado e propoe o tamanho, com justificativa. Antes, quem estimava era a sessao principal, que em geral roda em Opus.

@@ -3,7 +3,7 @@ title: Economia de contexto
 type: convencao
 status: aprovado
 created: 2026-10-18
-updated: 2026-10-18
+updated: 2026-10-29
 project: template_projetos
 tags: [convencao, custo, tokens, claude-code, tema/tooling]
 ---
@@ -67,14 +67,18 @@ E a alavanca principal.
 | Tarefa | Onde roda | Modelo |
 |---|---|---|
 | Pergunta, edicao pequena, issue XS/S | sessao principal | Sonnet (`/model sonnet`) |
-| Issue M | sessao principal + `implementer` | `implementer` sonnet, um por fatia |
+| Issue M | sessao principal, sem subagente | Sonnet (`/model sonnet`) |
 | Issue L/XL, decisao de desenho | `Plan` + `implementer` | Opus |
 | Busca que varre muitos arquivos | `explorer` | Haiku |
 | Uma ou duas leituras | na propria sessao | o que estiver |
 | Pesquisa na web | `researcher` | Sonnet |
 
 - **Subagente nao e gratis.** Ele comeca com o proprio preambulo, de dezenas de milhares de
-  tokens. Compensa quando a busca levaria muitas chamadas; para uma ou duas leituras, nao.
+  tokens. Compensa quando a busca levaria muitas chamadas; para uma ou duas leituras, nao. Numa
+  issue M medida, o fluxo com subagentes custou cerca de 45% mais que a sessao unica
+  ([[AGENTES]] secao 7).
+- **Trocar de modelo regrava o cache.** O cache e por modelo: `/model` no meio da sessao paga o
+  contexto inteiro de novo. Troque so com `/clear` e um handoff escrito.
 - **Leitura de cache do Sonnet custa bem menos que a do Opus.** Numa sessao longa, e ali que esta
   a diferenca.
 - **`effort` baixo reduz a saida, nao o contexto** ([[AGENTES]] secao 1).
