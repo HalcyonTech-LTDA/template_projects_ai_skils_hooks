@@ -158,7 +158,7 @@ Quem executa: **<agente | dono | externo>** · Repo do codigo: `<repo>` · Base:
 - **A `/issue` e o pedido explicito.** Ela faz o merge do PR e so entao poe o estado final:
   - Done quando todo criterio de aceite foi provado por teste automatizado;
   - In review em qualquer outro caso.
-  O criterio esta no passo 5.7 dela, e o comando e `node .claude/statusline/issue.js mover`.
+  O criterio esta na F8, passo 7 dela, e o comando e `node .claude/statusline/issue.js mover`.
 - PR usa `Refs #N`. A `/issue` nunca usa `Closes`. Fora dela, `Closes #N` so quando o merge **e** o aceite (sem prova em ambiente real pendente).
 
 ### Workflows nativos do Project (configure uma vez)

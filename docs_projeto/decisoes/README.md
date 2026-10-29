@@ -31,3 +31,4 @@ Registro de mudancas estruturais feitas **neste repositorio** (nao nos projetos 
 - [[2026-10-21_beui]] — beUI como quarta fonte de frontend (terceiro registry): controles com motion, UI de agente, React Native; skill e MCP dele fora; quatro itens vetados
 - [[2026-10-18_economia_de_contexto]] — `ECONOMIA.md` (menos chamadas, contexto menor, modelo pela tarefa); hook de 5,3 KB para 0,7 KB sem a lista de skills; perguntas e alternativas escalam pelo tamanho
 - [[2026-10-15_galerias_de_secao]] — degrau "galeria da secao" no passo 2 (navbar, footer, CTA, 404, bento, motion); scrolltide so como ficha, pago e sem redistribuicao
+- [[2026-10-29_issue_por_fases]] — `/issue` v2.0 por fases F1 a F8: XS a M numa sessao so em Sonnet, sem subagentes (M medida ~45% mais barata); L/XL mantem subagentes; fase e modelo recomendado na barra por `issue.js fase`; modelo so troca por `/clear` e handoff
