@@ -2,6 +2,8 @@
 const test = require("node:test");
 const assert = require("node:assert");
 
+process.env.HALCYON_STATUSLINE_OFFLINE = "1";
+
 const { escolherAlvo } = require("../lib/mover");
 
 const opcoes = [

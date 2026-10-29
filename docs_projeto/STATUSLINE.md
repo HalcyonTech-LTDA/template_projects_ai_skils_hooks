@@ -38,7 +38,7 @@ Tudo em `.claude/statusline/`, que se copia inteira para um projeto derivado:
 | `hook-capturar-issue.js` | Hook `UserPromptSubmit`: prompt que comeca com `/issue <ref>` liga a sessao a issue |
 | `issue.js` | CLI `definir <ref>`, `mostrar` e `limpar` (skill `/issue`, passo 1), `mover "<Status>"` (F5.1 e F8, passo 7) e `fase [F1..F8]` |
 | `atualizar-board.js` | Processo destacado que consulta o `gh` e grava o cache |
-| `lib/` | `estado` (caminhos e arquivos), `referencia` (interpretar a ref), `board` (cache e `gh`), `tokens` (soma dos transcripts), `segmentos` (formatar), `registro` (ligar sessao a issue), `mover` (Status no board), `fase` (fase e modelo recomendado) |
+| `lib/` | `estado` (caminhos e arquivos), `referencia` (interpretar a ref), `board` (cache e `gh`), `rede` (chave `HALCYON_STATUSLINE_OFFLINE`), `tokens` (soma dos transcripts), `segmentos` (formatar), `registro` (ligar sessao a issue), `mover` (Status no board), `fase` (fase e modelo recomendado) |
 | `testes/statusline.test.js` | Testes das partes puras |
 | `testes/fase.test.js` | Testes da fase: estado, segmento, aviso, CLI `fase` e barra com estado corrompido |
 
@@ -181,6 +181,10 @@ echo '{"model":{"display_name":"Opus 5.5"},"effort":{"level":"high"}}' | node .c
 ```
 
 `HALCYON_STATUSLINE_DIR` troca a pasta de estado. Os testes usam isso para nao tocar o home.
+
+`HALCYON_STATUSLINE_OFFLINE=1` desliga toda chamada ao `gh`: `disparar` nao abre o atualizador e
+`consultar` e `mover` falham na hora. Os tres arquivos de teste a definem, para que registrar uma
+issue sem cache nunca consulte o GitHub. Qualquer outro valor mantem a rede ligada.
 
 ## Desligar ou trocar
 

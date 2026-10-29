@@ -170,9 +170,10 @@ ja conhecia o codigo (o que o favorece); a sessao unica rodou como subagente, co
 fora; L/XL e a troca de modelo nao foram medidos. A sessao unica marcou so 4 das 8 fases em texto
 livre, por isso a fase vai para a barra e nao para o chat.
 
-Pendente: testes da statusline que registram uma issue sem cache fazem o `statusline.js` disparar
-o `atualizar-board.js`, que chama o `gh` de verdade (houve uma consulta de leitura num repo
-inexistente). Falta uma variavel que desligue a rede nos testes.
+Resolvido: testes da statusline que registravam uma issue sem cache faziam o `statusline.js`
+disparar o `atualizar-board.js`, que chamava o `gh` de verdade (houve uma consulta de leitura num
+repo inexistente). `HALCYON_STATUSLINE_OFFLINE=1` desliga o `gh` e os testes ja a definem
+(`docs_projeto/STATUSLINE.md`).
 
 ## Adaptacao local
 

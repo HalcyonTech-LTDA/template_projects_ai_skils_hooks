@@ -5,6 +5,7 @@ const fs = require("fs");
 const path = require("path");
 const { execFileSync, spawn } = require("child_process");
 const { caminhoCache, lerJson } = require("./estado");
+const { semRede, exigirRede } = require("./rede");
 
 const VALIDADE_CACHE_MS = 60 * 1000;
 const VALIDADE_TRAVA_MS = 30 * 1000;
@@ -26,13 +27,15 @@ function travaOcupada(ref, agora = Date.now()) {
   }
 }
 
+// Devolve se o atualizador foi disparado: nao dispara offline nem com a trava ocupada.
 function disparar(ref) {
-  if (travaOcupada(ref)) return;
+  if (semRede() || travaOcupada(ref)) return false;
   spawn(process.execPath, [ATUALIZADOR, ref.repo, String(ref.numero)], {
     detached: true,
     stdio: "ignore",
     windowsHide: true,
   }).unref();
+  return true;
 }
 
 // Primeiro Project com status; sem Project, o estado da issue (open/closed).
@@ -43,6 +46,7 @@ function extrairStatus(issue) {
 }
 
 function verIssue(ref, campos) {
+  exigirRede();
   const saida = execFileSync("gh", ["issue", "view", String(ref.numero), "-R", ref.repo, "--json", campos], {
     encoding: "utf8",
     stdio: ["ignore", "pipe", "ignore"],

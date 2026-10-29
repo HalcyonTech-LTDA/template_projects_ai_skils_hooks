@@ -6,6 +6,7 @@ const os = require("os");
 const path = require("path");
 
 process.env.HALCYON_STATUSLINE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), "statusline-fase-"));
+process.env.HALCYON_STATUSLINE_OFFLINE = "1";
 test.after(() => fs.rmSync(process.env.HALCYON_STATUSLINE_DIR, { recursive: true, force: true }));
 
 const estado = require("../lib/estado");
@@ -210,7 +211,7 @@ test("barra: estado da fase corrompido nao quebra a linha", () => {
 
 test("barra: a fase convive com a issue da sessao", () => {
   estado.gravarSessao("c-5", { repo: "o/r", numero: 5 });
-  // cache fresco: sem ele a barra dispara o atualizador destacado, que chama o gh (rede)
+  // o cache traz titulo e status; offline a barra nunca preenche isso sozinha
   estado.gravarJson(estado.caminhoCache("o/r", 5), { titulo: "T", status: "open", consultadoEm: Date.now() });
   fase.registrarFase("c-5", "F4", "opus");
   assert.strictEqual(barra("c-5"), "#5 T · open │ F4 · rec. opus │ Opus 5.5 │ ctx —");

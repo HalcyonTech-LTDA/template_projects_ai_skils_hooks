@@ -2,6 +2,7 @@
 // fim (In review ou Done). Os ids saem do proprio item da issue no Project, entao funciona com o
 // BOARD.md ainda vazio; sem Project com campo Status, nao move nada.
 const { execFileSync } = require("child_process");
+const { exigirRede } = require("./rede");
 
 // O workflow "Pull request merged -> In review" roda em segundo plano e pode chegar depois do
 // item-edit; com conferencia, espera, rele e reaplica uma vez.
@@ -16,6 +17,7 @@ const CONSULTA = `query($dono: String!, $repo: String!, $numero: Int!) {
 }`;
 
 function gh(args) {
+  exigirRede();
   return execFileSync("gh", args, {
     encoding: "utf8",
     stdio: ["ignore", "pipe", "pipe"],

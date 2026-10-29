@@ -45,4 +45,4 @@ Ajusta [[2026-10-15_classificacao_sonnet_e_plano_l_xl]] e [[2026-10-18_issue_ent
 ## Consequencias
 
 - Projetos derivados continuam no fluxo antigo ate alguem copiar `.claude/skills/issue/`, `.claude/statusline/`, `.claude/agents/implementer.md` e os docs acima.
-- Pendente, fora desta decisao: testes que registram uma issue sem cache fazem a statusline disparar o `gh` de verdade ([[../AGENTES|AGENTES.md]] secao 7).
+- Resolvido depois, fora desta decisao: testes que registravam uma issue sem cache faziam a statusline disparar o `gh` de verdade; `HALCYON_STATUSLINE_OFFLINE=1` desliga a rede nos testes ([[../AGENTES|AGENTES.md]] secao 7).

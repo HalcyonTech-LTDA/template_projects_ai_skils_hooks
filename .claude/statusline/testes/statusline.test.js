@@ -6,12 +6,14 @@ const os = require("os");
 const path = require("path");
 
 process.env.HALCYON_STATUSLINE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), "statusline-teste-"));
+process.env.HALCYON_STATUSLINE_OFFLINE = "1";
 test.after(() => fs.rmSync(process.env.HALCYON_STATUSLINE_DIR, { recursive: true, force: true }));
 
 const { interpretar, repoDoRemote } = require("../lib/referencia");
 const { montar, encurtar, formatarTokens } = require("../lib/segmentos");
 const { somarUso, contarSessao } = require("../lib/tokens");
-const { extrairStatus, precisaAtualizar } = require("../lib/board");
+const { extrairStatus, precisaAtualizar, disparar, consultar } = require("../lib/board");
+const { semRede } = require("../lib/rede");
 const estado = require("../lib/estado");
 
 const semCor = (texto) => texto.replace(/\x1b\[\d+m/g, "");
@@ -41,6 +43,24 @@ test("cache vale 60 s", () => {
   assert.strictEqual(precisaAtualizar(null), true);
   assert.strictEqual(precisaAtualizar({ consultadoEm: 1000 }, 50_000), false);
   assert.strictEqual(precisaAtualizar({ consultadoEm: 1000 }, 70_000), true);
+});
+
+test("offline: nao dispara o atualizador nem consulta o gh", () => {
+  assert.strictEqual(disparar({ repo: "o/r", numero: 1 }), false);
+  assert.throws(() => consultar({ repo: "o/r", numero: 1 }), /HALCYON_STATUSLINE_OFFLINE/);
+});
+
+test("so HALCYON_STATUSLINE_OFFLINE=1 desliga a rede", () => {
+  const antes = process.env.HALCYON_STATUSLINE_OFFLINE;
+  try {
+    for (const [valor, esperado] of [["1", true], ["0", false], ["", false], [undefined, false]]) {
+      if (valor === undefined) delete process.env.HALCYON_STATUSLINE_OFFLINE;
+      else process.env.HALCYON_STATUSLINE_OFFLINE = valor;
+      assert.strictEqual(semRede(), esperado, String(valor));
+    }
+  } finally {
+    process.env.HALCYON_STATUSLINE_OFFLINE = antes;
+  }
 });
 
 const payload = {
